@@ -13,11 +13,18 @@ use Getopt::Long;
 
 my $top = 10;
 my $all = 0;
+my $help = 0;
 
 GetOptions (
     "top=i" => \$top,
-    "all" => \$all
+    "all" => \$all,
+    "help" => \$help
 );
+
+if ($help) {
+    print "usage: bbprof-read [-t|--top N] [-a|--all] [PROFILE]\n";
+    exit 0;
+}
 
 my $fn = shift @ARGV;
 unless ($fn) {
