@@ -6,6 +6,13 @@ bash-boost-$(VERSION): src
 	$(RM) $@/bash-boost.sh.m4
 	./flatten $@
 
+release: bash-boost-$(VERSION).tar.gz
+
+bash-boost-$(VERSION).tar.gz: bash-boost-$(VERSION)
+	tar czvf $@ $<
+
 clean:
 	$(RM) -r bash-boost-$(VERSION)
+
+.PHONY: release clean
 
