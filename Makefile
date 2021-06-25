@@ -2,6 +2,7 @@ VERSION=0.4
 
 bash-boost-$(VERSION): src
 	cp -r src $@
+	cp LICENSE $@
 	m4 -DM4_VERSION=$(VERSION) $@/bash-boost.sh.m4 > $@/bash-boost.sh
 	$(RM) $@/bash-boost.sh.m4
 	./flatten $@
