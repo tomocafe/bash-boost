@@ -13,6 +13,7 @@ bash-boost-$(VERSION).tar.gz: bash-boost-$(VERSION)
 
 clean:
 	$(RM) -r bash-boost-$(VERSION)
+	$(RM)    bash-boost-$(VERSION).tar.gz
 
 .PHONY: release clean
 
