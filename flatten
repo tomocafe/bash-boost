@@ -1,0 +1,28 @@
+#!/bin/bash
+BB_ROOT="${1:?requires BB_ROOT as argument}"
+modules=(cli interactive util)
+unflattened="$BB_ROOT/bash-boost.sh"
+flattened="$BB_ROOT/bash-boost-portable.sh"
+tmp=$(mktemp)
+
+{ cat "$BB_ROOT/core/core.sh"; echo; } > $tmp
+
+for m in "${modules[@]}"; do
+    loader="$BB_ROOT/$m/_load.sh"
+    [[ -r "$loader" ]] || continue
+    re="^\s*source \".*$m/(.*)\""
+    while read -r line; do
+        if [[ $line =~ $re ]]; then
+            { cat "$BB_ROOT/$m/${BASH_REMATCH[1]}"; echo; } >> $tmp
+        fi
+    done < "$loader"
+done
+
+sed "/flatten-include-here/ r $tmp" "$BB_ROOT/bash-boost.sh" > "$flattened"
+sed -i '/flatten-begin-exclude/,/flatten-end-exclude/d' "$flattened"
+sed -i 's|/full/path/to/bash-boost.sh .*$|/full/path/to/bash-boost-portable.sh|' "$flattened"
+
+# Clean up pragmas
+sed -i '/flatten-/d' "$unflattened"
+sed -i '/flatten-/d' "$flattened"
+

@@ -1,0 +1,55 @@
+#!/usr/bin/env perl
+
+=head1 NAME
+
+bbprof-read - parse bbprof profile output for analysis
+
+=cut
+
+use strict;
+use warnings;
+
+use Getopt::Long;
+
+my $top = 10;
+my $all = 0;
+
+GetOptions (
+    "top=i" => \$top,
+    "all" => \$all
+);
+
+my $fn = shift @ARGV;
+unless ($fn) {
+    my $tmp = $ENV{TMPDIR} ? $ENV{TMPDIR} : "/tmp";
+    my @files = sort { (stat($b))[9] <=> (stat($a))[9] } glob "$tmp/bbprof.*";
+    $fn = $files[0];
+    unless ($fn) {
+        print STDERR "error: no profile output specified and could not find any from $tmp\n";
+        exit 1;
+    }
+    print "Using latest profile: $fn\n";
+}
+
+my @times = ();
+
+open (my $fd, '<', $fn) or die $!;
+my $prev = undef;
+while (my $line = <$fd>) {
+    chomp $line;
+    my ($lv, $ts, $what) = ($line =~ m/^(\+*)\s*([0-9\.]+)\s+(.*)$/) or next;
+    if ($prev) {
+        my $delta = $ts - $prev->[0];
+        push @times, [$delta, $prev->[1]];
+    }
+    $prev = [$ts, $what];
+}
+close $fd;
+
+@times = sort { $b->[0] <=> $a->[0] } @times;
+my $ct = 0;
+foreach (@times) {
+    printf "%8.4f %s\n", $_->[0], $_->[1];
+    last if ++$ct >= $top and not $all;
+}
+

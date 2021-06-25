@@ -34,6 +34,7 @@ bb_cli_msg_error () {
 bb_cli_msg_fatal () {
     bb_cli_color_colorize 'bright_red' 'fatal error:' 1>&2
     echo " $1" 1>&2
+    exit ${2:-1}
 }
 
 # expect VAL1 VAL2 [MESSAGE] [RETURNCODE]

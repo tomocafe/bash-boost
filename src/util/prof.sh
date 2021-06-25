@@ -16,7 +16,7 @@ _bb_util_prof_backup_ps4="$PS4"
 
 # startprof LOGFILE
 bb_util_prof_startprof () {
-    _bb_util_prof_logfile="${1:-${TMPDIR:-/tmp}/bashprof.$$.out}"
+    _bb_util_prof_logfile="${1:-${TMPDIR:-/tmp}/bbprof.$$.out}"
     _bb_util_prof_backup_ps4="$PS4"
     [[ $- == *i* ]] && bb_cli_msg_info "logging runtime profile to $_bb_util_prof_logfile"
     exec 5>"$_bb_util_prof_logfile"

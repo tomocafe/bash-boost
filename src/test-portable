@@ -1,0 +1,50 @@
+#!/bin/bash
+
+# This is a temporary file, to be replaced with proper testing harnesses
+
+# $ ./testing --foo=hello\ world -x -- -1 -2 -3
+
+function dummy() {
+    :
+}
+
+source bash-boost-portable.sh
+
+bb_namespace "bb"
+
+bb_startprof
+
+bb_addopt "f:foo" "This is the foo arg (default: bar)" "bar"
+bb_addflag "x:extra" "Use this to print an extra message"
+
+bb_setprog "${BASH_SOURCE[0]##*/}"
+bb_setpositional "NUMS" "List of integers"
+bb_parseargs "$@"
+
+foo="$(bb_cli_arg_getopt foo)"
+echo "foo={$foo}"
+
+if bb_checkopt "extra"; then
+    echo "saw extra"
+fi
+
+nums=( $(bb_getpositionals) )
+for pos in "${nums[@]}"; do
+    echo "positional arg: $pos"
+    bb_isint "$pos" || bb_fatal "not an int: $pos"
+done
+
+sum="$(bb_util_math_sum "${nums[@]}")"
+min="$(bb_util_math_min "${nums[@]}")"
+max="$(bb_util_math_max "${nums[@]}")"
+
+echo "sum=$sum min=$min max=$max"
+
+bb_kwparse "one=1" "two=2" || bb_error "kwargs failed to parse"
+one=$(bb_kwget "one")
+two=$(bb_kwget "two")
+
+bb_expect "$one" "1" "kwargs consistency" 5
+bb_expect "$two" "2"
+
+bb_stopprof

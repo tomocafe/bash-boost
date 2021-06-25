@@ -24,19 +24,23 @@ changecom()dnl
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 #
-
+#
 # INSTRUCTIONS:
 # 
 # Source this script from your script or interactive environment
+# flatten-begin-exclude
 # and optionally give packages to load via argument:
+# flatten-end-exclude
 #
 #   source /full/path/to/bash-boost.sh [PKGS ...]
-# 
+#
+# flatten-begin-exclude 
 # After sourcing you can load packages using bb_load:
 #
 #   bb_load cli         # all cli packages (cli/*)
 #   bb_load util/math   # only the util/math package
-#
+# 
+# flatten-end-exclude
 # To get help on functions and variables exported by packages,
 # check the documentation.
 
@@ -61,7 +65,7 @@ done
 # flatten-end-exclude
 
 # flatten-include-here
-
 # Clean up
 unset arg
 unset this
+
