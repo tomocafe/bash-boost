@@ -22,3 +22,14 @@ bb_util_list_join () {
 bb_util_list_split () {
     :
 }
+
+# inlist TARGET LIST ...
+bb_util_list_inlist () {
+    local target="$1"
+    shift
+    local item
+    for item in "$@"; do
+        [[ "$item" == "$target" ]] && return $_bb_true
+    done
+    return $_bb_false
+}
