@@ -1,13 +1,6 @@
 #!/bin/bash
 
-# This is a temporary file, to be replaced with proper testing harnesses
-
-# $ ./testing --foo=hello\ world -x -- -1 -2 -3
-
-function dummy() {
-    :
-}
-
+# Load everything
 if [[ $0 =~ -portable ]]; then
     echo "Testing bash-boost-portable"
     source bash-boost-*/bash-boost-portable.sh
@@ -15,10 +8,27 @@ else
     echo "Testing bash-boost"
     source bash-boost-*/bash-boost.sh
     bb_load "cli"
+    bb_load "interactive"
     bb_load "util"
 fi
 
 bb_namespace "bb"
+
+# Make sure bb_expect works
+(
+    bb_expect "foo" "bar" &>/dev/null;
+) && bb_fatal "bb_expect not working"
+(
+    bb_expect "foo" "foo" &>/dev/null;
+) || bb_fatal "bb_expect not working"
+
+for module in cli interactive util; do
+    tester="src/$module/_test.sh"
+    [[ -r "$tester" ]] || bb_fatal "could not read $tester"
+    source "$tester" || exit 1
+done
+
+exit 0
 
 bb_startprof
 
