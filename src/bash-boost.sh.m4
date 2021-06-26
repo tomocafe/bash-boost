@@ -52,20 +52,21 @@ if [[ ${BASH_VERSINFO:-0} -lt 4 ]]; then
     return 1
 fi
 
-# Load the core
 BB_ROOT="$(dirname "${BASH_SOURCE[0]}")"
 # flatten-begin-exclude
+
+# Load the core
 source $BB_ROOT/core/core.sh
 
 # Load packages by argument
 # Alternatively, caller can use bb_load after sourcing this function
-for arg in "$@"; do
-    bb_load "$arg"
+for __bb_arg in "$@"; do
+    bb_load "$__bb_arg"
 done
 # flatten-end-exclude
 
 # flatten-include-here
 # Clean up
-unset arg
-unset this
+unset __bb_arg
+unset __bb_this
 

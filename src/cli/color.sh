@@ -1,5 +1,5 @@
-this="bb_cli_color"
-bb_on_first_load "$this" || return
+__bb_this="bb_cli_color"
+bb_on_first_load "$__bb_this" || return
 
 ################################################################################
 # Globals
