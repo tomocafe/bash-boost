@@ -39,5 +39,5 @@ bb_cli_msg_fatal () {
 
 # expect VAL1 VAL2 [MESSAGE] [RETURNCODE]
 bb_cli_msg_expect () {
-    [[ "$1" == "$2" ]] || bb_cli_msg_fatal "${3:+$3: }expected $1 got $2" $4
+    [[ "$1" == "$2" ]] || bb_cli_msg_fatal "${3:+$3: }expected $2 got $1" $4
 }

@@ -18,6 +18,7 @@ bb_load () {
         if [[ -d "$BB_ROOT/$pkg" ]] && [[ -e "$BB_ROOT/$pkg/_load.sh" ]]; then
             source "$BB_ROOT/$pkg/_load.sh"
         elif [[ -r "$BB_ROOT/${pkg%.sh}.sh" ]]; then
+            [[ "${pkg##*/}" =~ ^_ ]] && continue
             source "$BB_ROOT/${pkg%.sh}.sh"
         fi
     done
