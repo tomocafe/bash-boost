@@ -16,5 +16,9 @@ clean:
 	$(RM) -r bash-boost-$(VERSION)
 	$(RM)    bash-boost-$(VERSION).tar.gz
 
-.PHONY: release clean
+test: bash-boost-$(VERSION)
+	@./test
+	@./test-portable
+
+.PHONY: release clean test
 
