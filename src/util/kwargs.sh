@@ -1,5 +1,5 @@
-this="bb_util_kwargs"
-bb_on_first_load "$this" || return
+__bb_this="bb_util_kwargs"
+bb_on_first_load "$__bb_this" || return
 
 ################################################################################
 # Globals
