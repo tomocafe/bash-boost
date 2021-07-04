@@ -17,9 +17,9 @@ bb_util_list_join () {
     echo "$*"
 }
 
-# split SEP STR
+# split LISTVAR SEP STR
 bb_util_list_split () {
-    :
+    eval "$1=(${3//$2/ })"
 }
 
 # inlist TARGET LIST ...

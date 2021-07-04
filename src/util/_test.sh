@@ -26,25 +26,31 @@ bb_util_env_inpath "__bb_tmp_path" "bar"
 bb_expect "$?" "$__bb_false" "inpath false"
 
 bb_util_env_appendpath "__bb_tmp_path" "bar"
-bb_util_env_inpath "__bb_tmp_path" "bar"
-bb_expect "$?" "$__bb_true" "appendpath"
+bb_expect "$__bb_tmp_path" "foo:bar" "appendpath"
 
 __bb_tmp_prevpath="$__bb_tmp_path"
 bb_util_env_appendpathuniq "__bb_tmp_path" "foo"
 bb_expect "$__bb_tmp_prevpath" "$__bb_tmp_path" "appendpathuniq"
 
 bb_util_env_prependpath "__bb_tmp_path" "baz"
-bb_util_env_inpath "__bb_tmp_path" "baz"
-bb_expect "$?" "$__bb_true" "prependpath"
+bb_expect "$__bb_tmp_path" "baz:foo:bar" "prependpath"
 
 __bb_tmp_prevpath="$__bb_tmp_path"
 bb_util_env_prependpathuniq "__bb_tmp_path" "foo"
 bb_expect "$__bb_tmp_prevpath" "$__bb_tmp_path" "prependpathuniq"
 
+bb_expect "$(bb_util_env_printpath "__bb_tmp_path")" "baz
+foo
+bar"
+
+bb_util_env_swapinpath "__bb_tmp_path" "bar" "baz"
+bb_expect "$__bb_tmp_path" "bar:foo:baz" "swapinpath"
+
+bb_util_env_removefrompath "__bb_tmp_path" "bar" "baz"
+bb_expect "$__bb_tmp_path" "foo"
+
 unset __bb_tmp_path
 unset __bb_tmp_prevpath
-
-# TODO: removefrompath, swapinpath
 
 ################################################################################
 # util/kwargs
@@ -60,7 +66,13 @@ bb_expect "$(bb_util_kwargs_kwget NOT_A_KEY)" "" "kwget NOT_A_KEY"
 ################################################################################
 
 __bb_tmp_list=(foo bar baz)
+
 bb_expect "$(bb_util_list_join : "${__bb_tmp_list[@]}")" "foo:bar:baz"
+bb_util_list_split "__bb_tmp_rebuilt_list" ":" "foo:bar:baz"
+bb_expect "${__bb_tmp_rebuilt_list[*]}" "foo bar baz"
+bb_expect "${#__bb_tmp_rebuilt_list}" "3"
+unset __bb_tmp_rebuilt_list
+
 bb_util_list_inlist "bar" "${__bb_tmp_list[@]}"
 bb_expect "$?" "$__bb_true" "inlist bar"
 bb_util_list_inlist "NOT_IN_LIST" "${__bb_tmp_list[@]}"
