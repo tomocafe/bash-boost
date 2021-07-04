@@ -65,6 +65,16 @@ bb_util_list_inlist "bar" "${__bb_tmp_list[@]}"
 bb_expect "$?" "$__bb_true" "inlist bar"
 bb_util_list_inlist "NOT_IN_LIST" "${__bb_tmp_list[@]}"
 bb_expect "$?" "$__bb_false" "inlist NOT_IN_LIST"
+
+__bb_tmp_list=()
+bb_util_list_push "__bb_tmp_list" "aa"
+bb_util_list_push "__bb_tmp_list" "bb"
+bb_util_list_unshift "__bb_tmp_list" "cc"
+bb_expect "${__bb_tmp_list[*]}" "cc aa bb"
+bb_util_list_pop "__bb_tmp_list"
+bb_expect "${__bb_tmp_list[*]}" "cc aa"
+bb_util_list_shift "__bb_tmp_list"
+bb_expect "${__bb_tmp_list[*]}" "aa"
 unset __bb_tmp_list
 
 ################################################################################

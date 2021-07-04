@@ -32,3 +32,23 @@ bb_util_list_inlist () {
     done
     return $__bb_false
 }
+
+# push LISTVAR ITEM
+bb_util_list_push () {
+    eval "$1=("\${$1[@]}" "$2")"
+}
+
+# pop LISTVAR
+bb_util_list_pop () {
+    eval "unset $1[-1]"
+}
+
+# unshift LISTVAR ITEM
+bb_util_list_unshift () {
+    eval "$1=("$2" "\${$1[@]}")"
+}
+
+# shift LISTVAR
+bb_util_list_shift () {
+    eval "unset $1[0]"
+}
