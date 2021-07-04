@@ -1,4 +1,4 @@
-VERSION=0.4
+VERSION=0.5
 
 bash-boost-$(VERSION): src
 	cp -r src $@
