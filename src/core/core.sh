@@ -2,10 +2,10 @@
 # Globals
 ################################################################################
 
-_bb_true=0
-_bb_false=1
+__bb_true=0
+__bb_false=1
 
-declare -Ag _bb_loaded=() # _bb_loaded[PKGSTR] = 1
+declare -Ag __bb_loaded=() # _bb_loaded[PKGSTR] = 1
 
 ################################################################################
 # Functions
@@ -16,27 +16,29 @@ bb_load () {
     local pkg
     for pkg in "$@"; do
         if [[ -d "$BB_ROOT/$pkg" ]] && [[ -e "$BB_ROOT/$pkg/_load.sh" ]]; then
+            bb_debug "sourcing $BB_ROOT/$pkg/_load.sh"
             source "$BB_ROOT/$pkg/_load.sh"
         elif [[ -r "$BB_ROOT/${pkg%.sh}.sh" ]]; then
             [[ "${pkg##*/}" =~ ^_ ]] && continue
+            bb_debug "sourcing $BB_ROOT/${pkg%.sh}.sh"
             source "$BB_ROOT/${pkg%.sh}.sh"
         fi
     done
 }
 
 bb_is_loaded () {
-    [[ ${_bb_loaded["$1"]+set} ]]
+    [[ ${__bb_loaded["$1"]+set} ]]
 }
 
-bb_set_loaded () {
-    _bb_loaded["$1"]=1
+_bb_set_loaded () {
+    __bb_loaded["$1"]=1
 }
 
-bb_on_first_load () {
-    bb_is_loaded "$1" && return $_bb_false
-    bb_set_loaded "$1"
+_bb_on_first_load () {
+    bb_is_loaded "$1" && return $__bb_false
+    _bb_set_loaded "$1"
     bb_debug "loaded $1"
-    return $_bb_true
+    return $__bb_true
 }
 
 # namespace PREFIX
@@ -49,7 +51,7 @@ bb_namespace () {
         fcn="${fcn/#declare -f }"
         [[ ${fcn:0:3} == "bb_" ]] || continue
         local pkg
-        for pkg in "${!_bb_loaded[@]}"; do
+        for pkg in "${!__bb_loaded[@]}"; do
             if [[ $fcn =~ ^${pkg}_ ]]; then
                 local alias="$prefix${fcn/#${pkg}_}"
                 bb_debug "$fcn -> $alias"

@@ -23,6 +23,8 @@ testcmd() {
     done
 }
 
+bb_expectsubstr "$(testcmd --help 2>&1)" "testcmd [-f|--foo FOO] [-x|--extra] [NUMS ...]"
+
 bb_expect "$(testcmd)" "foo=bar"
 bb_expect "$(testcmd -f call2)" "foo=call2"
 bb_expect "$(testcmd --foo call3)" "foo=call3"

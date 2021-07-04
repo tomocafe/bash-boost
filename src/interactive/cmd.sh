@@ -1,5 +1,4 @@
-__bb_this="bb_interactive_cmd"
-bb_on_first_load "$__bb_this" || return
+_bb_on_first_load "bb_interactive_cmd" || return
 
 ################################################################################
 # Globals

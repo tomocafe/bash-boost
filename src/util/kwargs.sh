@@ -1,11 +1,10 @@
-__bb_this="bb_util_kwargs"
-bb_on_first_load "$__bb_this" || return
+_bb_on_first_load "bb_util_kwargs" || return
 
 ################################################################################
 # Globals
 ################################################################################
 
-declare -Ag _bb_util_kwargs_dict=()
+declare -Ag __bb_util_kwargs_dict=()
 
 ################################################################################
 # Functions
@@ -17,13 +16,18 @@ bb_util_kwargs_kwparse () {
     for pair in "$@"; do
         local key="${pair%%=*}"
         local val="${pair#*=}"
-        [[ "$key" == "$val" ]] && return $_bb_false
-        _bb_util_kwargs_dict["$key"]="$val"
+        [[ "$key" == "$val" ]] && return $__bb_false
+        __bb_util_kwargs_dict["$key"]="$val"
     done
-    return $_bb_true
+    return $__bb_true
 }
 
 # kwget KEY
 bb_util_kwargs_kwget () {
-    echo -n "${_bb_util_kwargs_dict["$1"]}"
+    echo -n "${__bb_util_kwargs_dict["$1"]}"
+}
+
+# kwclear
+bb_util_kwargs_kwclear () {
+    __bb_util_kwargs_dict=()
 }

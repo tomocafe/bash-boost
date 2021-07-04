@@ -1,5 +1,4 @@
-__bb_this="bb_util_math"
-bb_on_first_load "$__bb_this" || return
+_bb_on_first_load "bb_util_math" || return
 
 ################################################################################
 # Globals
@@ -46,7 +45,7 @@ bb_util_math_isint () {
     local re='^-*[0-9]+$'
     local n
     for n in "$@"; do
-        [[ $n =~ $re ]] || return $_bb_false
+        [[ $n =~ $re ]] || return $__bb_false
     done
-    return $_bb_true
+    return $__bb_true
 }

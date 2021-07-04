@@ -1,5 +1,4 @@
-__bb_this="bb_util_list"
-bb_on_first_load "$__bb_this" || return
+_bb_on_first_load "bb_util_list" || return
 
 ################################################################################
 # Globals
@@ -29,7 +28,7 @@ bb_util_list_inlist () {
     shift
     local item
     for item in "$@"; do
-        [[ "$item" == "$target" ]] && return $_bb_true
+        [[ "$item" == "$target" ]] && return $__bb_true
     done
-    return $_bb_false
+    return $__bb_false
 }

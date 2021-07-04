@@ -1,5 +1,4 @@
-__bb_this="bb_util_prof"
-bb_on_first_load "$__bb_this" || return
+_bb_on_first_load "bb_util_prof" || return
 
 bb_load "cli/msg"
 
@@ -7,8 +6,8 @@ bb_load "cli/msg"
 # Globals
 ################################################################################
 
-_bb_util_prof_logfile=""
-_bb_util_prof_backup_ps4="$PS4"
+__bb_util_prof_logfile=""
+__bb_util_prof_backup_ps4="$PS4"
 
 ################################################################################
 # Functions
@@ -16,10 +15,10 @@ _bb_util_prof_backup_ps4="$PS4"
 
 # startprof LOGFILE
 bb_util_prof_startprof () {
-    _bb_util_prof_logfile="${1:-${TMPDIR:-/tmp}/bbprof.$$.out}"
-    _bb_util_prof_backup_ps4="$PS4"
-    [[ $- == *i* ]] && bb_cli_msg_info "logging runtime profile to $_bb_util_prof_logfile"
-    exec 5>"$_bb_util_prof_logfile"
+    __bb_util_prof_logfile="${1:-${TMPDIR:-/tmp}/bbprof.$$.out}"
+    __bb_util_prof_backup_ps4="$PS4"
+    [[ $- == *i* ]] && bb_cli_msg_info "logging runtime profile to $__bb_util_prof_logfile"
+    exec 5>"$__bb_util_prof_logfile"
     BASH_XTRACEFD="5"
     if [[ ${BASH_VERSINFO-0} -ge 5 ]]; then
         echo -e "$EPOCHREALTIME\011 start" 1>&5
@@ -35,5 +34,5 @@ bb_util_prof_startprof () {
 bb_util_prof_stopprof () {
     set +x
     unset BASH_XTRACEFD
-    PS4="$_bb_util_prof_backup_ps4"
+    PS4="$__bb_util_prof_backup_ps4"
 }

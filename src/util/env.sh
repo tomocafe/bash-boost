@@ -1,5 +1,4 @@
-__bb_this="bb_util_env"
-bb_on_first_load "$__bb_this" || return
+_bb_on_first_load "bb_util_env" || return
 
 ################################################################################
 # Globals
@@ -26,12 +25,12 @@ bb_util_env_iscmd () {
 
 # inpath VAR ITEM
 bb_util_env_inpath () {
-    [[ $# -ge 2 ]] || return $_bb_false
+    [[ $# -ge 2 ]] || return $__bb_false
     local item
     for item in "${@:2}"; do
-        eval [[ ":\${$1}:" =~ ":${item}:" ]] || return $_bb_false
+        eval [[ ":\${$1}:" =~ ":${item}:" ]] || return $__bb_false
     done
-    return $_bb_true
+    return $__bb_true
 }
 
 # prependpath VAR ITEM

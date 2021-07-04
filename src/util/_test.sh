@@ -15,19 +15,19 @@ unset __bb_tmp_setvar
 unset __bb_tmp_emptyvar
 
 bb_util_env_iscmd "echo"
-bb_expect "$?" "$_bb_true" "iscmd command"
+bb_expect "$?" "$__bb_true" "iscmd command"
 bb_util_env_iscmd "this_is_not_a_command"
-bb_expect "$?" "$_bb_false" "iscmd not a command"
+bb_expect "$?" "$__bb_false" "iscmd not a command"
 
 __bb_tmp_path="foo"
 bb_util_env_inpath "__bb_tmp_path" "foo"
-bb_expect "$?" "$_bb_true" "inpath true"
+bb_expect "$?" "$__bb_true" "inpath true"
 bb_util_env_inpath "__bb_tmp_path" "bar"
-bb_expect "$?" "$_bb_false" "inpath false"
+bb_expect "$?" "$__bb_false" "inpath false"
 
 bb_util_env_appendpath "__bb_tmp_path" "bar"
 bb_util_env_inpath "__bb_tmp_path" "bar"
-bb_expect "$?" "$_bb_true" "appendpath"
+bb_expect "$?" "$__bb_true" "appendpath"
 
 __bb_tmp_prevpath="$__bb_tmp_path"
 bb_util_env_appendpathuniq "__bb_tmp_path" "foo"
@@ -35,7 +35,7 @@ bb_expect "$__bb_tmp_prevpath" "$__bb_tmp_path" "appendpathuniq"
 
 bb_util_env_prependpath "__bb_tmp_path" "baz"
 bb_util_env_inpath "__bb_tmp_path" "baz"
-bb_expect "$?" "$_bb_true" "prependpath"
+bb_expect "$?" "$__bb_true" "prependpath"
 
 __bb_tmp_prevpath="$__bb_tmp_path"
 bb_util_env_prependpathuniq "__bb_tmp_path" "foo"
@@ -55,7 +55,6 @@ bb_expect "$(bb_util_kwargs_kwget foo)" "bar" "kwget foo"
 bb_expect "$(bb_util_kwargs_kwget hello)" "world" "kwget hello"
 bb_expect "$(bb_util_kwargs_kwget NOT_A_KEY)" "" "kwget NOT_A_KEY"
 
-
 ################################################################################
 # util/list
 ################################################################################
@@ -63,9 +62,9 @@ bb_expect "$(bb_util_kwargs_kwget NOT_A_KEY)" "" "kwget NOT_A_KEY"
 __bb_tmp_list=(foo bar baz)
 bb_expect "$(bb_util_list_join : "${__bb_tmp_list[@]}")" "foo:bar:baz"
 bb_util_list_inlist "bar" "${__bb_tmp_list[@]}"
-bb_expect "$?" "$_bb_true" "inlist bar"
+bb_expect "$?" "$__bb_true" "inlist bar"
 bb_util_list_inlist "NOT_IN_LIST" "${__bb_tmp_list[@]}"
-bb_expect "$?" "$_bb_false" "inlist NOT_IN_LIST"
+bb_expect "$?" "$__bb_false" "inlist NOT_IN_LIST"
 unset __bb_tmp_list
 
 ################################################################################
@@ -77,10 +76,10 @@ bb_expect "$(bb_util_math_min -1 3 -3 7)" "-3" "min"
 bb_expect "$(bb_util_math_max -1 3 -3 7)" "7" "max"
 
 bb_util_math_isint "42"
-bb_expect "$?" "$_bb_true" "isint true"
+bb_expect "$?" "$__bb_true" "isint true"
 bb_util_math_isint "-5"
-bb_expect "$?" "$_bb_true" "isint negative true"
+bb_expect "$?" "$__bb_true" "isint negative true"
 bb_util_math_isint "3.14"
-bb_expect "$?" "$_bb_false" "isint float false"
+bb_expect "$?" "$__bb_false" "isint float false"
 bb_util_math_isint "abcd"
-bb_expect "$?" "$_bb_false" "isint string false"
+bb_expect "$?" "$__bb_false" "isint string false"

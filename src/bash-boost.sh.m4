@@ -68,5 +68,3 @@ done
 # flatten-include-here
 # Clean up
 unset __bb_arg
-unset __bb_this
-
