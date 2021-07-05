@@ -1,5 +1,5 @@
 ################################################################################
-# util/arg
+# cli/arg
 ################################################################################
 
 testcmd() {
@@ -40,3 +40,16 @@ saw extra"
 bb_expect "$(testcmd --foo=call8 hello world)" "foo=call8
 posarg=hello
 posarg=world"
+
+################################################################################
+# cli/color
+################################################################################
+
+__bb_tmp_colorized="$(bb_cli_color_colorize red hello)"
+bb_expect "${#__bb_tmp_colorized}" "5" "colorize"
+__bb_tmp_colorized="$(bb_cli_color_rawcolor red hello)"
+bb_expect "${#__bb_tmp_colorized}" "14" "rawcolor"
+__bb_tmp_colorstripped="$(bb_cli_color_colorstrip "$__bb_tmp_colorized")"
+bb_expect "${#__bb_tmp_colorstripped}" "5" "colorstrip"
+unset __bb_tmp_colorized
+unset __bb_tmp_colorstripped
