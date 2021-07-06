@@ -10,7 +10,9 @@ __bb_interactive_prompt_lhs=()
 __bb_interactive_prompt_rhs=()
 __bb_interactive_prompt_nl=()
 
-__bb_interactive_prompt_backup=""
+__bb_interactive_prompt_backup_ps1=""
+__bb_interactive_prompt_backup_cmd=""
+__bb_interactive_prompt_resetopt=false
 
 ################################################################################
 # Functions
@@ -18,13 +20,19 @@ __bb_interactive_prompt_backup=""
 
 # loadprompt
 bb_interactive_prompt_loadprompt () {
-    shopt -s checkwinsize
+    if [[ ! -o checkwinsize ]]; then
+        shopt -s checkwinsize
+        __bb_interactive_prompt_resetopt=true
+    fi
+    __bb_interactive_prompt_backup_ps1="$PS1"
     __bb_interactive_prompt_backup="$PROMPT_COMMAND"
     export PROMPT_COMMAND="_bb_interactive_prompt_promptimpl"
 }
 
 # unloadprompt
 bb_interactive_prompt_unloadprompt () {
+    $__bb_interactive_prompt_resetopt && shopt -u checkwinsize
+    PS1="$__bb_interactive_prompt_backup_ps1"
     if [[ -z $__bb_interactive_prompt_backup ]]; then
         unset PROMPT_COMMAND
     else
