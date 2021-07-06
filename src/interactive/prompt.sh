@@ -11,8 +11,6 @@ __bb_interactive_prompt_rhs=()
 __bb_interactive_prompt_nl=()
 
 __bb_interactive_prompt_backup=""
-__bb_interactive_prompt_lastrc=$__bb_true
-__bb_interactive_prompt_rem=0
 
 ################################################################################
 # Functions
@@ -34,19 +32,19 @@ bb_interactive_prompt_unloadprompt () {
     fi
 }
 
-# addpromptleft FUNCTION ...
-bb_interactive_prompt_addpromptleft () {
-    __bb_interactive_prompt_lhs+=("$@")
+# setpromptleft FUNCTION ...
+bb_interactive_prompt_setpromptleft () {
+    __bb_interactive_prompt_lhs=("$@")
 }
 
-# addpromptright FUNCTION ...
-bb_interactive_prompt_addpromptright () {
-    __bb_interactive_prompt_rhs+=("$@")
+# setpromptright FUNCTION ...
+bb_interactive_prompt_setpromptright () {
+    __bb_interactive_prompt_rhs=("$@")
 }
 
-# addpromptnextline FUNCTION ...
-bb_interactive_prompt_addpromptnextline () {
-    __bb_interactive_prompt_nl+=("$@")
+# setpromptnextline FUNCTION ...
+bb_interactive_prompt_setpromptnextline () {
+    __bb_interactive_prompt_nl=("$@")
 }
 
 # setwintitle FUNCTION
@@ -59,27 +57,42 @@ bb_interactive_prompt_settabtitle () {
     __bb_interactive_prompt_tabtitle="$1"
 }
 
+# promptcolor COLORSTR TEXT
+# like colorize but adds \[ and \] around non-printing
+# characters which are needed specifically in prompts
+bb_interactive_prompt_promptcolor () {
+    __bb_cli_color_escapeprompt=1
+    bb_cli_color_rawcolor "$@"
+    unset __bb_cli_color_escapeprompt
+}
+
 # promptimpl
 _bb_interactive_prompt_promptimpl () {
-    __bb_interactive_prompt_lastrc=$? # keep this line first!
-    __bb_interactive_prompt_rem=${COLUMNS?set checkwinsize}
+    BB_PROMPT_LASTRC=$? # keep this line first!
+    BB_PROMPT_REM=${COLUMNS?set checkwinsize}
 
     local unitsep=$'\x22'
     local block
-    local color
+    local raw
     local text
+
+    # Set window title, tab title
+    if [[ -n "${__bb_interactive_prompt_wintitle}" ]]; then
+        text="$(__bb_interactive_prompt_wintitle)"
+        echo -ne "\033]0;${text}\007"
+    fi
+    if [[ -n "${__bb_interactive_prompt_tabtitle}" ]]; then
+        text="$(__bb_interactive_prompt_tabtitle)"
+        echo -ne "\033]30;${text}\007"
+    fi
 
     # Left hand side
     local lhs=""
     for block in "${__bb_interactive_prompt_lhs[@]}"; do
-        local packed=$(
-            { text="$($block)"; } 2>&1
-            printf "%s%s" "$unitsep" "$text"
-)
-        color="${packed%%${unitsep}*}"
-        text="${packed#*${unitsep}}"
-        lhs+="${color:+\[${color}\]}${text}${color:+\[$__bb_cli_color_reset\]}"
-        (( __bb_interactive_prompt_rem -= ${#text} ))
+        raw="$($block)" 
+        text="$(bb_cli_color_colorstrip "$raw")"
+        lhs+="$raw"
+        (( BB_PROMPT_REM -= ${#text} ))
     done # for block
 
     # Left-only: stop here, no new line
@@ -92,20 +105,16 @@ _bb_interactive_prompt_promptimpl () {
     # Right hand side
     local rhs=""
     for block in "${__bb_interactive_prompt_rhs[@]}"; do
-        local packed=$(
-            { text="$($block)"; } 2>&1
-            printf "%s%s" "$unitsep" "$text"
-)
-        color="${packed%%${unitsep}*}"
-        text="${packed#*${unitsep}}"
-        rhs+="${color:+\[${color}\]}${text}${color:+\[$__bb_cli_color_reset\]}"
-        (( __bb_interactive_prompt_rem -= ${#text} ))
+        raw="$($block)" 
+        text="$(bb_cli_color_colorstrip "$raw")"
+        rhs+="$raw"
+        (( BB_PROMPT_REM -= ${#text} ))
     done # for block  
 
     # Calculate center width
     local center
-    if [[ $__bb_interactive_prompt_rem -gt 0 ]]; then
-        center="$(printf "%${__bb_interactive_prompt_rem}s" "")"
+    if [[ $BB_PROMPT_REM -gt 0 ]]; then
+        center="$(printf "%${BB_PROMPT_REM}s" "")"
     else
         center=' '
     fi
@@ -115,32 +124,18 @@ _bb_interactive_prompt_promptimpl () {
     [[ -z "${__bb_interactive_prompt_nl+1}" ]] && return
 
     # Next line prompt
-    __bb_interactive_prompt_rem=$COLUMNS
+    BB_PROMPT_REM=$COLUMNS
     local nextline=""
     for block in "${__bb_interactive_prompt_nl[@]}"; do
-        local packed=$(
-            { text="$($block)"; } 2>&1
-            printf "%s%s" "$unitsep" "$text"
-)
-        color="${packed%%${unitsep}*}"
-        text="${packed#*${unitsep}}"
-        nextline+="${color:+\[${color}\]}${text}${color:+\[$__bb_cli_color_reset\]}"
-        (( __bb_interactive_prompt_rem -= ${#text} ))
+        raw="$($block)" 
+        text="$(bb_cli_color_colorstrip "$raw")"
+        nextline+="$raw"
+        (( BB_PROMPT_REM -= ${#text} ))
     done # for block
 
-    PS1+="${next}"
-
-    # Set window title, tab title
-    if [[ -n "${__bb_interactive_prompt_wintitle}" ]]; then
-        text="$(__bb_interactive_prompt_wintitle)"
-        echo -ne "\033]0;${text}\007"
-    fi
-    if [[ -n "${__bb_interactive_prompt_tabtitle}" ]]; then
-        text="$(__bb_interactive_prompt_tabtitle)"
-        echo -ne "\033]30;${text}\007"
-    fi
+    PS1+="${nextline}"
 
     # Clean up
-    unset __bb_interactive_prompt_rc # important!
-    unset __bb_interactive_prompt_rem
+    unset BB_PROMPT_RC # important!
+    unset BB_PROMPT_REM
 }
