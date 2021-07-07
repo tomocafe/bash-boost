@@ -6,6 +6,7 @@ __bb_true=0
 __bb_false=1
 
 declare -Ag __bb_loaded=() # _bb_loaded[PKGSTR] = 1
+declare -Ag __bb_alias_completions=()
 
 ################################################################################
 # Functions
@@ -56,6 +57,12 @@ bb_namespace () {
                 local alias="$prefix${fcn/#${pkg}_}"
                 bb_debug "$fcn -> $alias"
                 eval "alias $alias=$fcn"
+                local cmpl="$(complete -p "$fcn" 2>/dev/null)"
+                if [[ -n "$cmpl" ]]; then
+                    cmpl=${cmpl% $fcn}
+                    bb_debug "$cmpl $alias"
+                    eval "$cmpl $alias"
+                fi
             fi
         done
     done
