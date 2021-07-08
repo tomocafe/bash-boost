@@ -11,7 +11,7 @@ declare -Ag __bb_util_kwargs_dict=()
 ################################################################################
 
 # kwparse KEY=VAL ...
-bb_util_kwargs_kwparse () {
+function bb_util_kwargs_kwparse () {
     local pair
     for pair in "$@"; do
         local key="${pair%%=*}"
@@ -23,11 +23,11 @@ bb_util_kwargs_kwparse () {
 }
 
 # kwget KEY
-bb_util_kwargs_kwget () {
+function bb_util_kwargs_kwget () {
     echo -n "${__bb_util_kwargs_dict["$1"]}"
 }
 
 # kwclear
-bb_util_kwargs_kwclear () {
+function bb_util_kwargs_kwclear () {
     __bb_util_kwargs_dict=()
 }

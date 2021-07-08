@@ -11,16 +11,16 @@ _bb_on_first_load "bb_interactive_cmd" || return
 ################################################################################
 
 # mcd DIR
-bb_interactive_cmd_mcd () {
+function bb_interactive_cmd_mcd () {
     command mkdir "$@" && command cd "${@: -1}"
 }
 
 # up DIR
-bb_interactive_cmd_up () {
+function bb_interactive_cmd_up () {
     cd ${1:-..}
 }
 
-_bb_interactive_cmd_up_completion () {
+function _bb_interactive_cmd_up_completion () {
     # Note: must be used with complete -o nospace
     # $1=cmd $2=cur $3=pre
     local cwd="${2:-$PWD}"

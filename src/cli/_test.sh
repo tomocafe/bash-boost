@@ -2,7 +2,7 @@
 # cli/arg
 ################################################################################
 
-testcmd() {
+function testcmd () {
     bb_cli_arg_addopt "f:foo" "This is the foo arg (default: bar)" "bar"
     bb_cli_arg_addflag "x:extra" "Use this to print an extra message"
 

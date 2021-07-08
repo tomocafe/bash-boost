@@ -11,19 +11,19 @@ _bb_on_first_load "bb_util_list" || return
 ################################################################################
 
 # join SEP ITEMS ...
-bb_util_list_join () {
+function bb_util_list_join () {
     local IFS="$1"
     shift
     echo "$*"
 }
 
 # split LISTVAR SEP STR
-bb_util_list_split () {
+function bb_util_list_split () {
     eval "$1=(${3//$2/ })"
 }
 
 # inlist TARGET LIST ...
-bb_util_list_inlist () {
+function bb_util_list_inlist () {
     local target="$1"
     shift
     local item
@@ -34,21 +34,21 @@ bb_util_list_inlist () {
 }
 
 # push LISTVAR ITEM
-bb_util_list_push () {
+function bb_util_list_push () {
     eval "$1=("\${$1[@]}" "$2")"
 }
 
 # pop LISTVAR
-bb_util_list_pop () {
+function bb_util_list_pop () {
     eval "unset $1[-1]"
 }
 
 # unshift LISTVAR ITEM
-bb_util_list_unshift () {
+function bb_util_list_unshift () {
     eval "$1=("$2" "\${$1[@]}")"
 }
 
 # shift LISTVAR
-bb_util_list_shift () {
+function bb_util_list_shift () {
     eval "unset $1[0]"
 }

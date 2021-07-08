@@ -19,7 +19,7 @@ __bb_interactive_prompt_resetopt=false
 ################################################################################
 
 # loadprompt
-bb_interactive_prompt_loadprompt () {
+function bb_interactive_prompt_loadprompt () {
     if [[ ! -o checkwinsize ]]; then
         shopt -s checkwinsize
         __bb_interactive_prompt_resetopt=true
@@ -30,7 +30,7 @@ bb_interactive_prompt_loadprompt () {
 }
 
 # unloadprompt
-bb_interactive_prompt_unloadprompt () {
+function bb_interactive_prompt_unloadprompt () {
     $__bb_interactive_prompt_resetopt && shopt -u checkwinsize
     PS1="$__bb_interactive_prompt_backup_ps1"
     if [[ -z $__bb_interactive_prompt_backup ]]; then
@@ -41,41 +41,41 @@ bb_interactive_prompt_unloadprompt () {
 }
 
 # setpromptleft FUNCTION ...
-bb_interactive_prompt_setpromptleft () {
+function bb_interactive_prompt_setpromptleft () {
     __bb_interactive_prompt_lhs=("$@")
 }
 
 # setpromptright FUNCTION ...
-bb_interactive_prompt_setpromptright () {
+function bb_interactive_prompt_setpromptright () {
     __bb_interactive_prompt_rhs=("$@")
 }
 
 # setpromptnextline FUNCTION ...
-bb_interactive_prompt_setpromptnextline () {
+function bb_interactive_prompt_setpromptnextline () {
     __bb_interactive_prompt_nl=("$@")
 }
 
 # setwintitle FUNCTION
-bb_interactive_prompt_setwintitle () {
+function bb_interactive_prompt_setwintitle () {
     __bb_interactive_prompt_wintitle="$1"
 }
 
 # settabtitle FUNCTION
-bb_interactive_prompt_settabtitle () {
+function bb_interactive_prompt_settabtitle () {
     __bb_interactive_prompt_tabtitle="$1"
 }
 
 # promptcolor COLORSTR TEXT
 # like colorize but adds \[ and \] around non-printing
 # characters which are needed specifically in prompts
-bb_interactive_prompt_promptcolor () {
+function bb_interactive_prompt_promptcolor () {
     __bb_cli_color_escapeprompt=1
     bb_cli_color_rawcolor "$@"
     unset __bb_cli_color_escapeprompt
 }
 
 # promptimpl
-_bb_interactive_prompt_promptimpl () {
+function _bb_interactive_prompt_promptimpl () {
     BB_PROMPT_LASTRC=$? # keep this line first!
     BB_PROMPT_REM=${COLUMNS?set checkwinsize}
 

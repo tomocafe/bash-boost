@@ -14,7 +14,7 @@ __bb_util_prof_backup_ps4="$PS4"
 ################################################################################
 
 # startprof LOGFILE
-bb_util_prof_startprof () {
+function bb_util_prof_startprof () {
     __bb_util_prof_logfile="${1:-${TMPDIR:-/tmp}/bbprof.$$.out}"
     __bb_util_prof_backup_ps4="$PS4"
     [[ $- == *i* ]] && bb_cli_msg_info "logging runtime profile to $__bb_util_prof_logfile"
@@ -31,7 +31,7 @@ bb_util_prof_startprof () {
 }
 
 # stopprof
-bb_util_prof_stopprof () {
+function bb_util_prof_stopprof () {
     set +x
     unset BASH_XTRACEFD
     PS4="$__bb_util_prof_backup_ps4"

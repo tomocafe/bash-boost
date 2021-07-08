@@ -11,7 +11,7 @@ _bb_on_first_load "bb_util_math" || return
 ################################################################################
 
 # sum NUMS ...
-bb_util_math_sum () {
+function bb_util_math_sum () {
     local sum=0
     local n
     for n in "$@"; do
@@ -21,7 +21,7 @@ bb_util_math_sum () {
 }
 
 # min NUMS ...
-bb_util_math_min () {
+function bb_util_math_min () {
     local min="$1"
     local n
     for n in "${@:2}"; do
@@ -31,7 +31,7 @@ bb_util_math_min () {
 }
 
 # max NUMS ...
-bb_util_math_max () {
+function bb_util_math_max () {
     local max="$1"
     local n
     for n in "${@:2}"; do
@@ -41,7 +41,7 @@ bb_util_math_max () {
 }
 
 # isint NUMS ...
-bb_util_math_isint () {
+function bb_util_math_isint () {
     local re='^-*[0-9]+$'
     local n
     for n in "$@"; do

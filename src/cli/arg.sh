@@ -23,7 +23,7 @@ __bb_cli_arg_positional_desc="" # see setpositional()
 ################################################################################
 
 # addopt [SHORTNAME:]LONGNAME [DESCRIPTION] [DEFAULT]
-bb_cli_arg_addopt () {
+function bb_cli_arg_addopt () {
     local optdef="$1"
     local desc="$2"
     local default="$3"
@@ -41,7 +41,7 @@ bb_cli_arg_addopt () {
 }
 
 # addflag [SHORTNAME:]LONGNAME [DESCRIPTION] 
-bb_cli_arg_addflag () {
+function bb_cli_arg_addflag () {
     local optdef="$1"
     local longname="${optdef#*:}"
     bb_cli_arg_addopt "$optdef" "$2" $__bb_false
@@ -49,7 +49,7 @@ bb_cli_arg_addflag () {
 }
 
 # usage
-bb_cli_arg_usage () {
+function bb_cli_arg_usage () {
     {
     printf "$__bb_cli_arg_progname"
     local optdef
@@ -75,7 +75,7 @@ bb_cli_arg_usage () {
 }
 
 # help
-bb_cli_arg_help () {
+function bb_cli_arg_help () {
     {
     bb_cli_arg_usage
     local optdef
@@ -92,30 +92,30 @@ bb_cli_arg_help () {
 }
 
 # errusage MESSAGE [RETURNVAL]
-bb_cli_arg_errusage () {
+function bb_cli_arg_errusage () {
     echo "usage error: $1" 1>&2
     bb_cli_arg_usage
     exit ${2:-1}
 }
 
 # isflag LONGNAME
-bb_cli_arg_isflag () {
+function bb_cli_arg_isflag () {
     [[ ${__bb_cli_arg_flags["$1"]+set} ]]
 }
 
 # setprog PROGNAME
-bb_cli_arg_setprog () {
+function bb_cli_arg_setprog () {
     __bb_cli_arg_progname="$1"
 }
 
 # setpositional NAME DESCRIPTION
-bb_cli_arg_setpositional () {
+function bb_cli_arg_setpositional () {
     __bb_cli_arg_positional_name="$1"
     __bb_cli_arg_positional_desc="$2"
 }
 
 # parseargs ARGS
-bb_cli_arg_parseargs () {
+function bb_cli_arg_parseargs () {
     __bb_cli_arg_positionals=()
     while [[ $# -gt 0 ]]; do
         case "$1" in
@@ -185,22 +185,22 @@ bb_cli_arg_parseargs () {
 }
 
 # getopt LONGNAME
-bb_cli_arg_getopt () {
+function bb_cli_arg_getopt () {
     echo -n "${__bb_cli_arg_optvals["$1"]}"
 }
 
 # checkopt LONGNAME
-bb_cli_arg_checkopt () {
+function bb_cli_arg_checkopt () {
     return ${__bb_cli_arg_optvals["$1"]}
 }
 
 # getpositionals
-bb_cli_arg_getpositionals () {
+function bb_cli_arg_getpositionals () {
     echo -n "${__bb_cli_arg_positionals[@]}"
 }
 
 # argclear
-bb_cli_arg_argclear () {
+function bb_cli_arg_argclear () {
     __bb_cli_arg_optvals=()
     __bb_cli_arg_optdesc=()
     __bb_cli_arg_flags=()

@@ -13,7 +13,7 @@ declare -Ag __bb_alias_completions=()
 ################################################################################
 
 # load PKG ...
-bb_load () {
+function bb_load () {
     local pkg
     for pkg in "$@"; do
         if [[ -d "$BB_ROOT/$pkg" ]] && [[ -e "$BB_ROOT/$pkg/_load.sh" ]]; then
@@ -27,23 +27,23 @@ bb_load () {
     done
 }
 
-bb_is_loaded () {
+function bb_is_loaded () {
     [[ ${__bb_loaded["$1"]+set} ]]
 }
 
-_bb_set_loaded () {
+function _bb_set_loaded () {
     __bb_loaded["$1"]=1
     bb_debug "loaded $1"
 }
 
-_bb_on_first_load () {
+function _bb_on_first_load () {
     bb_is_loaded "$1" && return $__bb_false
     _bb_set_loaded "$1"
     return $__bb_true
 }
 
 # namespace PREFIX
-bb_namespace () {
+function bb_namespace () {
     shopt -s expand_aliases
     local prefix="$1${1:+_}"
     local fcn
@@ -68,6 +68,6 @@ bb_namespace () {
     done
 }
 
-bb_debug () {
+function bb_debug () {
     [[ -n $BB_DEBUG ]] && echo "[bb_debug:$$] $1"
 }

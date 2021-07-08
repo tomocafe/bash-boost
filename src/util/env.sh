@@ -11,7 +11,7 @@ _bb_on_first_load "bb_util_env" || return
 ################################################################################
 
 # checkset VAR
-bb_util_env_checkset () {
+function bb_util_env_checkset () {
     local v="$1"
     eval test -z \${$v+x} && return 1 # unset
     eval test -z \${$v}   && return 2 # set, but empty
@@ -19,12 +19,12 @@ bb_util_env_checkset () {
 }
 
 # iscmd COMMAND
-bb_util_env_iscmd () {
+function bb_util_env_iscmd () {
     command -v "$1" &>/dev/null
 }
 
 # inpath VAR ITEM ...
-bb_util_env_inpath () {
+function bb_util_env_inpath () {
     [[ $# -ge 2 ]] || return $__bb_false
     local item
     for item in "${@:2}"; do
@@ -34,7 +34,7 @@ bb_util_env_inpath () {
 }
 
 # prependpath VAR ITEM ...
-bb_util_env_prependpath () {
+function bb_util_env_prependpath () {
     [[ $# -ge 2 ]] || return
     local paths=("${@:2}")
     local IFS=':'
@@ -42,7 +42,7 @@ bb_util_env_prependpath () {
 }
 
 # appendpath VAR ITEM ...
-bb_util_env_appendpath () {
+function bb_util_env_appendpath () {
     [[ $# -ge 2 ]] || return
     local paths=("${@:2}")
     local IFS=':'
@@ -50,7 +50,7 @@ bb_util_env_appendpath () {
 }
 
 # prependpathuniq VAR ITEM ...
-bb_util_env_prependpathuniq () {
+function bb_util_env_prependpathuniq () {
     [[ $# -ge 2 ]] || return
     local item
     local filtered=()
@@ -61,7 +61,7 @@ bb_util_env_prependpathuniq () {
 }
 
 # appendpathuniq VAR ITEM ...
-bb_util_env_appendpathuniq () {
+function bb_util_env_appendpathuniq () {
     [[ $# -ge 2 ]] || return
     local item
     local filtered=()
@@ -72,7 +72,7 @@ bb_util_env_appendpathuniq () {
 }
 
 # removefrompath VAR ITEM ...
-bb_util_env_removefrompath () {
+function bb_util_env_removefrompath () {
     [[ $# -ge 2 ]] || return
     local path
     local newpath
@@ -90,7 +90,7 @@ bb_util_env_removefrompath () {
 }
 
 # swapinpath VAR ITEM1 ITEM2
-bb_util_env_swapinpath () {
+function bb_util_env_swapinpath () {
     [[ $# -eq 3 ]] || return 2
     bb_util_env_inpath "$1" "$2" || return $__bb_false
     bb_util_env_inpath "$1" "$3" || return $__bb_false
@@ -107,6 +107,6 @@ bb_util_env_swapinpath () {
 }
 
 # printpath VAR [SEP]
-bb_util_env_printpath () {
+function bb_util_env_printpath () {
     eval printf \"\${$1//${2:-:}/$'\n'}$'\n'\"
 }
