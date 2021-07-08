@@ -21,6 +21,8 @@ done
 sed "/flatten-include-here/ r $tmp" "$BB_ROOT/bash-boost.sh" > "$flattened"
 sed -i '/flatten-begin-exclude/,/flatten-end-exclude/d' "$flattened"
 sed -i 's|/full/path/to/bash-boost.sh .*$|/full/path/to/bash-boost-portable.sh|' "$flattened"
+sed -i 's/^\s*_bb_on_first_load \(.*\)\s*||\s*return\s*$/_bb_set_loaded \1/g' "$flattened"
+sed -i '/^\s*bb_load ^[\(]/d' "$flattened"
 
 # Clean up pragmas
 sed -i '/flatten-/d' "$unflattened"

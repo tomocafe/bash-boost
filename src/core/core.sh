@@ -33,12 +33,12 @@ bb_is_loaded () {
 
 _bb_set_loaded () {
     __bb_loaded["$1"]=1
+    bb_debug "loaded $1"
 }
 
 _bb_on_first_load () {
     bb_is_loaded "$1" && return $__bb_false
     _bb_set_loaded "$1"
-    bb_debug "loaded $1"
     return $__bb_true
 }
 

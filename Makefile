@@ -1,6 +1,8 @@
 VERSION=0.6
 
-bash-boost-$(VERSION): src
+SRCS := $(shell find src -type f)
+
+bash-boost-$(VERSION): $(SRCS) flatten
 	cp -r src $@
 	cp LICENSE $@
 	m4 -DM4_VERSION=$(VERSION) $@/bash-boost.sh.m4 > $@/bash-boost.sh
