@@ -100,6 +100,11 @@ __bb_tmp_list=(3M 2G 4K)
 bb_expect "$(bb_util_list_sorthuman "${__bb_tmp_list[@]}")" "4K 3M 2G"
 bb_expect "$(bb_util_list_sorthumandesc "${__bb_tmp_list[@]}")" "2G 3M 4K"
 
+__bb_tmp_list=(1 2 3 2 1)
+bb_expect "$(bb_util_list_uniq "${__bb_tmp_list[@]}")" "1 2 3"
+bb_expect "$(bb_util_list_uniqsorted $(bb_util_list_sort "${__bb_tmp_list[@]}"))" "1 2 3"
+bb_expect "$(bb_util_list_uniqsorted $(bb_util_list_sortnums "${__bb_tmp_list[@]}"))" "1 2 3"
+
 unset __bb_tmp_list
 
 ################################################################################

@@ -106,3 +106,29 @@ function bb_util_list_sorthumandesc () {
     unset __bb_util_list_sort_opts
 }
 
+# uniq UNSORTED_ITEMS ...
+function bb_util_list_uniq () {
+    declare -A __bb_util_list_uniq_items=()
+    local dedup=()
+    local item
+    for item in "$@"; do
+        [[ ${__bb_util_list_uniq_items[$item]+set} ]] && continue
+        __bb_util_list_uniq_items[$item]=1
+        dedup+=("$item")
+    done
+    unset __bb_util_list_uniq_items
+    echo "${dedup[*]}"
+}
+
+# uniqsorted SORTED_ITEMS ...
+function bb_util_list_uniqsorted () {
+    local dedup=("$1")
+    local prev="$1"
+    local item
+    for item in "${@:2}"; do
+        [[ $item == $prev ]] && continue
+        prev="$item"
+        dedup+=("$item")
+    done
+    echo "${dedup[*]}"
+}
