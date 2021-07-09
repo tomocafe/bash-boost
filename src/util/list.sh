@@ -52,3 +52,57 @@ function bb_util_list_unshift () {
 function bb_util_list_shift () {
     eval "unset $1[0]"
 }
+
+function _bb_util_list_base_sort () {
+    local IFS=$'\n'
+    local sorted=( $(sort "${__bb_util_list_sort_opts[@]}" <<<"$*") )
+    unset IFS
+    echo "${sorted[*]}"
+}
+
+# sort ITEMS ...
+# Lexicographical sort
+function bb_util_list_sort () {
+    _bb_util_list_base_sort "$@"
+}
+
+# sortdesc ITEMS ...
+# Reverse lexicographical sort
+function bb_util_list_sortdesc () {
+    __bb_util_list_sort_opts=(-r)
+    _bb_util_list_base_sort "$@"
+    unset __bb_util_list_sort_opts
+}
+
+# sortnums ITEMS ...
+# Numeric sort
+function bb_util_list_sortnums () {
+    __bb_util_list_sort_opts=(-g)
+    _bb_util_list_base_sort "$@"
+    unset __bb_util_list_sort_opts
+}
+
+# sortnumsdesc ITEMS ...
+# Numeric sort descending
+function bb_util_list_sortnumsdesc () {
+    __bb_util_list_sort_opts=(-g -r)
+    _bb_util_list_base_sort "$@"
+    unset __bb_util_list_sort_opts
+}
+
+# sorthuman ITEMS ...
+# Human numeric sort
+function bb_util_list_sorthuman () {
+    __bb_util_list_sort_opts=(-h)
+    _bb_util_list_base_sort "$@"
+    unset __bb_util_list_sort_opts
+}
+
+# sorthumandesc ITEMS ...
+# Human numeric sort descending
+function bb_util_list_sorthumandesc () {
+    __bb_util_list_sort_opts=(-h -r)
+    _bb_util_list_base_sort "$@"
+    unset __bb_util_list_sort_opts
+}
+

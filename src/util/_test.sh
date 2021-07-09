@@ -87,6 +87,19 @@ bb_util_list_pop "__bb_tmp_list"
 bb_expect "${__bb_tmp_list[*]}" "cc aa"
 bb_util_list_shift "__bb_tmp_list"
 bb_expect "${__bb_tmp_list[*]}" "aa"
+
+__bb_tmp_list=(foo bar baz)
+bb_expect "$(bb_util_list_sort "${__bb_tmp_list[@]}")" "bar baz foo"
+bb_expect "$(bb_util_list_sortdesc "${__bb_tmp_list[@]}")" "foo baz bar"
+
+__bb_tmp_list=(1 2 -1)
+bb_expect "$(bb_util_list_sortnums "${__bb_tmp_list[@]}")" "-1 1 2"
+bb_expect "$(bb_util_list_sortnumsdesc "${__bb_tmp_list[@]}")" "2 1 -1"
+
+__bb_tmp_list=(3M 2G 4K)
+bb_expect "$(bb_util_list_sorthuman "${__bb_tmp_list[@]}")" "4K 3M 2G"
+bb_expect "$(bb_util_list_sorthumandesc "${__bb_tmp_list[@]}")" "2G 3M 4K"
+
 unset __bb_tmp_list
 
 ################################################################################
