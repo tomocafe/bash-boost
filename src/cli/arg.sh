@@ -23,6 +23,15 @@ __bb_cli_arg_positional_desc="" # see setpositional()
 ################################################################################
 
 # addopt [SHORTNAME:]LONGNAME [DESCRIPTION] [DEFAULT]
+# Adds a command line option to be parsed
+# @arguments:
+# - SHORTNAME: optional single character, e.g. "f" for an -f FOO option
+# - LONGNAME: required long name, e.g. "foo" for a --foo FOO option
+# - DESCRIPTION: description of the option used in help
+# - DEFAULT: the default value of the option if not given in the command line
+# @notes:
+#   -h and --help are reserved for automatically-generated
+#   command usage and help
 function bb_cli_arg_addopt () {
     local optdef="$1"
     local desc="$2"
@@ -40,7 +49,15 @@ function bb_cli_arg_addopt () {
     fi
 }
 
-# addflag [SHORTNAME:]LONGNAME [DESCRIPTION] 
+# addflag [SHORTNAME:]LONGNAME [DESCRIPTION]
+# Adds a command line flag to be parsed
+# @arguments:
+# - SHORTNAME: optional single character, e.g. "f" for an -f flag
+# - LONGNAME: required long name, e.g. "foo" for a --foo flag
+# - DESCRIPTION: description of the option used in help
+# @notes:
+#   -h and --help are reserved for automatically-generated
+#   command usage and help
 function bb_cli_arg_addflag () {
     local optdef="$1"
     local longname="${optdef#*:}"
@@ -49,6 +66,7 @@ function bb_cli_arg_addflag () {
 }
 
 # usage
+# Print the command line usage string
 function bb_cli_arg_usage () {
     {
     printf "$__bb_cli_arg_progname"
@@ -75,6 +93,10 @@ function bb_cli_arg_usage () {
 }
 
 # help
+# Print the command line help
+# @notes:
+#   Includes the usage string and a list of flags and options with their
+#   descrptions.
 function bb_cli_arg_help () {
     {
     bb_cli_arg_usage
@@ -92,6 +114,10 @@ function bb_cli_arg_help () {
 }
 
 # errusage MESSAGE [RETURNVAL]
+# Issues an error message, prints the command usage, and exits the shell
+# @arguments:
+# - MESSAGE: error message to be printed
+# - RETURNVAL: return code to exit with (defaults to 1)
 function bb_cli_arg_errusage () {
     echo "usage error: $1" 1>&2
     bb_cli_arg_usage
@@ -99,22 +125,34 @@ function bb_cli_arg_errusage () {
 }
 
 # isflag LONGNAME
+# Check if LONGNAME is a registered flag (not an option)
+# @returns: 0 if LONGNAME is a flag, 1 otherwise (i.e. it is an option)
 function bb_cli_arg_isflag () {
     [[ ${__bb_cli_arg_flags["$1"]+set} ]]
 }
 
 # setprog PROGNAME
+# Sets the name of the program for printing usage and help
+# @arguments:
+# - PROGNAME: name of the program
 function bb_cli_arg_setprog () {
     __bb_cli_arg_progname="$1"
 }
 
 # setpositional NAME DESCRIPTION
+# Sets the name and description of the positional arguments
+# @arguments:
+# - NAME: one-word name of the positional arguments (auto-capitalized)
+# - DESCRIPTION: description of the positionals used in help
 function bb_cli_arg_setpositional () {
     __bb_cli_arg_positional_name="$1"
     __bb_cli_arg_positional_desc="$2"
 }
 
 # parseargs ARGS
+# Parses command line arguments after registering valid flags and options
+# @arguments:
+# - ARGS: the list of command line arguments, usually "$@"
 function bb_cli_arg_parseargs () {
     __bb_cli_arg_positionals=()
     while [[ $# -gt 0 ]]; do
@@ -185,21 +223,34 @@ function bb_cli_arg_parseargs () {
 }
 
 # getopt LONGNAME
+# Gets the value of option named LONGNAME
+# @arguments:
+# - LONGNAME: long name of the option
 function bb_cli_arg_getopt () {
     echo -n "${__bb_cli_arg_optvals["$1"]}"
 }
 
 # checkopt LONGNAME
+# Returns the value of flag named LONGNAME
+# @arguments:
+# - LONGNAME: long name of the flag
+# @returns: the flag value
 function bb_cli_arg_checkopt () {
     return ${__bb_cli_arg_optvals["$1"]}
 }
 
 # getpositionals
+# Gets the list of positional argument values
 function bb_cli_arg_getpositionals () {
     echo -n "${__bb_cli_arg_positionals[@]}"
 }
 
 # argclear
+# Clears all registered argument parsing settings
+# @notes:
+#   Only one "command" can be registered for parsing at once
+#   so this can be used to clear the state of a previous command
+#   and start a new one
 function bb_cli_arg_argclear () {
     __bb_cli_arg_optvals=()
     __bb_cli_arg_optdesc=()
