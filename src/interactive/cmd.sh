@@ -27,10 +27,10 @@ function bb_interactive_cmd_mcd () {
 # @arguments:
 # - DIR: go to this directory, otherwise defaults to .. if no DIR specified
 # @notes:
-#   Most useful with the associated command completion. After pressing <TAB>,
-#   the current working directory is populated, and with each further <TAB>,
+#   Most useful with the associated command completion. After pressing TAB,
+#   the current working directory is populated, and with each further TAB,
 #   a directory is removed, moving you up the directory stack. Once you see
-#   the upward directory you want to go to, hit <ENTER>
+#   the upward directory you want to go to, hit ENTER
 function bb_interactive_cmd_up () {
     cd ${1:-..}
 }

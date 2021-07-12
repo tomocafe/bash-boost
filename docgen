@@ -3,7 +3,46 @@
 use warnings;
 use strict;
 
-my @LINES = ();
+my $OUTPUT = 'md';
+
+sub formatout {
+    if ($OUTPUT eq 'md') {
+        formatmd (@_);
+    }
+    elsif ($OUTPUT eq 'man') {
+        formatman (@_);
+    }
+}
+
+sub formatmd {
+    my ($text, $type) = @_;
+    $type = 'text' unless $type;
+    $text =~ s/^\s*#\s*//;
+    if ($type eq 'package') {
+        print "\n## Package $text\n\n";
+    }
+    elsif ($type eq 'function') {
+        print "\n### \`$text\`\n\n";
+    }
+    else {
+        if ($text =~ m/^\s*\@arguments:/) {
+           print "\n**Arguments:**\n\n"; 
+        }
+        elsif (my ($v) = ($text =~ m/^\s*\@returns:\s*(.*)$/)) {
+           print "\n**Returns:** $v\n"; 
+        }
+        elsif ($text =~ m/^\s*\@notes:/) {
+           print "\n**Notes:**\n\n"; 
+        }
+        elsif ($text =~ m/^\s*- ([A-Z0-9_=]+):/) {
+            $text =~ s/- ([A-Z0-9_=]+):/- `$1`:/;
+            print "$text\n";
+        }
+        else {
+            print "$text\n";
+        }
+    }
+}
 
 sub parsepkg {
     my $fn = shift @_;
@@ -15,11 +54,11 @@ sub parsepkg {
             return;
         }
         if ($start) {
-            push @LINES, $line;
+            formatout $line;
         }
-        elsif ($line =~ m/^# \@package:/) {
+        elsif (my ($pkg) = ($line =~ m/^# \@package: (.*)/)) {
             $start = 1;
-            push @LINES, $line;
+            formatout $pkg, 'package';
         }
     }
     close $fd;
@@ -51,44 +90,16 @@ sub parsefcns {
             next;
         }
         if ($start) {
-            push @LINES, $line;
+            formatout $line;
         }
         elsif (my ($f) = ($line =~ m/#\s*(\w+)/)) {
             next unless $fcns[0] =~ $f;
             shift @fcns;
             $start = 1;
-            push @LINES, $line;
+            formatout $line, 'function';
         }
     }
     close $fd;
-}
-
-sub formatmd {
-    foreach my $line (@LINES) {
-        $line =~ s/^\s*#\s*//;
-        if (my ($pkg) = ($line =~ m/^\@package: (.*)/)) {
-            print "\n## Package $pkg\n\n";
-        }
-        elsif ($line =~ m/^[a-z]\w+\s+[A-Z]/) {
-            print "\n### \`$line\`\n\n";
-        }
-        elsif ($line =~ m/^\s*\@arguments:/) {
-           print "\n**Arguments:**\n\n"; 
-        }
-        elsif (my ($text) = ($line =~ m/^\s*\@returns:\s*(.*)$/)) {
-           print "\n**Returns:** $text\n"; 
-        }
-        elsif ($line =~ m/^\s*\@notes:/) {
-           print "\n**Notes:**\n\n"; 
-        }
-        elsif ($line =~ m/^\s*- ([A-Z_]+):/) {
-            $line =~ s/- ([A-Z_]+):/- `$1`:/;
-            print "$line\n";
-        }
-        else {
-            print "$line\n";
-        }
-    }
 }
 
 ###
@@ -98,6 +109,4 @@ sub formatmd {
 foreach my $fn (@ARGV) {
     parsepkg $fn;
     parsefcns ($fn, getfcns $fn);
-    formatmd;
 }
-

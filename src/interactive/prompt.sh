@@ -53,10 +53,13 @@ function bb_interactive_prompt_unloadprompt () {
 # @arguments:
 # - FUNCTION: a function whose stdout output will be added to the prompt
 # @notes:
+#   The prompt areas are as follows:
+#   ```
 #   +----------------------------------------+
 #   | left prompt               right prompt |
 #   | nextline prompt                        |
 #   +----------------------------------------+
+#   ```
 function bb_interactive_prompt_setpromptleft () {
     __bb_interactive_prompt_lhs=("$@")
 }
@@ -100,7 +103,7 @@ function bb_interactive_prompt_settabtitle () {
 # @arguments:
 # - COLORSTR: valid color string, see bb_cli_color_colorize
 # - TEXT: text to be printed in color
-# @note:
+# @notes:
 #   This is like colorize but adds \[ and \] around non-printing
 #   characters which are needed specifically in prompts
 function bb_interactive_prompt_promptcolor () {
