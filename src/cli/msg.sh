@@ -1,3 +1,6 @@
+# @package: cli/msg
+# Messaging routines
+
 _bb_on_first_load "bb_cli_msg" || return
 
 bb_load "cli/color"

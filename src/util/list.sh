@@ -1,3 +1,6 @@
+# @package: util/list
+# Routines for common list operations
+
 _bb_on_first_load "bb_util_list" || return
 
 ################################################################################

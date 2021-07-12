@@ -1,3 +1,6 @@
+# @package: util/env
+# Routines for checking and setting environment variables
+
 _bb_on_first_load "bb_util_env" || return
 
 ################################################################################

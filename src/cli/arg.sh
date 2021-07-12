@@ -1,3 +1,6 @@
+# @package: cli/arg
+# Routines for parsing command line arguments
+
 _bb_on_first_load "bb_cli_arg" || return
 
 bb_load "cli/color"
