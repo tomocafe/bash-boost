@@ -1,0 +1,102 @@
+#!/usr/bin/env perl
+
+use warnings;
+use strict;
+
+my @LINES = ();
+
+sub parsepkg {
+    my $fn = shift @_;
+    open (my $fd, '<', $fn) or return;
+    my $start = 0;
+    while (my $line = <$fd>) {
+        chomp $line;
+        unless (substr($line, 0, 1) eq '#') {
+            return;
+        }
+        if ($start) {
+            push @LINES, $line;
+        }
+        elsif ($line =~ m/^# \@package:/) {
+            $start = 1;
+            push @LINES, $line;
+        }
+    }
+    close $fd;
+}
+
+sub getfcns {
+    my $fn = shift @_;
+    open (my $fd, '<', $fn) or return ();
+    my @fcns = ();
+    while (my $line = <$fd>) {
+        chomp $line;
+        if (my ($f) = ($line =~ m/^\s*function\s+(.*)\s*\(\s*\)/)) {
+            push @fcns, $f;
+        }
+    }
+    close $fd;
+    return @fcns;
+}
+
+sub parsefcns {
+    my ($fn, @fcns) = @_;
+    open (my $fd, '<', $fn) or return;
+    my $start = 0;
+    while (my $line = <$fd>) {
+        chomp $line;
+        unless (substr($line, 0, 1) eq '#') {
+            $start = 0;
+            next;
+        }
+        if ($start) {
+            push @LINES, $line;
+        }
+        elsif (my ($f) = ($line =~ m/#\s*(\w+)/)) {
+            next unless $fcns[0] =~ $f;
+            shift @fcns;
+            $start = 1;
+            push @LINES, $line;
+        }
+    }
+    close $fd;
+}
+
+sub formatmd {
+    foreach my $line (@LINES) {
+        $line =~ s/^\s*#\s*//;
+        if (my ($pkg) = ($line =~ m/^\@package: (.*)/)) {
+            print "\n## Package $pkg\n\n";
+        }
+        elsif ($line =~ m/^[a-z]\w+\s+[A-Z]/) {
+            print "\n### \`$line\`\n\n";
+        }
+        elsif ($line =~ m/^\s*\@arguments:/) {
+           print "\n**Arguments:**\n\n"; 
+        }
+        elsif (my ($text) = ($line =~ m/^\s*\@returns:\s*(.*)$/)) {
+           print "\n**Returns:** $text\n"; 
+        }
+        elsif ($line =~ m/^\s*\@notes:/) {
+           print "\n**Notes:**\n\n"; 
+        }
+        elsif ($line =~ m/^\s*- ([A-Z_]+):/) {
+            $line =~ s/- ([A-Z_]+):/- `\1`:/;
+            print "$line\n";
+        }
+        else {
+            print "$line\n";
+        }
+    }
+}
+
+###
+### Main
+###
+
+foreach my $fn (@ARGV) {
+    parsepkg $fn;
+    parsefcns ($fn, getfcns $fn);
+    formatmd;
+}
+
