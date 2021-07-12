@@ -14,6 +14,12 @@ __bb_util_prof_backup_ps4="$PS4"
 ################################################################################
 
 # startprof LOGFILE
+# Starts runtime profiling
+# @arguments:
+# - LOGFILE: (optional) file use to log profiling data
+#            Default: TMPDIR/bbprof.PID.out
+# @notes:
+#   Use the bbprof-read utility script to parse and analyze profile data
 function bb_util_prof_startprof () {
     __bb_util_prof_logfile="${1:-${TMPDIR:-/tmp}/bbprof.$$.out}"
     __bb_util_prof_backup_ps4="$PS4"
@@ -31,6 +37,7 @@ function bb_util_prof_startprof () {
 }
 
 # stopprof
+# Stops runtime profiling
 function bb_util_prof_stopprof () {
     set +x
     unset BASH_XTRACEFD

@@ -10,7 +10,11 @@ _bb_on_first_load "bb_util_list" || return
 # Functions
 ################################################################################
 
-# join SEP ITEMS ...
+# join SEP ITEM ...
+# Joins the list of items into a string with the given separator
+# @arguments:
+# - SEP: separator
+# - ITEM: a list item 
 function bb_util_list_join () {
     local IFS="$1"
     shift
@@ -18,11 +22,22 @@ function bb_util_list_join () {
 }
 
 # split LISTVAR SEP STR
+# Splits a string based on a separator and stores the resulting list into
+# the specified list variable
+# @arguments:
+# - LISTVAR: name of variable to store resulting list into (do not include $)
+# - SEP: separator
+# - STR: string to split
 function bb_util_list_split () {
     eval "$1=(${3//$2/ })"
 }
 
 # inlist TARGET LIST ...
+# Checks if a target item exists in a given list
+# @arguments:
+# - TARGET: the search target
+# - LIST: a list item
+# @returns: 0 if found, 1 otherwise
 function bb_util_list_inlist () {
     local target="$1"
     shift
@@ -34,21 +49,35 @@ function bb_util_list_inlist () {
 }
 
 # push LISTVAR ITEM
+# Pushes an item to a list (stack)
+# @arguments:
+# - LISTVAR: name of the list variable (do not include $)
+# - ITEM: item to push
 function bb_util_list_push () {
     eval "$1=("\${$1[@]}" "$2")"
 }
 
 # pop LISTVAR
+# Pops an item from a list (stack)
+# @arguments:
+# - LISTVAR: name of the list variable (do not include $)
 function bb_util_list_pop () {
     eval "unset $1[-1]"
 }
 
 # unshift LISTVAR ITEM
+# Unshifts an item from a list (stack)
+# @arguments:
+# - LISTVAR: name of the list variable (do not include $)
+# - ITEM: item to unshift
 function bb_util_list_unshift () {
     eval "$1=("$2" "\${$1[@]}")"
 }
 
 # shift LISTVAR
+# Shifts an item from a list (stack)
+# @arguments:
+# - LISTVAR: name of the list variable (do not include $)
 function bb_util_list_shift () {
     eval "unset $1[0]"
 }
@@ -60,53 +89,72 @@ function _bb_util_list_base_sort () {
     echo "${sorted[*]}"
 }
 
-# sort ITEMS ...
-# Lexicographical sort
+# sort ITEM ...
+# Sorts the items of a list in lexicographic ascending order
+# @arguments:
+# - ITEM: a list item
 function bb_util_list_sort () {
     _bb_util_list_base_sort "$@"
 }
 
-# sortdesc ITEMS ...
-# Reverse lexicographical sort
+# sortdesc ITEM ...
+# Sorts the items of a list in lexicographic descending order
+# @arguments:
+# - ITEM: a list item
 function bb_util_list_sortdesc () {
     __bb_util_list_sort_opts=(-r)
     _bb_util_list_base_sort "$@"
     unset __bb_util_list_sort_opts
 }
 
-# sortnums ITEMS ...
-# Numeric sort
+# sortnums ITEM ...
+# Sorts the items of a list in numerical ascending order
+# @arguments:
+# - ITEM: a list item
 function bb_util_list_sortnums () {
     __bb_util_list_sort_opts=(-g)
     _bb_util_list_base_sort "$@"
     unset __bb_util_list_sort_opts
 }
 
-# sortnumsdesc ITEMS ...
-# Numeric sort descending
+# sortnumsdesc ITEM ...
+# Sorts the items of a list in numerical descending order
+# @arguments:
+# - ITEM: a list item
 function bb_util_list_sortnumsdesc () {
     __bb_util_list_sort_opts=(-g -r)
     _bb_util_list_base_sort "$@"
     unset __bb_util_list_sort_opts
 }
 
-# sorthuman ITEMS ...
-# Human numeric sort
+# sorthuman ITEM ...
+# Sorts the items of a list in human-readable ascending order
+# @arguments:
+# - ITEM: a list item
+# @notes:
+#   Human readable, e.g., 1K, 2M, 3G
 function bb_util_list_sorthuman () {
     __bb_util_list_sort_opts=(-h)
     _bb_util_list_base_sort "$@"
     unset __bb_util_list_sort_opts
 }
 
-# sorthumandesc ITEMS ...
-# Human numeric sort descending
+# sorthumandesc ITEM ...
+# Sorts the items of a list in human-readable descending order
+# @arguments:
+# - ITEM: a list item
+# @notes:
+#   Human readable, e.g., 1K, 2M, 3G
 function bb_util_list_sorthumandesc () {
     __bb_util_list_sort_opts=(-h -r)
     _bb_util_list_base_sort "$@"
     unset __bb_util_list_sort_opts
 }
 
-# uniq UNSORTED_ITEMS ...
+# uniq ITEM ...
+# Filters an unsorted list to include only unique items
+# @arguments:
+# - ITEM: a list item
 function bb_util_list_uniq () {
     declare -A __bb_util_list_uniq_items=()
     local dedup=()
@@ -120,7 +168,12 @@ function bb_util_list_uniq () {
     echo "${dedup[*]}"
 }
 
-# uniqsorted SORTED_ITEMS ...
+# uniqsorted ITEM ...
+# Filters an sorted list to include only unique items
+# @arguments:
+# - ITEM: a list item
+# @notes:
+#   Faster than uniq, but requires the list to be pre-sorted
 function bb_util_list_uniqsorted () {
     local dedup=("$1")
     local prev="$1"
