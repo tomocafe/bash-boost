@@ -1,8 +1,9 @@
 VERSION=0.6
 
-SRCS := $(shell find src -type f)
+TARGET := bash-boost-$(VERSION)
+SRCS := $(shell find src -type f -name "*.sh")
 
-bash-boost-$(VERSION): doc $(SRCS) flatten
+$(TARGET): doc $(SRCS) flatten
 	$(RM) -r $@
 	cp -r src $@
 	cp LICENSE $@
@@ -12,15 +13,15 @@ bash-boost-$(VERSION): doc $(SRCS) flatten
 
 release: bash-boost-$(VERSION).tar.gz
 
-bash-boost-$(VERSION).tar.gz: bash-boost-$(VERSION)
+$(TARGET).tar.gz: $(TARGET)
 	tar czvf $@ $<
 
 clean:
 	$(RM)    src/MANUAL.md
-	$(RM) -r bash-boost-$(VERSION)
-	$(RM)    bash-boost-$(VERSION).tar.gz
+	$(RM) -r $(TARGET)
+	$(RM)    $(TARGET).tar.gz
 
-test: bash-boost-$(VERSION)
+test: $(TARGET)/bash-boost.sh $(TARGET)/bash-boost-portable.sh
 	@./test
 	@./test-portable
 

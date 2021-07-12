@@ -92,6 +92,9 @@ sub parsefcns {
         if ($start) {
             formatout $line;
         }
+        elsif (@fcns == 0) {
+            last;
+        }
         elsif (my ($f) = ($line =~ m/#\s*(\w+)/)) {
             next unless $fcns[0] =~ $f;
             shift @fcns;
