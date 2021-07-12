@@ -1,3 +1,6 @@
+# @package: core
+# Core routines
+
 ################################################################################
 # Globals
 ################################################################################
@@ -13,6 +16,12 @@ declare -Ag __bb_alias_completions=()
 ################################################################################
 
 # load PKG ...
+# Loads a module or package
+# @arguments:
+# - PKG: either a package (e.g. cli/arg) or a whole module (e.g. cli)
+# @notes:
+#   Each package only loads once; if you happen to load one twice, the second 
+#   time has no effect
 function bb_load () {
     local pkg
     for pkg in "$@"; do
@@ -27,15 +36,22 @@ function bb_load () {
     done
 }
 
+# is_loaded PKG
+# Checks if a package is loaded already
+# @arguments:
+# - PKG: package name in internal format, e.g. bb_cli_arg
+# @returns: 0 if loaded, 1 otherwise
 function bb_is_loaded () {
     [[ ${__bb_loaded["$1"]+set} ]]
 }
 
+# set_loaded PKG
 function _bb_set_loaded () {
     __bb_loaded["$1"]=1
     bb_debug "loaded $1"
 }
 
+# on_first_load PKG
 function _bb_on_first_load () {
     bb_is_loaded "$1" && return $__bb_false
     _bb_set_loaded "$1"
@@ -43,6 +59,14 @@ function _bb_on_first_load () {
 }
 
 # namespace PREFIX
+# Aliases bash-boost functions based on prefix
+# @arguments:
+# - PREFIX: the prefix to use, e.g. "xyz" makes the function
+#           bb_cli_arg_loadprompt aliased to xyz_loadprompt
+# @notes:
+#   If PREFIX is an empty string, the commads just become the
+#   base function name (e.g. loadprompt).
+#   This will copy over any command completions as well.
 function bb_namespace () {
     shopt -s expand_aliases
     local prefix="$1${1:+_}"
@@ -68,6 +92,12 @@ function bb_namespace () {
     done
 }
 
+# debug TEXT
+# Log text when debugging is enabled
+# @arguments:
+# - TEXT: message to be logged in debug mode
+# @notes:
+#   Set environment variable BB_DEBUG to enable debug mode
 function bb_debug () {
     [[ -n $BB_DEBUG ]] && echo "[bb_debug:$$] $1"
 }

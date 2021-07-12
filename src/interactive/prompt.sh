@@ -1,3 +1,6 @@
+# @package: interactive/prompt
+# Routines for managing a dynamic shell prompt
+
 _bb_on_first_load "bb_interactive_prompt" || return
 
 bb_load "cli/color"
@@ -19,6 +22,7 @@ __bb_interactive_prompt_resetopt=false
 ################################################################################
 
 # loadprompt
+# Activates the registered dynamic prompt
 function bb_interactive_prompt_loadprompt () {
     if [[ ! -o checkwinsize ]]; then
         shopt -s checkwinsize
@@ -30,6 +34,10 @@ function bb_interactive_prompt_loadprompt () {
 }
 
 # unloadprompt
+# Deactivates the registered dynamic prompt
+# @notes:
+#   This will restore the prompt to the state it was in
+#   when loadprompt was called
 function bb_interactive_prompt_unloadprompt () {
     $__bb_interactive_prompt_resetopt && shopt -u checkwinsize
     PS1="$__bb_interactive_prompt_backup_ps1"
@@ -41,33 +49,63 @@ function bb_interactive_prompt_unloadprompt () {
 }
 
 # setpromptleft FUNCTION ...
+# Sets the left prompt to the output of the list of given functions
+# @arguments:
+# - FUNCTION: a function whose stdout output will be added to the prompt
+# @notes:
+#   The prompt areas are as follows:
+#   ```
+#   +----------------------------------------+
+#   | left prompt               right prompt |
+#   | nextline prompt                        |
+#   +----------------------------------------+
+#   ```
 function bb_interactive_prompt_setpromptleft () {
     __bb_interactive_prompt_lhs=("$@")
 }
 
 # setpromptright FUNCTION ...
+# Sets the right prompt to the output of the list of given functions
+# @arguments:
+# - FUNCTION: a function whose stdout output will be added to the prompt
 function bb_interactive_prompt_setpromptright () {
     __bb_interactive_prompt_rhs=("$@")
 }
 
 # setpromptnextline FUNCTION ...
+# Sets the next line prompt to the output of the list of given functions
+# @arguments:
+# - FUNCTION: a function whose stdout output will be added to the prompt
 function bb_interactive_prompt_setpromptnextline () {
     __bb_interactive_prompt_nl=("$@")
 }
 
 # setwintitle FUNCTION
+# Sets the window title to the output of the list of given functions
+# @arguments:
+# - FUNCTION: a function whose stdout output will used as the window title
 function bb_interactive_prompt_setwintitle () {
     __bb_interactive_prompt_wintitle="$1"
 }
 
 # settabtitle FUNCTION
+# Sets the tab title to the output of the list of given functions
+# @arguments:
+# - FUNCTION: a function whose stdout output will used as the tab title
+# @notes:
+#   Not all terminals support this
 function bb_interactive_prompt_settabtitle () {
     __bb_interactive_prompt_tabtitle="$1"
 }
 
 # promptcolor COLORSTR TEXT
-# like colorize but adds \[ and \] around non-printing
-# characters which are needed specifically in prompts
+# Prints text in color, for use specifically in prompts
+# @arguments:
+# - COLORSTR: valid color string, see bb_cli_color_colorize
+# - TEXT: text to be printed in color
+# @notes:
+#   This is like colorize but adds \[ and \] around non-printing
+#   characters which are needed specifically in prompts
 function bb_interactive_prompt_promptcolor () {
     __bb_cli_color_escapeprompt=1
     bb_cli_color_rawcolor "$@"

@@ -1,0 +1,112 @@
+#!/usr/bin/env perl
+
+use warnings;
+use strict;
+
+my $OUTPUT = 'md';
+
+sub formatout {
+    if ($OUTPUT eq 'md') {
+        formatmd (@_);
+    }
+    elsif ($OUTPUT eq 'man') {
+        formatman (@_);
+    }
+}
+
+sub formatmd {
+    my ($text, $type) = @_;
+    $type = 'text' unless $type;
+    $text =~ s/^\s*#\s*//;
+    if ($type eq 'package') {
+        print "\n## Package $text\n\n";
+    }
+    elsif ($type eq 'function') {
+        print "\n### \`$text\`\n\n";
+    }
+    else {
+        if ($text =~ m/^\s*\@arguments:/) {
+           print "\n**Arguments:**\n\n"; 
+        }
+        elsif (my ($v) = ($text =~ m/^\s*\@returns:\s*(.*)$/)) {
+           print "\n**Returns:** $v\n"; 
+        }
+        elsif ($text =~ m/^\s*\@notes:/) {
+           print "\n**Notes:**\n\n"; 
+        }
+        elsif ($text =~ m/^\s*- ([A-Z0-9_=]+):/) {
+            $text =~ s/- ([A-Z0-9_=]+):/- `$1`:/;
+            print "$text\n";
+        }
+        else {
+            print "$text\n";
+        }
+    }
+}
+
+sub parsepkg {
+    my $fn = shift @_;
+    open (my $fd, '<', $fn) or return;
+    my $start = 0;
+    while (my $line = <$fd>) {
+        chomp $line;
+        unless (substr($line, 0, 1) eq '#') {
+            return;
+        }
+        if ($start) {
+            formatout $line;
+        }
+        elsif (my ($pkg) = ($line =~ m/^# \@package: (.*)/)) {
+            $start = 1;
+            formatout $pkg, 'package';
+        }
+    }
+    close $fd;
+}
+
+sub getfcns {
+    my $fn = shift @_;
+    open (my $fd, '<', $fn) or return ();
+    my @fcns = ();
+    while (my $line = <$fd>) {
+        chomp $line;
+        if (my ($f) = ($line =~ m/^\s*function\s+(.*)\s*\(\s*\)/)) {
+            push @fcns, $f unless $f =~ /^_/;
+        }
+    }
+    close $fd;
+    return @fcns;
+}
+
+sub parsefcns {
+    my ($fn, @fcns) = @_;
+    return unless @fcns;
+    open (my $fd, '<', $fn) or return;
+    my $start = 0;
+    while (my $line = <$fd>) {
+        chomp $line;
+        unless (substr($line, 0, 1) eq '#') {
+            $start = 0;
+            next;
+        }
+        if ($start) {
+            formatout $line;
+        }
+        elsif (my ($f) = ($line =~ m/#\s*(\w+)/)) {
+            next unless $fcns[0] =~ $f;
+            shift @fcns;
+            $start = 1;
+            formatout $line, 'function';
+        }
+    }
+    close $fd;
+}
+
+###
+### Main
+###
+
+foreach my $fn (@ARGV) {
+    parsepkg $fn;
+    parsefcns ($fn, getfcns $fn);
+}

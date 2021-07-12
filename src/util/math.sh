@@ -1,3 +1,6 @@
+# @package: util/math
+# Routines for common math operations
+
 _bb_on_first_load "bb_util_math" || return
 
 ################################################################################
@@ -10,7 +13,10 @@ _bb_on_first_load "bb_util_math" || return
 # Functions
 ################################################################################
 
-# sum NUMS ...
+# sum NUM ...
+# Returns the sum of the given numbers
+# @arguments:
+# - NUM: a valid number
 function bb_util_math_sum () {
     local sum=0
     local n
@@ -20,7 +26,10 @@ function bb_util_math_sum () {
     echo "$sum"
 }
 
-# min NUMS ...
+# min NUM ...
+# Returns the minimum of the given numbers
+# @arguments:
+# - NUM: a valid number
 function bb_util_math_min () {
     local min="$1"
     local n
@@ -30,7 +39,10 @@ function bb_util_math_min () {
     echo "$min"
 }
 
-# max NUMS ...
+# max NUM ...
+# Returns the maximum of the given numbers
+# @arguments:
+# - NUM: a valid number
 function bb_util_math_max () {
     local max="$1"
     local n
@@ -40,7 +52,11 @@ function bb_util_math_max () {
     echo "$max"
 }
 
-# isint NUMS ...
+# isint NUM ...
+# Checks if all the given numbers are valid integers
+# @arguments:
+# - NUM: a number to check
+# @returns: 0 if all arguments are integers, 1 otherwise
 function bb_util_math_isint () {
     local re='^-*[0-9]+$'
     local n
