@@ -41,6 +41,7 @@ sub getfcns {
 
 sub parsefcns {
     my ($fn, @fcns) = @_;
+    return unless @fcns;
     open (my $fd, '<', $fn) or return;
     my $start = 0;
     while (my $line = <$fd>) {
@@ -81,7 +82,7 @@ sub formatmd {
            print "\n**Notes:**\n\n"; 
         }
         elsif ($line =~ m/^\s*- ([A-Z_]+):/) {
-            $line =~ s/- ([A-Z_]+):/- `\1`:/;
+            $line =~ s/- ([A-Z_]+):/- `$1`:/;
             print "$line\n";
         }
         else {
