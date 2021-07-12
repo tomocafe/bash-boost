@@ -328,9 +328,6 @@ Prints text in color, for use specifically in prompts
 This is like colorize but adds \[ and \] around non-printing
 characters which are needed specifically in prompts
 
-### `promptimpl`
-
-
 ## Package interactive/cmd
 
 Miscellaneous interactive commands
@@ -620,6 +617,74 @@ Sorts the items of a list in lexicographic ascending order
 
 - `ITEM`: a list item
 
+### `sortdesc ITEM ...`
+
+Sorts the items of a list in lexicographic descending order
+
+**Arguments:**
+
+- `ITEM`: a list item
+
+### `sortnums ITEM ...`
+
+Sorts the items of a list in numerical ascending order
+
+**Arguments:**
+
+- `ITEM`: a list item
+
+### `sortnumsdesc ITEM ...`
+
+Sorts the items of a list in numerical descending order
+
+**Arguments:**
+
+- `ITEM`: a list item
+
+### `sorthuman ITEM ...`
+
+Sorts the items of a list in human-readable ascending order
+
+**Arguments:**
+
+- `ITEM`: a list item
+
+**Notes:**
+
+Human readable, e.g., 1K, 2M, 3G
+
+### `sorthumandesc ITEM ...`
+
+Sorts the items of a list in human-readable descending order
+
+**Arguments:**
+
+- `ITEM`: a list item
+
+**Notes:**
+
+Human readable, e.g., 1K, 2M, 3G
+
+### `uniq ITEM ...`
+
+Filters an unsorted list to include only unique items
+
+**Arguments:**
+
+- `ITEM`: a list item
+
+### `uniqsorted ITEM ...`
+
+Filters an sorted list to include only unique items
+
+**Arguments:**
+
+- `ITEM`: a list item
+
+**Notes:**
+
+Faster than uniq, but requires the list to be pre-sorted
+
 ## Package util/prof
 
 Routines for runtime profiling of bash scripts
@@ -667,12 +732,6 @@ Checks if a package is loaded already
 - `PKG`: package name in internal format, e.g. bb_cli_arg
 
 **Returns:** 0 if loaded, 1 otherwise
-
-### `set_loaded PKG`
-
-
-### `on_first_load PKG`
-
 
 ### `namespace PREFIX`
 

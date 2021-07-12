@@ -71,7 +71,7 @@ sub getfcns {
     while (my $line = <$fd>) {
         chomp $line;
         if (my ($f) = ($line =~ m/^\s*function\s+(.*)\s*\(\s*\)/)) {
-            push @fcns, $f;
+            push @fcns, $f unless $f =~ /^_/;
         }
     }
     close $fd;
