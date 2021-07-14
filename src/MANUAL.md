@@ -718,6 +718,10 @@ Converts text from snake to camel case
 
 - `TEXT`: text in snake case
 
+**Notes:**
+
+Leading underscores are preserved
+
 ### `camel2snake TEXT`
 
 Converts text from camel to snake case
@@ -725,6 +729,27 @@ Converts text from camel to snake case
 **Arguments:**
 
 - `TEXT`: text in camel case
+
+### `titlecase TEXT`
+
+Converts text into title case (every word capitalized)
+
+**Arguments:**
+
+- `TEXT`: text to transform
+
+**Notes:**
+
+This does not check the content of the words itself and may not
+respect grammatical rules, e.g. "And" will be capitalized
+
+### `sentcase TEXT`
+
+Converts text into sentence case (every first word capitalized)
+
+**Arguments:**
+
+- `TEXT`: text to transform
 
 ## Package core
 
