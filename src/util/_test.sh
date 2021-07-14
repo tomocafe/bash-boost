@@ -129,4 +129,5 @@ bb_expect "$?" "$__bb_false" "isint string false"
 ################################################################################
 
 bb_expect "$(bb_util_string_snake2camel foo_bar_baz)" "fooBarBaz" "snake2camel"
+bb_expect "$(bb_util_string_snake2camel __foo_bar_baz)" "__fooBarBaz" "snake2camel leading underscore"
 bb_expect "$(bb_util_string_camel2snake fooBarBaz)" "foo_bar_baz" "camel2snake"

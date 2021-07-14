@@ -17,20 +17,24 @@ _bb_on_first_load "bb_util_string" || return
 # Converts text from snake to camel case
 # @arguments:
 # - TEXT: text in snake case
+# @notes:
+#   Leading underscores are preserved
 function bb_util_string_snake2camel () {
-    local str="${1##_*}" # remove leading underscores
+    local str="$1"
     local i
     local camel=""
+    local start=false # preserve leading underscores
     local caps=false
     for (( i=0; i<${#str}; i++ )); do
         local char="${str:$i:1}"
         case "$char" in
             _)
-                caps=true
+                $start && caps=true || camel+="$char"
                 ;;
             *)
                 $caps && char="${char^^}"
                 camel+="$char"
+                start=true
                 caps=false
                 ;;
         esac
