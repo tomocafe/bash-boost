@@ -123,3 +123,10 @@ bb_util_math_isint "3.14"
 bb_expect "$?" "$__bb_false" "isint float false"
 bb_util_math_isint "abcd"
 bb_expect "$?" "$__bb_false" "isint string false"
+
+################################################################################
+# util/string
+################################################################################
+
+bb_expect "$(bb_util_string_snake2camel foo_bar_baz)" "fooBarBaz" "snake2camel"
+bb_expect "$(bb_util_string_camel2snake fooBarBaz)" "foo_bar_baz" "camel2snake"

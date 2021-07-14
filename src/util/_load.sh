@@ -1,4 +1,5 @@
 source "$BB_ROOT/util/list.sh"
+source "$BB_ROOT/util/string.sh"
 source "$BB_ROOT/util/kwargs.sh"
 source "$BB_ROOT/util/env.sh"
 source "$BB_ROOT/util/math.sh"

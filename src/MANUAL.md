@@ -706,6 +706,26 @@ Use the bbprof-read utility script to parse and analyze profile data
 
 Stops runtime profiling
 
+## Package util/string
+
+Routines for common string operations
+
+### `snake2camel TEXT`
+
+Converts text from snake to camel case
+
+**Arguments:**
+
+- `TEXT`: text in snake case
+
+### `camel2snake TEXT`
+
+Converts text from camel to snake case
+
+**Arguments:**
+
+- `TEXT`: text in camel case
+
 ## Package core
 
 Core routines
