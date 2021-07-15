@@ -751,6 +751,24 @@ Converts text into sentence case (every first word capitalized)
 
 - `TEXT`: text to transform
 
+### `urlencode TEXT`
+
+Performs URL (percent) encoding on the given string
+
+**Arguments:**
+
+- `TEXT`: text to be encoded
+
+### `urldecode TEXT`
+
+Decodes URL-encoded text
+
+**Arguments:**
+
+- `TEXT`: text to be decoded
+
+**Returns:** 1 if the input URL encoding is malformed, 0 otherwise
+
 ## Package core
 
 Core routines

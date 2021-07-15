@@ -133,3 +133,6 @@ bb_expect "$(bb_util_string_snake2camel __foo_bar_baz)" "__fooBarBaz" "snake2cam
 bb_expect "$(bb_util_string_camel2snake fooBarBaz)" "foo_bar_baz" "camel2snake"
 bb_expect "$(bb_util_string_titlecase "foo bar baz")" "Foo Bar Baz" "titlecase"
 bb_expect "$(bb_util_string_sentcase "foo bar. baz")" "Foo bar. Baz" "sentcase"
+
+bb_expect "$(bb_util_string_urlencode "hello world")" "hello%20world" "urlencode"
+bb_expect "$(bb_util_string_urldecode "hello%20world")" "hello world" "urldecode"

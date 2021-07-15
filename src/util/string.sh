@@ -120,5 +120,46 @@ function bb_util_string_sentcase () {
     echo -n "$sent"
 }
 
-# TODO: url encode/decode
+# urlencode TEXT
+# Performs URL (percent) encoding on the given string
+# @arguments:
+# - TEXT: text to be encoded
+function bb_util_string_urlencode () {
+    local LC_ALL=C
+    local text="$1"
+    local i
+    for (( i=0; i<${#text}; i++ )); do
+        local char="${text:$i:1}"
+        case "$char" in
+            [[:alnum:].~_-]) printf '%s' "$char" ;;
+            *) printf '%%%02X' "'$char" ;;
+        esac
+    done
+}
 
+# urldecode TEXT
+# Decodes URL-encoded text
+# @arguments:
+# - TEXT: text to be decoded
+# @returns: 1 if the input URL encoding is malformed, 0 otherwise
+function bb_util_string_urldecode () {
+    local LC_ALL=C
+    local text="$1"
+    local i
+    for (( i=0; i<${#text}; i++ )); do
+        local char="${text:$i:1}"
+        case "$char" in
+            %)
+                char="${text:$i:3}"
+                case "$char" in
+                    %[[:xdigit:]][[:xdigit:]]) ;;
+                    *) return $__bb_false ;; # malformed
+                esac
+                let i+=2
+                printf '%b' "\\x${char:1}"
+                ;;
+            *) printf '%s' "$char" ;;
+        esac
+    done
+    return $__bb_true
+}
