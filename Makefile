@@ -1,4 +1,4 @@
-VERSION=0.7
+VERSION=0.8
 
 TARGET := bash-boost-$(VERSION)
 SRCS := $(shell find src -type f -name "*.sh")
