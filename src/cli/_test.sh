@@ -53,3 +53,12 @@ __bb_tmp_colorstripped="$(bb_cli_color_colorstrip "$__bb_tmp_colorized")"
 bb_expect "${#__bb_tmp_colorstripped}" "5" "colorstrip"
 unset __bb_tmp_colorized
 unset __bb_tmp_colorstripped
+
+################################################################################
+# cli/input
+################################################################################
+
+yes | bb_yn
+bb_expect "$?" "$__bb_true" "bb_yn y"
+yes n | bb_yn
+bb_expect "$?" "$__bb_false" "bb_yn n"
