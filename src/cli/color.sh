@@ -108,7 +108,7 @@ function bb_cli_color_rawcolor () {
     unset __bb_cli_color_rawcolor
 }
 
-# strip TEXT
+# colorstrip TEXT
 # Strips ANSI color codes from text colorized by colorize (or rawcolor)
 # @arguments:
 # - TEXT: text possibly with color escape codes to be removed

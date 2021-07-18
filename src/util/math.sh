@@ -23,7 +23,7 @@ function bb_util_math_sum () {
     for n in "$@"; do
         (( sum += n ))
     done
-    echo "$sum"
+    echo -n "$sum"
 }
 
 # min NUM ...
@@ -36,7 +36,7 @@ function bb_util_math_min () {
     for n in "${@:2}"; do
         [[ $n -lt $min ]] && min="$n"
     done
-    echo "$min"
+    echo -n "$min"
 }
 
 # max NUM ...
@@ -49,7 +49,17 @@ function bb_util_math_max () {
     for n in "${@:2}"; do
         [[ $n -gt $max ]] && max="$n"
     done
-    echo "$max"
+    echo -n "$max"
+}
+
+# abs NUM
+# Returns the absolute value of a given number
+# @arguments:
+# - NUM: a valid number
+function bb_util_math_abs () {
+    local abs="$1"
+    [[ $abs -lt 0 ]] && abs="${abs#-}"
+    echo -n "$abs"
 }
 
 # isint NUM ...

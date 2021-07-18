@@ -69,8 +69,11 @@ __bb_tmp_list=(foo bar baz)
 
 bb_expect "$(bb_util_list_join : "${__bb_tmp_list[@]}")" "foo:bar:baz"
 bb_util_list_split "__bb_tmp_rebuilt_list" ":" "foo:bar:baz"
-bb_expect "${__bb_tmp_rebuilt_list[*]}" "foo bar baz"
-bb_expect "${#__bb_tmp_rebuilt_list}" "3"
+bb_expect "${__bb_tmp_rebuilt_list[*]}" "foo bar baz" "split foo:bar:baz by :"
+bb_expect "${#__bb_tmp_rebuilt_list[@]}" "3" "split foo:bar:baz by :"
+bb_util_list_split "__bb_tmp_rebuilt_list" "z" "aazb bzcc"
+bb_expect "${#__bb_tmp_rebuilt_list[@]}" "3" "split aazb bzcc by z"
+bb_expect "${__bb_tmp_rebuilt_list[1]}" "b b" "split aazb bzcc by z"
 unset __bb_tmp_rebuilt_list
 
 bb_util_list_inlist "bar" "${__bb_tmp_list[@]}"
@@ -108,12 +111,21 @@ bb_expect "$(bb_util_list_uniqsorted $(bb_util_list_sortnums "${__bb_tmp_list[@]
 unset __bb_tmp_list
 
 ################################################################################
+# util/file
+################################################################################
+
+bb_expect "$(bb_util_file_canonicalize "/foo//bar/../bar/./baz/")" "/foo/bar/baz"
+bb_expect "$(bb_util_file_abspath "../leaf2" "/base/leaf1")" "/base/leaf2"
+bb_expect "$(bb_util_file_relpath "/base/leaf2" "/base/leaf1")" "../leaf2"
+
+################################################################################
 # util/math
 ################################################################################
 
 bb_expect "$(bb_util_math_sum -1 2 3)" "4" "sum"
 bb_expect "$(bb_util_math_min -1 3 -3 7)" "-3" "min"
 bb_expect "$(bb_util_math_max -1 3 -3 7)" "7" "max"
+bb_expect "$(bb_util_math_abs -5)" "5" "abs"
 
 bb_util_math_isint "42"
 bb_expect "$?" "$__bb_true" "isint true"
@@ -127,6 +139,10 @@ bb_expect "$?" "$__bb_false" "isint string false"
 ################################################################################
 # util/string
 ################################################################################
+
+bb_expect "$(bb_util_string_lstrip "  hello world  ")" "hello world  " "lstrip"
+bb_expect "$(bb_util_string_rstrip "  hello world  ")" "  hello world" "rstrip"
+bb_expect "$(bb_util_string_strip "  hello world  ")" "hello world" "strip"
 
 bb_expect "$(bb_util_string_snake2camel foo_bar_baz)" "fooBarBaz" "snake2camel"
 bb_expect "$(bb_util_string_snake2camel __foo_bar_baz)" "__fooBarBaz" "snake2camel leading underscore"

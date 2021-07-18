@@ -230,7 +230,7 @@ Use this instead of colorize if you need to still print in color even if
 not connected to a terminal, e.g. when saving the output to a variable.
 See colorize for supported colors
 
-### `strip TEXT`
+### `colorstrip TEXT`
 
 Strips ANSI color codes from text colorized by colorize (or rawcolor)
 
@@ -355,6 +355,42 @@ Most useful with the associated command completion. After pressing TAB,
 the current working directory is populated, and with each further TAB,
 a directory is removed, moving you up the directory stack. Once you see
 the upward directory you want to go to, hit ENTER
+
+## Package util/file
+
+Routines for common file operations
+
+### `canonicalize PATH`
+
+Resolves . and .. in a given absolute path
+
+**Arguments:**
+
+- `PATH`: an absolute path
+
+**Returns:** 1 if PATH is invalid, 0 otherwise
+
+### `abspath TARGET [FROM]`
+
+Returns the absolute path from a relative one
+
+**Arguments:**
+
+- `TARGET`: target relative path (can be file or directory)
+- `FROM`: the absolute directory path from which the absolute path is formed
+(Defaults to $PWD)
+
+### `relpath TARGET [FROM]`
+
+Returns the relative path from a directory to the target
+
+**Arguments:**
+
+- `TARGET`: target absolute path (can be file or directory)
+- `FROM`: the absolute directory path from which the relative path is formed
+(Defaults to $PWD)
+
+**Returns:** 1 if either TARGET or FROM is invalid, 0 otherwise
 
 ## Package util/env
 
@@ -497,6 +533,14 @@ Returns the minimum of the given numbers
 ### `max NUM ...`
 
 Returns the maximum of the given numbers
+
+**Arguments:**
+
+- `NUM`: a valid number
+
+### `abs NUM`
+
+Returns the absolute value of a given number
 
 **Arguments:**
 
@@ -709,6 +753,30 @@ Stops runtime profiling
 ## Package util/string
 
 Routines for common string operations
+
+### `lstrip TEXT`
+
+Strips leading (left) whitespace from text
+
+**Arguments:**
+
+- `TEXT`: text to strip whitespace from
+
+### `rstrip TEXT`
+
+Strips trailing (right) whitespace from text
+
+**Arguments:**
+
+- `TEXT`: text to strip whitespace from
+
+### `strip TEXT`
+
+Strips leading and trailing whitespace from text
+
+**Arguments:**
+
+- `TEXT`: text to strip whitespace from
 
 ### `snake2camel TEXT`
 

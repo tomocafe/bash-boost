@@ -13,6 +13,42 @@ _bb_on_first_load "bb_util_string" || return
 # Functions
 ################################################################################
 
+# lstrip TEXT
+# Strips leading (left) whitespace from text
+# @arguments:
+# - TEXT: text to strip whitespace from
+function bb_util_string_lstrip () {
+    local resetopt=false
+    if [[ ! -o extglob ]]; then
+        shopt -s extglob
+        resetopt=true
+    fi
+    echo -n "${1##+([[:space:]])}"
+    $resetopt && shopt -u extglob
+}
+
+# rstrip TEXT
+# Strips trailing (right) whitespace from text
+# @arguments:
+# - TEXT: text to strip whitespace from
+function bb_util_string_rstrip () {
+    local resetopt=false
+    if [[ ! -o extglob ]]; then
+        shopt -s extglob
+        resetopt=true
+    fi
+    echo -n "${1%%+([[:space:]])}"
+    $resetopt && shopt -u extglob
+}
+
+# strip TEXT
+# Strips leading and trailing whitespace from text
+# @arguments:
+# - TEXT: text to strip whitespace from
+function bb_util_string_strip () {
+    echo -n "$(bb_util_string_lstrip "$(bb_util_string_rstrip "$1")")"
+}
+
 # snake2camel TEXT
 # Converts text from snake to camel case
 # @arguments:

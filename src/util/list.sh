@@ -32,7 +32,20 @@ function bb_util_list_join () {
 # - SEP: separator
 # - STR: string to split
 function bb_util_list_split () {
-    eval "$1=(${3//$2/ })"
+    local IFS=$2
+    local -
+    set -f # turn off globbing, local to this function
+    local arr=()
+    local token
+    while IFS= read -r token; do
+        arr+=( $token ) # no quotes around $token -- important!
+    done <<< "$3"
+    # Quote tokens
+    local quoted=()
+    for token in "${arr[@]}"; do
+        quoted+=( "\"$token\"" )
+    done
+    eval "$1=( "${quoted[@]}" )"
 }
 
 # inlist TARGET LIST ...
