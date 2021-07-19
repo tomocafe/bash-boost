@@ -5,6 +5,7 @@ bash-boost is a set of library functions for bash, useful for both scripting and
 ## Philosophy
 
 - Always prefer pure-bash solutions
+- 
 
 ## Requirements
 

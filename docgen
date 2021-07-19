@@ -109,7 +109,7 @@ sub parsefcns {
 ### Main
 ###
 
-foreach my $fn (@ARGV) {
+foreach my $fn (sort @ARGV) {
     parsepkg $fn;
     parsefcns ($fn, getfcns $fn);
 }

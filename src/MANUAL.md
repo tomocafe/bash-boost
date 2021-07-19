@@ -119,65 +119,6 @@ Only one "command" can be registered for parsing at once
 so this can be used to clear the state of a previous command
 and start a new one
 
-## Package cli/msg
-
-Messaging routines
-
-### `info MESSAGE`
-
-Prints an informational message to stderr
-
-**Arguments:**
-
-- `MESSAGE`: message to be printed
-
-### `warn MESSAGE`
-
-Prints a warning message to stderr
-
-**Arguments:**
-
-- `MESSAGE`: message to be printed
-
-### `error MESSAGE`
-
-Prints an error message to stderr
-
-**Arguments:**
-
-- `MESSAGE`: message to be printed
-
-### `fatal MESSAGE [RETURNCODE]`
-
-Prints an error message to stderr and then exits the shell
-
-**Arguments:**
-
-- `MESSAGE`: message to be printed
-- `RETURNCODE`: return code to exit with (defaults to 1)
-
-### `expect VAL1 VAL2 [MESSAGE] [RETURNCODE]`
-
-Issues a fatal error if two given values are not equal
-
-**Arguments:**
-
-- `VAL1`: value to check
-- `VAL2`: value to check against (golden answer)
-- `MESSAGE`: optional prefix to the error message
-- `RETURNCODE`: return code to exit with (defaults to 1)
-
-### `expectsubstr VAL1 VAL2 [MESSAGE] [RETURNCODE]`
-
-Issues a fatal error if a given substring is not found in some given text
-
-**Arguments:**
-
-- `VAL1`: text to check
-- `VAL2`: substring to be found
-- `MESSAGE`: optional prefix to the error message
-- `RETURNCODE`: return code to exit with (defaults to 1)
-
 ## Package cli/color
 
 Routines for printing text in color using ANSI escape codes
@@ -280,6 +221,147 @@ Prompts user to press a key to continue
 - `PROMPT`: text displayed to the user
 Default: Press any key to continue
 
+## Package cli/msg
+
+Messaging routines
+
+### `info MESSAGE`
+
+Prints an informational message to stderr
+
+**Arguments:**
+
+- `MESSAGE`: message to be printed
+
+### `warn MESSAGE`
+
+Prints a warning message to stderr
+
+**Arguments:**
+
+- `MESSAGE`: message to be printed
+
+### `error MESSAGE`
+
+Prints an error message to stderr
+
+**Arguments:**
+
+- `MESSAGE`: message to be printed
+
+### `fatal MESSAGE [RETURNCODE]`
+
+Prints an error message to stderr and then exits the shell
+
+**Arguments:**
+
+- `MESSAGE`: message to be printed
+- `RETURNCODE`: return code to exit with (defaults to 1)
+
+### `expect VAL1 VAL2 [MESSAGE] [RETURNCODE]`
+
+Issues a fatal error if two given values are not equal
+
+**Arguments:**
+
+- `VAL1`: value to check
+- `VAL2`: value to check against (golden answer)
+- `MESSAGE`: optional prefix to the error message
+- `RETURNCODE`: return code to exit with (defaults to 1)
+
+### `expectsubstr VAL1 VAL2 [MESSAGE] [RETURNCODE]`
+
+Issues a fatal error if a given substring is not found in some given text
+
+**Arguments:**
+
+- `VAL1`: text to check
+- `VAL2`: substring to be found
+- `MESSAGE`: optional prefix to the error message
+- `RETURNCODE`: return code to exit with (defaults to 1)
+
+## Package core
+
+Core routines
+
+### `load PKG ...`
+
+Loads a module or package
+
+**Arguments:**
+
+- `PKG`: either a package (e.g. cli/arg) or a whole module (e.g. cli)
+
+**Notes:**
+
+Each package only loads once; if you happen to load one twice, the second 
+time has no effect
+
+### `is_loaded PKG`
+
+Checks if a package is loaded already
+
+**Arguments:**
+
+- `PKG`: package name in internal format, e.g. bb_cli_arg
+
+**Returns:** 0 if loaded, 1 otherwise
+
+### `namespace PREFIX`
+
+Aliases bash-boost functions based on prefix
+
+**Arguments:**
+
+- `PREFIX`: the prefix to use, e.g. "xyz" makes the function
+bb_cli_arg_loadprompt aliased to xyz_loadprompt
+
+**Notes:**
+
+If PREFIX is an empty string, the commads just become the
+base function name (e.g. loadprompt).
+This will copy over any command completions as well.
+
+### `debug TEXT`
+
+Log text when debugging is enabled
+
+**Arguments:**
+
+- `TEXT`: message to be logged in debug mode
+
+**Notes:**
+
+Set environment variable BB_DEBUG to enable debug mode
+
+## Package interactive/cmd
+
+Miscellaneous interactive commands
+
+### `mcd DIR`
+
+Make director(ies) and change directory to the last one
+
+**Arguments:**
+
+- `DIR`: usually a single directory to be made, but all arguments are passed to 
+mkdir and the last argument is then passed to cd if mkdir is successful
+
+### `up [DIR]`
+
+Change directory up
+
+**Arguments:**
+
+- `DIR`: go to this directory, otherwise defaults to .. if no DIR specified
+
+**Notes:**
+
+Most useful with the associated command completion. After pressing TAB,
+the current working directory is populated, and with each further TAB,
+a directory is removed, moving you up the directory stack. Once you see
+the upward directory you want to go to, hit ENTER
+
 ## Package interactive/prompt
 
 Routines for managing a dynamic shell prompt
@@ -364,70 +446,6 @@ Prints text in color, for use specifically in prompts
 
 This is like colorize but adds \[ and \] around non-printing
 characters which are needed specifically in prompts
-
-## Package interactive/cmd
-
-Miscellaneous interactive commands
-
-### `mcd DIR`
-
-Make director(ies) and change directory to the last one
-
-**Arguments:**
-
-- `DIR`: usually a single directory to be made, but all arguments are passed to 
-mkdir and the last argument is then passed to cd if mkdir is successful
-
-### `up [DIR]`
-
-Change directory up
-
-**Arguments:**
-
-- `DIR`: go to this directory, otherwise defaults to .. if no DIR specified
-
-**Notes:**
-
-Most useful with the associated command completion. After pressing TAB,
-the current working directory is populated, and with each further TAB,
-a directory is removed, moving you up the directory stack. Once you see
-the upward directory you want to go to, hit ENTER
-
-## Package util/file
-
-Routines for common file operations
-
-### `canonicalize PATH`
-
-Resolves . and .. in a given absolute path
-
-**Arguments:**
-
-- `PATH`: an absolute path
-
-**Returns:** 1 if PATH is invalid, 0 otherwise
-
-### `abspath TARGET [FROM]`
-
-Returns the absolute path from a relative one
-
-**Arguments:**
-
-- `TARGET`: target relative path (can be file or directory)
-- `FROM`: the absolute directory path from which the absolute path is formed
-(Defaults to $PWD)
-
-### `relpath TARGET [FROM]`
-
-Returns the relative path from a directory to the target
-
-**Arguments:**
-
-- `TARGET`: target absolute path (can be file or directory)
-- `FROM`: the absolute directory path from which the relative path is formed
-(Defaults to $PWD)
-
-**Returns:** 1 if either TARGET or FROM is invalid, 0 otherwise
 
 ## Package util/env
 
@@ -547,51 +565,41 @@ Prints a path variable separated by SEP, one item per line
 - `VAR`: path variable, e.g. PATH (do not use $)
 - `SEP`: separator character, defaults to :
 
-## Package util/math
+## Package util/file
 
-Routines for common math operations
+Routines for common file operations
 
-### `sum NUM ...`
+### `canonicalize PATH`
 
-Returns the sum of the given numbers
-
-**Arguments:**
-
-- `NUM`: a valid number
-
-### `min NUM ...`
-
-Returns the minimum of the given numbers
+Resolves . and .. in a given absolute path
 
 **Arguments:**
 
-- `NUM`: a valid number
+- `PATH`: an absolute path
 
-### `max NUM ...`
+**Returns:** 1 if PATH is invalid, 0 otherwise
 
-Returns the maximum of the given numbers
+### `abspath TARGET [FROM]`
 
-**Arguments:**
-
-- `NUM`: a valid number
-
-### `abs NUM`
-
-Returns the absolute value of a given number
+Returns the absolute path from a relative one
 
 **Arguments:**
 
-- `NUM`: a valid number
+- `TARGET`: target relative path (can be file or directory)
+- `FROM`: the absolute directory path from which the absolute path is formed
+(Defaults to $PWD)
 
-### `isint NUM ...`
+### `relpath TARGET [FROM]`
 
-Checks if all the given numbers are valid integers
+Returns the relative path from a directory to the target
 
 **Arguments:**
 
-- `NUM`: a number to check
+- `TARGET`: target absolute path (can be file or directory)
+- `FROM`: the absolute directory path from which the relative path is formed
+(Defaults to $PWD)
 
-**Returns:** 0 if all arguments are integers, 1 otherwise
+**Returns:** 1 if either TARGET or FROM is invalid, 0 otherwise
 
 ## Package util/kwargs
 
@@ -766,6 +774,52 @@ Filters an sorted list to include only unique items
 
 Faster than uniq, but requires the list to be pre-sorted
 
+## Package util/math
+
+Routines for common math operations
+
+### `sum NUM ...`
+
+Returns the sum of the given numbers
+
+**Arguments:**
+
+- `NUM`: a valid number
+
+### `min NUM ...`
+
+Returns the minimum of the given numbers
+
+**Arguments:**
+
+- `NUM`: a valid number
+
+### `max NUM ...`
+
+Returns the maximum of the given numbers
+
+**Arguments:**
+
+- `NUM`: a valid number
+
+### `abs NUM`
+
+Returns the absolute value of a given number
+
+**Arguments:**
+
+- `NUM`: a valid number
+
+### `isint NUM ...`
+
+Checks if all the given numbers are valid integers
+
+**Arguments:**
+
+- `NUM`: a number to check
+
+**Returns:** 0 if all arguments are integers, 1 otherwise
+
 ## Package util/prof
 
 Routines for runtime profiling of bash scripts
@@ -873,57 +927,3 @@ Decodes URL-encoded text
 - `TEXT`: text to be decoded
 
 **Returns:** 1 if the input URL encoding is malformed, 0 otherwise
-
-## Package core
-
-Core routines
-
-### `load PKG ...`
-
-Loads a module or package
-
-**Arguments:**
-
-- `PKG`: either a package (e.g. cli/arg) or a whole module (e.g. cli)
-
-**Notes:**
-
-Each package only loads once; if you happen to load one twice, the second 
-time has no effect
-
-### `is_loaded PKG`
-
-Checks if a package is loaded already
-
-**Arguments:**
-
-- `PKG`: package name in internal format, e.g. bb_cli_arg
-
-**Returns:** 0 if loaded, 1 otherwise
-
-### `namespace PREFIX`
-
-Aliases bash-boost functions based on prefix
-
-**Arguments:**
-
-- `PREFIX`: the prefix to use, e.g. "xyz" makes the function
-bb_cli_arg_loadprompt aliased to xyz_loadprompt
-
-**Notes:**
-
-If PREFIX is an empty string, the commads just become the
-base function name (e.g. loadprompt).
-This will copy over any command completions as well.
-
-### `debug TEXT`
-
-Log text when debugging is enabled
-
-**Arguments:**
-
-- `TEXT`: message to be logged in debug mode
-
-**Notes:**
-
-Set environment variable BB_DEBUG to enable debug mode

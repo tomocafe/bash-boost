@@ -1,7 +1,7 @@
 VERSION=0.9
 
 TARGET := bash-boost-$(VERSION)
-SRCS := $(shell find src -type f -name "*.sh")
+SRCS := $(shell find src -type f -name "*.sh" | sort)
 
 $(TARGET): doc $(SRCS) flatten
 	$(RM) -r $@
