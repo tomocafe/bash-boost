@@ -4,8 +4,9 @@ bash-boost is a set of library functions for bash, useful for both scripting and
 
 ## Philosophy
 
-- Always prefer pure-bash solutions
-- 
+- Always prefer pure-bash solutions whenever reasonable
+- Don't reimplement existing bash features; complement them
+- Functions should have a single purpose, without complicated options
 
 ## Requirements
 
@@ -28,3 +29,14 @@ You have the choice of loading an entire module, or select certain packages from
 ## Documentation
 
 See the [manual](src/MANUAL.md) for an exhaustive list of functions defined in each package.
+
+## Alternatives
+
+There are a number of different bash libraries out there, including:
+
+- [aks/bash-lib](https://github.com/aks/bash-lib)
+- [cyberark/bash-lib](https://github.com/cyberark/bash-lib)
+- [dylanaraps/pure-bash-bible](https://github.com/dylanaraps/pure-bash-bible)
+- [jandob/rebash](https://github.com/jandob/rebash)
+
+This one 
