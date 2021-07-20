@@ -927,3 +927,34 @@ Decodes URL-encoded text
 - `TEXT`: text to be decoded
 
 **Returns:** 1 if the input URL encoding is malformed, 0 otherwise
+
+## Package util/time
+
+Routines for common time and date operations
+
+### `now [OFFSET ...]`
+
+Returns a timestamp relative to the current time (in seconds after epoch)
+
+**Arguments:**
+
+- `OFFSET`: {+,-}N{s,m,h,D,W} where N is an integer
+
+**Returns:** 1 if any offset is invalid, 0 otherwise
+
+**Notes:**
+
+s: seconds
+m: minutes
+h: hours
+d: days
+w: weeks
+
+### `timefmt FORMAT [TIMESTAMP]`
+
+Formats a timestamp into a desired date format
+
+**Arguments:**
+
+- `FORMAT`: date format string, refer to man strftime
+- `TIMESTAMP`: epoch time, defaults to current time (now)

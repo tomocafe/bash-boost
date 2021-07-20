@@ -152,3 +152,19 @@ bb_expect "$(bb_util_string_sentcase "foo bar. baz")" "Foo bar. Baz" "sentcase"
 
 bb_expect "$(bb_util_string_urlencode "hello world")" "hello%20world" "urlencode"
 bb_expect "$(bb_util_string_urldecode "hello%20world")" "hello world" "urldecode"
+
+################################################################################
+# util/time
+################################################################################
+
+chkdelta () {
+    local delta
+    (( delta = $1 - $2 ))
+    delta="${delta#-}" # absolute value
+    [[ $delta -le 1 ]] # difference less than 1 second
+}
+
+chkdelta "$(bb_now)" "$(date +%s)" || bb_fatal "bb_now gave incorrect value"
+chkdelta "$(bb_now -2d +1h)" "$(date --date="now - 2 days + 1 hour" +%s)" || bb_fatal "bb_now gave incorrect value"
+
+bb_expect "$(TZ=UTC bb_util_time_timefmt %Y-%m-%d_%H%M%S 0)" "1970-01-01_000000"
