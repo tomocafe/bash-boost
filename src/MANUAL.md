@@ -820,6 +820,46 @@ Checks if all the given numbers are valid integers
 
 **Returns:** 0 if all arguments are integers, 1 otherwise
 
+### `hex2dec NUM ...`
+
+Converts numbers from hexademical (base 16) to decimal (base 10)
+
+**Arguments:**
+
+- `NUM`: a number to convert
+
+**Returns:** 1 if any number is invalid hexadecimal, 0 otherwise
+
+### `dec2hex NUM ...`
+
+Converts numbers from decimal (base 10) to hexademical (base 16)
+
+**Arguments:**
+
+- `NUM`: a number to convert
+
+**Returns:** 1 if any number is invalid decimal, 0 otherwise
+
+### `oct2dec NUM ...`
+
+Converts numbers from octal (base 8) to decimal (base 10)
+
+**Arguments:**
+
+- `NUM`: a number to convert
+
+**Returns:** 1 if any number is invalid octal, 0 otherwise
+
+### `dec2oct NUM ...`
+
+Converts numbers from decimal (base 10) to octal (base 8)
+
+**Arguments:**
+
+- `NUM`: a number to convert
+
+**Returns:** 1 if any number is invalid decimal, 0 otherwise
+
 ## Package util/prof
 
 Routines for runtime profiling of bash scripts

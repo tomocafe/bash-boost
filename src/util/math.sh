@@ -75,3 +75,69 @@ function bb_util_math_isint () {
     done
     return $__bb_true
 }
+
+# hex2dec NUM ...
+# Converts numbers from hexademical (base 16) to decimal (base 10)
+# @arguments:
+# - NUM: a number to convert
+# @returns: 1 if any number is invalid hexadecimal, 0 otherwise
+function bb_util_math_hex2dec () {
+    local n
+    local res=()
+    for n in "$@"; do
+        [[ $n == '0' ]] && { res+=("$n"); continue; }
+        (( n=16#$n )) 2>/dev/null || return $__bb_false
+        res+=( "$n" )
+    done
+    echo -n "${res[*]}"
+    return $__bb_true
+}
+
+# dec2hex NUM ...
+# Converts numbers from decimal (base 10) to hexademical (base 16)
+# @arguments:
+# - NUM: a number to convert
+# @returns: 1 if any number is invalid decimal, 0 otherwise
+function bb_util_math_dec2hex () {
+    local n
+    local res=()
+    for n in "$@"; do
+        printf -v n '%x' "$n" 2>/dev/null || return $__bb_false
+        res+=( "$n" )
+    done
+    echo -n "${res[*]}"
+    return $__bb_true
+}
+
+# oct2dec NUM ...
+# Converts numbers from octal (base 8) to decimal (base 10)
+# @arguments:
+# - NUM: a number to convert
+# @returns: 1 if any number is invalid octal, 0 otherwise
+function bb_util_math_oct2dec () {
+    local n
+    local res=()
+    for n in "$@"; do
+        [[ $n == '0' ]] && { res+=("$n"); continue; }
+        (( n=8#$n )) 2>/dev/null || return $__bb_false
+        res+=( "$n" )
+    done
+    echo -n "${res[*]}"
+    return $__bb_true
+}
+
+# dec2oct NUM ...
+# Converts numbers from decimal (base 10) to octal (base 8)
+# @arguments:
+# - NUM: a number to convert
+# @returns: 1 if any number is invalid decimal, 0 otherwise
+function bb_util_math_dec2oct () {
+    local n
+    local res=()
+    for n in "$@"; do
+        printf -v n '%o' "$n" || return $__bb_false
+        res+=( "$n" )
+    done
+    echo -n "${res[*]}"
+    return $__bb_true
+}
