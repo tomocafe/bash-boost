@@ -13,11 +13,6 @@ bb_addflag n:twoline "Use two-line prompt"
 bb_setprog "${BASH_SOURCE[0]##*/}"
 bb_parseargs "$@"
 
-if bb_checkopt right && ! bb_checkopt nextline; then
-    bb_error "cannot use --right without --nextline"
-    return
-fi
-
 if [[ ${BASH_SOURCE[0]} == $0 ]]; then
     bb_fatal "this script must be sourced"
 fi
@@ -40,8 +35,16 @@ lhs () {
     bb_promptcolor blue "$TTY_NUM"
 }
 rhs () {
-    echo -n "${PWD##*/}"
-    # TODO: check BB_PROMPT_REM, color dirname different than parent dirs
+    local cwd="${PWD/#$HOME/$'~'}"
+    local dirname="${cwd##*/}"
+    local dirpath="${cwd%/*}"
+    if [[ $dirname != $dirpath ]]; then
+        dirpath+="/"
+        if (( ${#dirpath} + ${#dirname} < ${BB_PROMPT_REM} )); then
+            echo -n "$dirpath"
+        fi
+    fi
+    bb_promptcolor bright_white "$dirname"
 }
 sep () {
     echo -n " "
