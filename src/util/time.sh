@@ -1,7 +1,7 @@
 # @package: util/time
 # Routines for common time and date operations
 
-_bb_on_first_load "bb_util_time" || return
+_bb_onfirstload "bb_util_time" || return
 
 bb_load "util/math"
 

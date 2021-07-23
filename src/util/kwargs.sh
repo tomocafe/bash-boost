@@ -1,7 +1,7 @@
 # @package: util/kwargs
 # Routines for parsing keyword arg strings
 
-_bb_on_first_load "bb_util_kwargs" || return
+_bb_onfirstload "bb_util_kwargs" || return
 
 ################################################################################
 # Globals

@@ -1,7 +1,7 @@
 # @package: util/math
 # Routines for common math operations
 
-_bb_on_first_load "bb_util_math" || return
+_bb_onfirstload "bb_util_math" || return
 
 ################################################################################
 # Globals

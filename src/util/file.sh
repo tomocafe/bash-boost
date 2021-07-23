@@ -1,7 +1,7 @@
 # @package: util/file
 # Routines for common file operations
 
-_bb_on_first_load "bb_util_file" || return
+_bb_onfirstload "bb_util_file" || return
 
 bb_load "util/list"
 

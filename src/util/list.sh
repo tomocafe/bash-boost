@@ -1,7 +1,7 @@
 # @package: util/list
 # Routines for common list operations
 
-_bb_on_first_load "bb_util_list" || return
+_bb_onfirstload "bb_util_list" || return
 
 ################################################################################
 # Globals

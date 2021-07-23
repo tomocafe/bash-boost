@@ -1,7 +1,7 @@
 # @package: util/env
 # Routines for checking and setting environment variables
 
-_bb_on_first_load "bb_util_env" || return
+_bb_onfirstload "bb_util_env" || return
 
 ################################################################################
 # Globals

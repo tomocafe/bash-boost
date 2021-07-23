@@ -297,7 +297,7 @@ Loads a module or package
 Each package only loads once; if you happen to load one twice, the second 
 time has no effect
 
-### `is_loaded PKG`
+### `isloaded PKG`
 
 Checks if a package is loaded already
 
@@ -333,6 +333,16 @@ Log text when debugging is enabled
 **Notes:**
 
 Set environment variable BB_DEBUG to enable debug mode
+
+### `issourced`
+
+Check if the script is being sourced
+
+**Returns:** 0 if sourced, 1 otherwise
+
+### `stacktrace`
+
+Print a stack trace to stderr
 
 ## Package interactive/cmd
 
