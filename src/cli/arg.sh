@@ -230,7 +230,7 @@ function bb_cli_arg_parseargs () {
 # @arguments:
 # - LONGNAME: long name of the option
 function bb_cli_arg_getopt () {
-    echo -n "${__bb_cli_arg_optvals["$1"]}"
+    _bb_result "${__bb_cli_arg_optvals["$1"]}"
 }
 
 # checkopt LONGNAME
@@ -245,7 +245,7 @@ function bb_cli_arg_checkopt () {
 # getpositionals
 # Gets the list of positional argument values
 function bb_cli_arg_getpositionals () {
-    echo -n "${__bb_cli_arg_positionals[@]}"
+    _bb_result "${__bb_cli_arg_positionals[*]}"
 }
 
 # argclear

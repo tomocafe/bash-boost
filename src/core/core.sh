@@ -123,3 +123,10 @@ function bb_stacktrace () {
         printf "%-${#depth}d  %-${maxwidth}s  %s:%d\n" "$i" "${FUNCNAME[$i]}" "${BASH_SOURCE[$i]}" "${BASH_LINENO[$i-1]}" 1>&2
     done
 }
+
+# result VAL
+# Prints result to stdout for capturing by caller, and also save to BB_RESULT variable
+function _bb_result () {
+    export BB_RESULT="$1"
+    echo "$1"
+}

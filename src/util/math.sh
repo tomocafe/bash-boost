@@ -23,7 +23,7 @@ function bb_util_math_sum () {
     for n in "$@"; do
         (( sum += n ))
     done
-    echo -n "$sum"
+    _bb_result "$sum"
 }
 
 # min NUM ...
@@ -36,7 +36,7 @@ function bb_util_math_min () {
     for n in "${@:2}"; do
         [[ $n -lt $min ]] && min="$n"
     done
-    echo -n "$min"
+    _bb_result "$min"
 }
 
 # max NUM ...
@@ -49,7 +49,7 @@ function bb_util_math_max () {
     for n in "${@:2}"; do
         [[ $n -gt $max ]] && max="$n"
     done
-    echo -n "$max"
+    _bb_result "$max"
 }
 
 # abs NUM
@@ -59,7 +59,7 @@ function bb_util_math_max () {
 function bb_util_math_abs () {
     local abs="$1"
     [[ $abs -lt 0 ]] && abs="${abs#-}"
-    echo -n "$abs"
+    _bb_result "$abs"
 }
 
 # isint NUM ...
@@ -89,7 +89,7 @@ function bb_util_math_hex2dec () {
         (( n=16#$n )) 2>/dev/null || return $__bb_false
         res+=( "$n" )
     done
-    echo -n "${res[*]}"
+    _bb_result "${res[*]}"
     return $__bb_true
 }
 
@@ -105,7 +105,7 @@ function bb_util_math_dec2hex () {
         printf -v n '%x' "$n" 2>/dev/null || return $__bb_false
         res+=( "$n" )
     done
-    echo -n "${res[*]}"
+    _bb_result "${res[*]}"
     return $__bb_true
 }
 
@@ -122,7 +122,7 @@ function bb_util_math_oct2dec () {
         (( n=8#$n )) 2>/dev/null || return $__bb_false
         res+=( "$n" )
     done
-    echo -n "${res[*]}"
+    _bb_result "${res[*]}"
     return $__bb_true
 }
 
@@ -138,6 +138,6 @@ function bb_util_math_dec2oct () {
         printf -v n '%o' "$n" || return $__bb_false
         res+=( "$n" )
     done
-    echo -n "${res[*]}"
+    _bb_result "${res[*]}"
     return $__bb_true
 }

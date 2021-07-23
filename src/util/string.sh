@@ -23,7 +23,7 @@ function bb_util_string_lstrip () {
         shopt -s extglob
         resetopt=true
     fi
-    echo -n "${1##+([[:space:]])}"
+    _bb_result "${1##+([[:space:]])}"
     $resetopt && shopt -u extglob
 }
 
@@ -37,7 +37,7 @@ function bb_util_string_rstrip () {
         shopt -s extglob
         resetopt=true
     fi
-    echo -n "${1%%+([[:space:]])}"
+    _bb_result "${1%%+([[:space:]])}"
     $resetopt && shopt -u extglob
 }
 
@@ -46,7 +46,7 @@ function bb_util_string_rstrip () {
 # @arguments:
 # - TEXT: text to strip whitespace from
 function bb_util_string_strip () {
-    echo -n "$(bb_util_string_lstrip "$(bb_util_string_rstrip "$1")")"
+    _bb_result "$(bb_util_string_lstrip "$(bb_util_string_rstrip "$1")")"
 }
 
 # snake2camel TEXT
@@ -75,7 +75,7 @@ function bb_util_string_snake2camel () {
                 ;;
         esac
     done
-    echo -n "$camel"
+    _bb_result "$camel"
 }
 
 # camel2snake TEXT
@@ -98,7 +98,7 @@ function bb_util_string_camel2snake () {
                 ;;
         esac
     done
-    echo -n "$snake"
+    _bb_result "$snake"
 }
 
 # titlecase TEXT
@@ -126,7 +126,7 @@ function bb_util_string_titlecase () {
         esac
         title+="$char"
     done
-    echo -n "$title"
+    _bb_result "$title"
 }
 
 # sentcase TEXT
@@ -153,7 +153,7 @@ function bb_util_string_sentcase () {
         esac
         sent+="$char"
     done
-    echo -n "$sent"
+    _bb_result "$sent"
 }
 
 # urlencode TEXT

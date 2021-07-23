@@ -35,7 +35,7 @@ function bb_util_kwargs_kwparse () {
 # @arguments:
 # - KEY: the key
 function bb_util_kwargs_kwget () {
-    echo -n "${__bb_util_kwargs_dict["$1"]}"
+    _bb_result "${__bb_util_kwargs_dict["$1"]}"
 }
 
 # kwclear
