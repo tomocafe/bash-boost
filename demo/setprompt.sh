@@ -6,7 +6,6 @@ source ../bash-boost-*/bash-boost.sh
 
 bb_load cli
 bb_load interactive/prompt
-bb_namespace bb
 
 # Parse command line arguments
 bb_addflag n:twoline "Use two-line prompt"

@@ -58,40 +58,6 @@ function _bb_onfirstload () {
     return $__bb_true
 }
 
-# namespace PREFIX
-# Aliases bash-boost functions based on prefix
-# @arguments:
-# - PREFIX: the prefix to use, e.g. "xyz" makes the function
-#           bb_loadprompt aliased to xyz_loadprompt
-# @notes:
-#   If PREFIX is an empty string, the commads just become the
-#   base function name (e.g. loadprompt).
-#   This will copy over any command completions as well.
-function bb_namespace () {
-    shopt -s expand_aliases
-    local prefix="$1${1:+_}"
-    local fcn
-    local IFS=$'\n'
-    for fcn in $(declare -F); do
-        fcn="${fcn/#declare -f }"
-        [[ ${fcn:0:3} == "bb_" ]] || continue
-        local pkg
-        for pkg in "${!__bb_loaded[@]}"; do
-            if [[ $fcn =~ ^${pkg}_ ]]; then
-                local alias="$prefix${fcn/#${pkg}_}"
-                bb_debug "$fcn -> $alias"
-                eval "alias $alias=$fcn"
-                local cmpl="$(complete -p "$fcn" 2>/dev/null)"
-                if [[ -n "$cmpl" ]]; then
-                    cmpl=${cmpl% $fcn}
-                    bb_debug "$cmpl $alias"
-                    eval "$cmpl $alias"
-                fi
-            fi
-        done
-    done
-}
-
 # debug TEXT
 # Log text when debugging is enabled
 # @arguments:
@@ -129,4 +95,21 @@ function bb_stacktrace () {
 function _bb_result () {
     export BB_RESULT="$1"
     echo "$1"
+}
+
+# cleanup
+# Clears all functions and variables defined by bash-boost
+function bb_cleanup () {
+    local line
+    # Clear functions
+    while read -r line; do
+        line="${line#declare -f }"
+        [[ $line =~ ^_?bb_ ]] && unset -f "$line"
+    done < <(declare -F)
+    # Clear variables
+    while read -r line; do
+        line="${line%%=*}"
+        [[ $line =~ ^(BB|__bb)_ ]] && unset "$line"
+    done < <(set -o posix; set)
+    : # don't use return $__bb_true here, it's now undefined
 }

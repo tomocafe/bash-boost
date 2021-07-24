@@ -307,21 +307,6 @@ Checks if a package is loaded already
 
 **Returns:** 0 if loaded, 1 otherwise
 
-### `namespace PREFIX`
-
-Aliases bash-boost functions based on prefix
-
-**Arguments:**
-
-- `PREFIX`: the prefix to use, e.g. "xyz" makes the function
-bb_loadprompt aliased to xyz_loadprompt
-
-**Notes:**
-
-If PREFIX is an empty string, the commads just become the
-base function name (e.g. loadprompt).
-This will copy over any command completions as well.
-
 ### `debug TEXT`
 
 Log text when debugging is enabled
@@ -343,6 +328,10 @@ Check if the script is being sourced
 ### `stacktrace`
 
 Print a stack trace to stderr
+
+### `cleanup`
+
+Clears all functions and variables defined by bash-boost
 
 ## Package interactive/cmd
 

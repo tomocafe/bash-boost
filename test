@@ -12,8 +12,6 @@ else
     bb_load "util"
 fi
 
-bb_namespace "bb"
-
 # Make sure bb_expect works
 (
     bb_expect "foo" "bar" &>/dev/null;
@@ -27,6 +25,16 @@ for module in cli interactive util; do
     [[ -r "$tester" ]] || bb_fatal "could not read $tester"
     source "$tester" || exit 1
 done
+
+bb_cleanup
+
+(
+    set -o posix; set | egrep "^(BB|__bb)_" 2>/dev/null
+) && { echo "error: left behind variable(s)"; exit 1; }
+
+(
+    declare -F | egrep "^declare -f _?bb_" 2>/dev/null
+) && { echo "error: left behind function(s)"; exit 1; }
 
 echo "OK"
 exit 0

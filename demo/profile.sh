@@ -8,7 +8,6 @@ source ../bash-boost-*/bash-boost.sh
 
 bb_load util/prof
 bb_load util/file # for bb_relpath, etc.
-bb_namespace bb
 
 echo "Waiting for 1 second"
 sleep 1
