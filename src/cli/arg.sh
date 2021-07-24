@@ -70,7 +70,7 @@ function bb_cli_arg_addflag () {
 
 # usage
 # Print the command line usage string
-function bb_cli_arg_usage () {
+function bb_cli_arg_argusage () {
     {
     printf "$__bb_cli_arg_progname"
     local optdef
@@ -100,9 +100,9 @@ function bb_cli_arg_usage () {
 # @notes:
 #   Includes the usage string and a list of flags and options with their
 #   descrptions.
-function bb_cli_arg_help () {
+function bb_cli_arg_arghelp () {
     {
-    bb_cli_arg_usage
+    bb_cli_arg_argusage
     local optdef
     for optdef in "${__bb_cli_arg_opts[@]}"; do
         local longname="${optdef#*:}"
@@ -123,7 +123,7 @@ function bb_cli_arg_help () {
 # - RETURNVAL: return code to exit with (defaults to 1)
 function bb_cli_arg_errusage () {
     echo "usage error: $1" 1>&2
-    bb_cli_arg_usage
+    bb_cli_arg_argusage
     bb_issourced && return ${2:-1} || exit ${2:-1}
 }
 
@@ -165,7 +165,7 @@ function bb_cli_arg_parseargs () {
                 break # remaining arguments shall not be interpreted as options, flags
                 ;;
             -h|--help)
-                bb_cli_arg_help
+                bb_cli_arg_arghelp
                 bb_issourced && return 0 || exit 0
                 ;;
             --*)
