@@ -8,6 +8,8 @@ bash-boost is a set of library functions for bash, useful for both scripting and
 - Don't reimplement existing bash features; complement them
 - Functions should have a single purpose, without complicated options
 
+
+
 ## Requirements
 
 `bash` 4.x or later
@@ -38,5 +40,3 @@ There are a number of different bash libraries out there, including:
 - [cyberark/bash-lib](https://github.com/cyberark/bash-lib)
 - [dylanaraps/pure-bash-bible](https://github.com/dylanaraps/pure-bash-bible)
 - [jandob/rebash](https://github.com/jandob/rebash)
-
-This one 
