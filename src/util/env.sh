@@ -18,7 +18,7 @@ _bb_onfirstload "bb_util_env" || return
 # @arguments:
 # - VAR: name of the variable to check (don't include $)
 # @returns: 1 if unset, 2 if set but empty, 0 otherwise
-function bb_util_env_checkset () {
+function bb_checkset () {
     local v="$1"
     eval test -z \${$v+x} && return 1 # unset
     eval test -z \${$v}   && return 2 # set, but empty
@@ -32,7 +32,7 @@ function bb_util_env_checkset () {
 # @notes:
 #   This could be an executable in your PATH, or a function or
 #   bash builtin
-function bb_util_env_iscmd () {
+function bb_iscmd () {
     command -v "$1" &>/dev/null
 }
 
@@ -42,7 +42,7 @@ function bb_util_env_iscmd () {
 # - VAR: path variable, e.g. PATH (do not use $)
 # - ITEM: items to find in the path variable
 # @returns: 0 if all items are in the path, 1 otherwise
-function bb_util_env_inpath () {
+function bb_inpath () {
     [[ $# -ge 2 ]] || return $__bb_false
     local item
     for item in "${@:2}"; do
@@ -56,7 +56,7 @@ function bb_util_env_inpath () {
 # @arguments:
 # - VAR: path variable, e.g. PATH (do not use $)
 # - ITEM: items to add to the path variable
-function bb_util_env_prependpath () {
+function bb_prependpath () {
     [[ $# -ge 2 ]] || return
     local paths=("${@:2}")
     local IFS=':'
@@ -68,7 +68,7 @@ function bb_util_env_prependpath () {
 # @arguments:
 # - VAR: path variable, e.g. PATH (do not use $)
 # - ITEM: items to add to the path variable
-function bb_util_env_appendpath () {
+function bb_appendpath () {
     [[ $# -ge 2 ]] || return
     local paths=("${@:2}")
     local IFS=':'
@@ -82,14 +82,14 @@ function bb_util_env_appendpath () {
 # - ITEM: items to add to the path variable
 # @notes:
 #   If an item is already in the path, it is not added twice
-function bb_util_env_prependpathuniq () {
+function bb_prependpathuniq () {
     [[ $# -ge 2 ]] || return
     local item
     local filtered=()
     for item in "${@:2}"; do
-        bb_util_env_inpath "$1" "$item" || filtered+=("$item")
+        bb_inpath "$1" "$item" || filtered+=("$item")
     done
-    bb_util_env_prependpath "$1" "${filtered[@]}"
+    bb_prependpath "$1" "${filtered[@]}"
 }
 
 # appendpathuniq VAR ITEM ...
@@ -99,14 +99,14 @@ function bb_util_env_prependpathuniq () {
 # - ITEM: items to add to the path variable
 # @notes:
 #   If an item is already in the path, it is not added twice
-function bb_util_env_appendpathuniq () {
+function bb_appendpathuniq () {
     [[ $# -ge 2 ]] || return
     local item
     local filtered=()
     for item in "${@:2}"; do
-        bb_util_env_inpath "$1" "$item" || filtered+=("$item")
+        bb_inpath "$1" "$item" || filtered+=("$item")
     done
-    bb_util_env_appendpath "$1" "${filtered[@]}"
+    bb_appendpath "$1" "${filtered[@]}"
 }
 
 # removefrompath VAR ITEM ...
@@ -115,13 +115,13 @@ function bb_util_env_appendpathuniq () {
 # - VAR: path variable, e.g. PATH (do not use $)
 # - ITEM: items to remove from the path variable
 # @returns: 0 if any item was removed, 1 otherwise
-function bb_util_env_removefrompath () {
+function bb_removefrompath () {
     [[ $# -ge 2 ]] || return
     local path
     local newpath
     local found=$__bb_false
     for path in "${@:2}"; do
-        bb_util_env_inpath "$1" "$path" || continue
+        bb_inpath "$1" "$path" || continue
         eval newpath=":\${$1}:"
         newpath="${newpath//:$path:/:}"
         newpath="${newpath#:}"
@@ -143,11 +143,11 @@ function bb_util_env_removefrompath () {
 #   1 if either ITEM1 or ITEM2 was not in the path
 #   2 if insufficient arguments were supplied (less than 3)
 #   3 for internal error
-function bb_util_env_swapinpath () {
+function bb_swapinpath () {
     [[ $# -eq 3 ]] || return 2
-    bb_util_env_inpath "$1" "$2" || return $__bb_false
-    bb_util_env_inpath "$1" "$3" || return $__bb_false
-    bb_util_env_inpath "$1" "@SWAPPING@" && return 3 # sentinel value
+    bb_inpath "$1" "$2" || return $__bb_false
+    bb_inpath "$1" "$3" || return $__bb_false
+    bb_inpath "$1" "@SWAPPING@" && return 3 # sentinel value
     local newpath
     eval newpath=":\$$1:"
     newpath="${newpath//:$2:/:@SWAPPING@:}"
@@ -164,6 +164,6 @@ function bb_util_env_swapinpath () {
 # @arguments:
 # - VAR: path variable, e.g. PATH (do not use $)
 # - SEP: separator character, defaults to :
-function bb_util_env_printpath () {
+function bb_printpath () {
     eval printf \"\${$1//${2:-:}/$'\n'}$'\n'\"
 }

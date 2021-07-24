@@ -17,7 +17,7 @@ _bb_onfirstload "bb_util_string" || return
 # Strips leading (left) whitespace from text
 # @arguments:
 # - TEXT: text to strip whitespace from
-function bb_util_string_lstrip () {
+function bb_lstrip () {
     local resetopt=false
     if [[ ! -o extglob ]]; then
         shopt -s extglob
@@ -31,7 +31,7 @@ function bb_util_string_lstrip () {
 # Strips trailing (right) whitespace from text
 # @arguments:
 # - TEXT: text to strip whitespace from
-function bb_util_string_rstrip () {
+function bb_rstrip () {
     local resetopt=false
     if [[ ! -o extglob ]]; then
         shopt -s extglob
@@ -45,8 +45,8 @@ function bb_util_string_rstrip () {
 # Strips leading and trailing whitespace from text
 # @arguments:
 # - TEXT: text to strip whitespace from
-function bb_util_string_strip () {
-    _bb_result "$(bb_util_string_lstrip "$(bb_util_string_rstrip "$1")")"
+function bb_strip () {
+    _bb_result "$(bb_lstrip "$(bb_rstrip "$1")")"
 }
 
 # snake2camel TEXT
@@ -55,7 +55,7 @@ function bb_util_string_strip () {
 # - TEXT: text in snake case
 # @notes:
 #   Leading underscores are preserved
-function bb_util_string_snake2camel () {
+function bb_snake2camel () {
     local str="$1"
     local -i i
     local camel=""
@@ -82,7 +82,7 @@ function bb_util_string_snake2camel () {
 # Converts text from camel to snake case
 # @arguments:
 # - TEXT: text in camel case
-function bb_util_string_camel2snake () {
+function bb_camel2snake () {
     local str="$1"
     local -i i
     local snake=""
@@ -108,7 +108,7 @@ function bb_util_string_camel2snake () {
 # @notes:
 #   This does not check the content of the words itself and may not
 #   respect grammatical rules, e.g. "And" will be capitalized
-function bb_util_string_titlecase () {
+function bb_titlecase () {
     local str="$1"
     local -i i
     local title=""
@@ -133,7 +133,7 @@ function bb_util_string_titlecase () {
 # Converts text into sentence case (every first word capitalized)
 # @arguments:
 # - TEXT: text to transform
-function bb_util_string_sentcase () {
+function bb_sentcase () {
     local str="$1"
     local -i i
     local sent=""
@@ -160,7 +160,7 @@ function bb_util_string_sentcase () {
 # Performs URL (percent) encoding on the given string
 # @arguments:
 # - TEXT: text to be encoded
-function bb_util_string_urlencode () {
+function bb_urlencode () {
     local LC_ALL=C
     local text="$1"
     local -i i
@@ -178,7 +178,7 @@ function bb_util_string_urlencode () {
 # @arguments:
 # - TEXT: text to be decoded
 # @returns: 1 if the input URL encoding is malformed, 0 otherwise
-function bb_util_string_urldecode () {
+function bb_urldecode () {
     local LC_ALL=C
     local text="$1"
     local -i i

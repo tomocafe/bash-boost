@@ -23,7 +23,7 @@ __bb_interactive_prompt_resetopt=false
 
 # loadprompt
 # Activates the registered dynamic prompt
-function bb_interactive_prompt_loadprompt () {
+function bb_loadprompt () {
     if [[ ! -o checkwinsize ]]; then
         shopt -s checkwinsize
         __bb_interactive_prompt_resetopt=true
@@ -38,7 +38,7 @@ function bb_interactive_prompt_loadprompt () {
 # @notes:
 #   This will restore the prompt to the state it was in
 #   when loadprompt was called
-function bb_interactive_prompt_unloadprompt () {
+function bb_unloadprompt () {
     $__bb_interactive_prompt_resetopt && shopt -u checkwinsize
     PS1="$__bb_interactive_prompt_backup_ps1"
     if [[ -z $__bb_interactive_prompt_backup ]]; then
@@ -60,7 +60,7 @@ function bb_interactive_prompt_unloadprompt () {
 #   | nextline prompt                        |
 #   +----------------------------------------+
 #   ```
-function bb_interactive_prompt_setpromptleft () {
+function bb_setpromptleft () {
     __bb_interactive_prompt_lhs=("$@")
 }
 
@@ -68,7 +68,7 @@ function bb_interactive_prompt_setpromptleft () {
 # Sets the right prompt to the output of the list of given functions
 # @arguments:
 # - FUNCTION: a function whose stdout output will be added to the prompt
-function bb_interactive_prompt_setpromptright () {
+function bb_setpromptright () {
     __bb_interactive_prompt_rhs=("$@")
 }
 
@@ -76,7 +76,7 @@ function bb_interactive_prompt_setpromptright () {
 # Sets the next line prompt to the output of the list of given functions
 # @arguments:
 # - FUNCTION: a function whose stdout output will be added to the prompt
-function bb_interactive_prompt_setpromptnextline () {
+function bb_setpromptnextline () {
     __bb_interactive_prompt_nl=("$@")
 }
 
@@ -84,7 +84,7 @@ function bb_interactive_prompt_setpromptnextline () {
 # Sets the window title to the output of the list of given functions
 # @arguments:
 # - FUNCTION: a function whose stdout output will used as the window title
-function bb_interactive_prompt_setwintitle () {
+function bb_setwintitle () {
     __bb_interactive_prompt_wintitle="$1"
 }
 
@@ -94,21 +94,21 @@ function bb_interactive_prompt_setwintitle () {
 # - FUNCTION: a function whose stdout output will used as the tab title
 # @notes:
 #   Not all terminals support this
-function bb_interactive_prompt_settabtitle () {
+function bb_settabtitle () {
     __bb_interactive_prompt_tabtitle="$1"
 }
 
 # promptcolor COLORSTR TEXT
 # Prints text in color, for use specifically in prompts
 # @arguments:
-# - COLORSTR: valid color string, see bb_cli_color_colorize
+# - COLORSTR: valid color string, see bb_colorize
 # - TEXT: text to be printed in color
 # @notes:
 #   This is like colorize but adds \[ and \] around non-printing
 #   characters which are needed specifically in prompts
-function bb_interactive_prompt_promptcolor () {
+function bb_promptcolor () {
     __bb_cli_color_escapeprompt=1
-    bb_cli_color_rawcolor "$@"
+    bb_rawcolor "$@"
     unset __bb_cli_color_escapeprompt
 }
 
@@ -136,7 +136,7 @@ function _bb_interactive_prompt_promptimpl () {
     local lhs=""
     for block in "${__bb_interactive_prompt_lhs[@]}"; do
         raw="$($block)" 
-        text="$(bb_cli_color_colorstrip "$raw")"
+        text="$(bb_colorstrip "$raw")"
         lhs+="$raw"
         (( BB_PROMPT_REM -= ${#text} ))
     done # for block
@@ -152,7 +152,7 @@ function _bb_interactive_prompt_promptimpl () {
     local rhs=""
     for block in "${__bb_interactive_prompt_rhs[@]}"; do
         raw="$($block)" 
-        text="$(bb_cli_color_colorstrip "$raw")"
+        text="$(bb_colorstrip "$raw")"
         rhs+="$raw"
         (( BB_PROMPT_REM -= ${#text} ))
     done # for block  
@@ -174,7 +174,7 @@ function _bb_interactive_prompt_promptimpl () {
     local nextline=""
     for block in "${__bb_interactive_prompt_nl[@]}"; do
         raw="$($block)" 
-        text="$(bb_cli_color_colorstrip "$raw")"
+        text="$(bb_colorstrip "$raw")"
         nextline+="$raw"
         (( BB_PROMPT_REM -= ${#text} ))
     done # for block

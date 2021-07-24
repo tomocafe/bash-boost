@@ -23,10 +23,10 @@ __bb_util_prof_backup_ps4="$PS4"
 #            Default: TMPDIR/bbprof.PID.out
 # @notes:
 #   Use the bbprof-read utility script to parse and analyze profile data
-function bb_util_prof_startprof () {
+function bb_startprof () {
     __bb_util_prof_logfile="${1:-${TMPDIR:-/tmp}/bbprof.$$.out}"
     __bb_util_prof_backup_ps4="$PS4"
-    [[ $- == *i* ]] && bb_cli_msg_info "logging runtime profile to $__bb_util_prof_logfile"
+    [[ $- == *i* ]] && bb_info "logging runtime profile to $__bb_util_prof_logfile"
     exec 5>"$__bb_util_prof_logfile"
     BASH_XTRACEFD="5"
     if [[ ${BASH_VERSINFO-0} -ge 5 ]]; then
@@ -41,7 +41,7 @@ function bb_util_prof_startprof () {
 
 # stopprof
 # Stops runtime profiling
-function bb_util_prof_stopprof () {
+function bb_stopprof () {
     set +x
     unset BASH_XTRACEFD
     PS4="$__bb_util_prof_backup_ps4"

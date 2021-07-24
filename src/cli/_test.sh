@@ -3,21 +3,21 @@
 ################################################################################
 
 function testcmd () {
-    bb_cli_arg_addopt "f:foo" "This is the foo arg (default: bar)" "bar"
-    bb_cli_arg_addflag "x:extra" "Use this to print an extra message"
+    bb_addopt "f:foo" "This is the foo arg (default: bar)" "bar"
+    bb_addflag "x:extra" "Use this to print an extra message"
 
-    bb_cli_arg_setprog "testcmd"
-    bb_cli_arg_setpositional "NUMS" "List of integers"
-    bb_cli_arg_parseargs "$@"
+    bb_setprog "testcmd"
+    bb_setpositional "NUMS" "List of integers"
+    bb_parseargs "$@"
 
-    foo="$(bb_cli_arg_getopt foo)"
+    foo="$(bb_getopt foo)"
     echo "foo=$foo"
 
-    if bb_cli_arg_checkopt "extra"; then
+    if bb_checkopt "extra"; then
         echo "saw extra"
     fi
 
-    posargs=( $(bb_cli_arg_getpositionals) )
+    posargs=( $(bb_getpositionals) )
     for pos in "${posargs[@]}"; do
         echo "posarg=$pos"
     done
@@ -45,11 +45,11 @@ posarg=world"
 # cli/color
 ################################################################################
 
-__bb_tmp_colorized="$(bb_cli_color_colorize red hello)"
+__bb_tmp_colorized="$(bb_colorize red hello)"
 bb_expect "${#__bb_tmp_colorized}" "5" "colorize"
-__bb_tmp_colorized="$(bb_cli_color_rawcolor red hello)"
+__bb_tmp_colorized="$(bb_rawcolor red hello)"
 bb_expect "${#__bb_tmp_colorized}" "14" "rawcolor"
-__bb_tmp_colorstripped="$(bb_cli_color_colorstrip "$__bb_tmp_colorized")"
+__bb_tmp_colorstripped="$(bb_colorstrip "$__bb_tmp_colorized")"
 bb_expect "${#__bb_tmp_colorstripped}" "5" "colorstrip"
 unset __bb_tmp_colorized
 unset __bb_tmp_colorstripped

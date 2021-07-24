@@ -26,7 +26,7 @@ bb_load "util/math"
 #   h: hours
 #   d: days
 #   w: weeks
-function bb_util_time_now () {
+function bb_now () {
     if [[ $# -eq 0 ]]; then
         printf '%(%s)T' -1
         return $__bb_true
@@ -50,7 +50,7 @@ function bb_util_time_now () {
             *) return $__bb_false ;;
         esac
         local val="${offset:1: -1}"
-        bb_util_math_isint "$val" || return $__bb_false
+        bb_isint "$val" || return $__bb_false
         $isadd && (( ts += val * unit )) || (( ts -= val * unit ))
     done
     printf '%(%s)T' "$ts"
@@ -62,6 +62,6 @@ function bb_util_time_now () {
 # @arguments:
 # - FORMAT: date format string, refer to man strftime
 # - TIMESTAMP: epoch time, defaults to current time (now)
-function bb_util_time_timefmt () {
+function bb_timefmt () {
     printf "%($1)T" "${2:--1}"
 }

@@ -17,7 +17,7 @@ _bb_onfirstload "bb_util_math" || return
 # Returns the sum of the given numbers
 # @arguments:
 # - NUM: a valid number
-function bb_util_math_sum () {
+function bb_sum () {
     local sum=0
     local n
     for n in "$@"; do
@@ -30,7 +30,7 @@ function bb_util_math_sum () {
 # Returns the minimum of the given numbers
 # @arguments:
 # - NUM: a valid number
-function bb_util_math_min () {
+function bb_min () {
     local min="$1"
     local n
     for n in "${@:2}"; do
@@ -43,7 +43,7 @@ function bb_util_math_min () {
 # Returns the maximum of the given numbers
 # @arguments:
 # - NUM: a valid number
-function bb_util_math_max () {
+function bb_max () {
     local max="$1"
     local n
     for n in "${@:2}"; do
@@ -56,7 +56,7 @@ function bb_util_math_max () {
 # Returns the absolute value of a given number
 # @arguments:
 # - NUM: a valid number
-function bb_util_math_abs () {
+function bb_abs () {
     local abs="$1"
     [[ $abs -lt 0 ]] && abs="${abs#-}"
     _bb_result "$abs"
@@ -67,7 +67,7 @@ function bb_util_math_abs () {
 # @arguments:
 # - NUM: a number to check
 # @returns: 0 if all arguments are integers, 1 otherwise
-function bb_util_math_isint () {
+function bb_isint () {
     local re='^-*[0-9]+$'
     local n
     for n in "$@"; do
@@ -81,7 +81,7 @@ function bb_util_math_isint () {
 # @arguments:
 # - NUM: a number to convert
 # @returns: 1 if any number is invalid hexadecimal, 0 otherwise
-function bb_util_math_hex2dec () {
+function bb_hex2dec () {
     local n
     local res=()
     for n in "$@"; do
@@ -98,7 +98,7 @@ function bb_util_math_hex2dec () {
 # @arguments:
 # - NUM: a number to convert
 # @returns: 1 if any number is invalid decimal, 0 otherwise
-function bb_util_math_dec2hex () {
+function bb_dec2hex () {
     local n
     local res=()
     for n in "$@"; do
@@ -114,7 +114,7 @@ function bb_util_math_dec2hex () {
 # @arguments:
 # - NUM: a number to convert
 # @returns: 1 if any number is invalid octal, 0 otherwise
-function bb_util_math_oct2dec () {
+function bb_oct2dec () {
     local n
     local res=()
     for n in "$@"; do
@@ -131,7 +131,7 @@ function bb_util_math_oct2dec () {
 # @arguments:
 # - NUM: a number to convert
 # @returns: 1 if any number is invalid decimal, 0 otherwise
-function bb_util_math_dec2oct () {
+function bb_dec2oct () {
     local n
     local res=()
     for n in "$@"; do

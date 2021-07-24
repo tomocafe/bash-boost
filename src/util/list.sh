@@ -18,7 +18,7 @@ _bb_onfirstload "bb_util_list" || return
 # @arguments:
 # - SEP: separator
 # - ITEM: a list item 
-function bb_util_list_join () {
+function bb_join () {
     local IFS="$1"
     shift
     echo "$*"
@@ -31,7 +31,7 @@ function bb_util_list_join () {
 # - LISTVAR: name of variable to store resulting list into (do not include $)
 # - SEP: separator
 # - STR: string to split
-function bb_util_list_split () {
+function bb_split () {
     local IFS=$2
     local -
     set -f # turn off globbing, local to this function
@@ -54,7 +54,7 @@ function bb_util_list_split () {
 # - TARGET: the search target
 # - LIST: a list item
 # @returns: 0 if found, 1 otherwise
-function bb_util_list_inlist () {
+function bb_inlist () {
     local target="$1"
     shift
     local item
@@ -69,7 +69,7 @@ function bb_util_list_inlist () {
 # @arguments:
 # - LISTVAR: name of the list variable (do not include $)
 # - ITEM: item to push
-function bb_util_list_push () {
+function bb_push () {
     eval "$1=("\${$1[@]}" "$2")"
 }
 
@@ -77,7 +77,7 @@ function bb_util_list_push () {
 # Pops an item from a list (stack)
 # @arguments:
 # - LISTVAR: name of the list variable (do not include $)
-function bb_util_list_pop () {
+function bb_pop () {
     eval "unset $1[-1]"
 }
 
@@ -86,7 +86,7 @@ function bb_util_list_pop () {
 # @arguments:
 # - LISTVAR: name of the list variable (do not include $)
 # - ITEM: item to unshift
-function bb_util_list_unshift () {
+function bb_unshift () {
     eval "$1=("$2" "\${$1[@]}")"
 }
 
@@ -94,7 +94,7 @@ function bb_util_list_unshift () {
 # Shifts an item from a list (stack)
 # @arguments:
 # - LISTVAR: name of the list variable (do not include $)
-function bb_util_list_shift () {
+function bb_shift () {
     eval "unset $1[0]"
 }
 
@@ -109,7 +109,7 @@ function _bb_util_list_base_sort () {
 # Sorts the items of a list in lexicographic ascending order
 # @arguments:
 # - ITEM: a list item
-function bb_util_list_sort () {
+function bb_sort () {
     _bb_util_list_base_sort "$@"
 }
 
@@ -117,7 +117,7 @@ function bb_util_list_sort () {
 # Sorts the items of a list in lexicographic descending order
 # @arguments:
 # - ITEM: a list item
-function bb_util_list_sortdesc () {
+function bb_sortdesc () {
     __bb_util_list_sort_opts=(-r)
     _bb_util_list_base_sort "$@"
     unset __bb_util_list_sort_opts
@@ -127,7 +127,7 @@ function bb_util_list_sortdesc () {
 # Sorts the items of a list in numerical ascending order
 # @arguments:
 # - ITEM: a list item
-function bb_util_list_sortnums () {
+function bb_sortnums () {
     __bb_util_list_sort_opts=(-g)
     _bb_util_list_base_sort "$@"
     unset __bb_util_list_sort_opts
@@ -137,7 +137,7 @@ function bb_util_list_sortnums () {
 # Sorts the items of a list in numerical descending order
 # @arguments:
 # - ITEM: a list item
-function bb_util_list_sortnumsdesc () {
+function bb_sortnumsdesc () {
     __bb_util_list_sort_opts=(-g -r)
     _bb_util_list_base_sort "$@"
     unset __bb_util_list_sort_opts
@@ -149,7 +149,7 @@ function bb_util_list_sortnumsdesc () {
 # - ITEM: a list item
 # @notes:
 #   Human readable, e.g., 1K, 2M, 3G
-function bb_util_list_sorthuman () {
+function bb_sorthuman () {
     __bb_util_list_sort_opts=(-h)
     _bb_util_list_base_sort "$@"
     unset __bb_util_list_sort_opts
@@ -161,7 +161,7 @@ function bb_util_list_sorthuman () {
 # - ITEM: a list item
 # @notes:
 #   Human readable, e.g., 1K, 2M, 3G
-function bb_util_list_sorthumandesc () {
+function bb_sorthumandesc () {
     __bb_util_list_sort_opts=(-h -r)
     _bb_util_list_base_sort "$@"
     unset __bb_util_list_sort_opts
@@ -171,7 +171,7 @@ function bb_util_list_sorthumandesc () {
 # Filters an unsorted list to include only unique items
 # @arguments:
 # - ITEM: a list item
-function bb_util_list_uniq () {
+function bb_uniq () {
     declare -A __bb_util_list_uniq_items=()
     local dedup=()
     local item
@@ -190,7 +190,7 @@ function bb_util_list_uniq () {
 # - ITEM: a list item
 # @notes:
 #   Faster than uniq, but requires the list to be pre-sorted
-function bb_util_list_uniqsorted () {
+function bb_uniqsorted () {
     local dedup=("$1")
     local prev="$1"
     local item

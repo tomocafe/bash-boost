@@ -18,7 +18,7 @@ _bb_onfirstload "bb_interactive_cmd" || return
 # @arguments:
 # - DIR: usually a single directory to be made, but all arguments are passed to 
 #        mkdir and the last argument is then passed to cd if mkdir is successful
-function bb_interactive_cmd_mcd () {
+function bb_mcd () {
     command mkdir "$@" && command cd "${@: -1}"
 }
 
@@ -31,7 +31,7 @@ function bb_interactive_cmd_mcd () {
 #   the current working directory is populated, and with each further TAB,
 #   a directory is removed, moving you up the directory stack. Once you see
 #   the upward directory you want to go to, hit ENTER
-function bb_interactive_cmd_up () {
+function bb_up () {
     cd ${1:-..}
 }
 
@@ -48,4 +48,4 @@ function _bb_interactive_cmd_up_completion () {
         COMPREPLY=("$upd")
     fi
 }
-complete -o nospace -F _bb_interactive_cmd_up_completion bb_interactive_cmd_up
+complete -o nospace -F _bb_interactive_cmd_up_completion bb_up

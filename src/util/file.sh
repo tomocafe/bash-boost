@@ -20,24 +20,24 @@ bb_load "util/list"
 # @arguments:
 # - PATH: an absolute path
 # @returns: 1 if PATH is invalid, 0 otherwise
-function bb_util_file_canonicalize () {
+function bb_canonicalize () {
     local path="$1"
     [[ "${path:0:1}" == '/' ]] || return $__bb_false
     local patharr=()
-    bb_util_list_split patharr '/' "$path"
+    bb_split patharr '/' "$path"
     local fixed=()
     for dir in "${patharr[@]}"; do
         case $dir in
             .|'') ;;
             ..)
-                bb_util_list_pop fixed
+                bb_pop fixed
                 ;;
             *)
                 fixed+=("$dir")
                 ;;
         esac
     done
-    _bb_result "/$(bb_util_list_join '/' "${fixed[@]}")"
+    _bb_result "/$(bb_join '/' "${fixed[@]}")"
     return $__bb_true
 }
 
@@ -47,10 +47,10 @@ function bb_util_file_canonicalize () {
 # - TARGET: target relative path (can be file or directory)
 # - FROM: the absolute directory path from which the absolute path is formed
 #         (Defaults to $PWD)
-function bb_util_file_abspath () {
+function bb_abspath () {
     local target="$1"
     local from="${2:-$PWD}"
-    _bb_result "$(bb_util_file_canonicalize "$from/$target")"
+    _bb_result "$(bb_canonicalize "$from/$target")"
 }
 
 # relpath TARGET [FROM]
@@ -60,7 +60,7 @@ function bb_util_file_abspath () {
 # - FROM: the absolute directory path from which the relative path is formed
 #         (Defaults to $PWD)
 # @returns: 1 if either TARGET or FROM is invalid, 0 otherwise
-function bb_util_file_relpath () {
+function bb_relpath () {
     local target="$1"
     local from="${2:-$PWD}"
     local result=""
@@ -71,8 +71,8 @@ function bb_util_file_relpath () {
     target="${target%/}"
     from="${from%/}"
     # Canonicalize paths
-    target="$(bb_util_file_canonicalize "$target")"
-    from="$(bb_util_file_canonicalize "$from")"
+    target="$(bb_canonicalize "$target")"
+    from="$(bb_canonicalize "$from")"
     # Find the common parent directory
     local common="$from"
     while [[ ${target#$common} == ${target} ]]; do

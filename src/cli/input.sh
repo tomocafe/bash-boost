@@ -18,7 +18,7 @@ _bb_onfirstload "bb_cli_input" || return
 # @arguments:
 # - VAR: variable to store response into (do not include $)
 # - PROMPT: text displayed to the user
-function bb_cli_input_getinput () {
+function bb_getinput () {
     eval "read -r -p \"${2% }${2:+ }$PS2\" $1"
 }
 
@@ -30,7 +30,7 @@ function bb_cli_input_getinput () {
 # @notes:
 #   If you want the user to type "yes", use getinput
 #   and check their response
-function bb_cli_input_yn () {
+function bb_yn () {
     local resp
     read -r -n 1 -p "${1% }${1:+ }(Yy) $PS2" resp
     [[ $resp =~ [Yy] ]]
@@ -41,7 +41,7 @@ function bb_cli_input_yn () {
 # @arguments:
 # - PROMPT: text displayed to the user
 #           Default: Press any key to continue
-function bb_cli_input_pause () {
+function bb_pause () {
     local resp
     read -r -n 1 -s -p "${1:-Press any key to continue}" resp
 }

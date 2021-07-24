@@ -62,7 +62,7 @@ function _bb_onfirstload () {
 # Aliases bash-boost functions based on prefix
 # @arguments:
 # - PREFIX: the prefix to use, e.g. "xyz" makes the function
-#           bb_cli_arg_loadprompt aliased to xyz_loadprompt
+#           bb_loadprompt aliased to xyz_loadprompt
 # @notes:
 #   If PREFIX is an empty string, the commads just become the
 #   base function name (e.g. loadprompt).

@@ -314,7 +314,7 @@ Aliases bash-boost functions based on prefix
 **Arguments:**
 
 - `PREFIX`: the prefix to use, e.g. "xyz" makes the function
-bb_cli_arg_loadprompt aliased to xyz_loadprompt
+bb_loadprompt aliased to xyz_loadprompt
 
 **Notes:**
 
@@ -449,7 +449,7 @@ Prints text in color, for use specifically in prompts
 
 **Arguments:**
 
-- `COLORSTR`: valid color string, see bb_cli_color_colorize
+- `COLORSTR`: valid color string, see bb_colorize
 - `TEXT`: text to be printed in color
 
 **Notes:**
