@@ -23,8 +23,21 @@ TO DO
 bash-boost consists of the following _modules_, each with different _packages_
 
 - [**cli**](src/cli) - for command-line (script) use
+  - [arg](src/cli/arg.sh) - for parsing command line arguments
+  - [color](src/cli/color.sh) - for printing text in color
+  - [input](src/cli/input.sh) - for handling user input
+  - [msg](src/cli/msg.sh) - for messaging and logging
 - [**interactive**](src/interactive) - for interactive use
+  - [cmd](src/interactive/cmd.sh) - miscellaneous interactive commands
+  - [prompt](src/interactive/prompt.sh) - dynamic shell prompt
 - [**util**](src/util) - general purpose routines
+  - [env](src/util/env.sh) - for checking and setting environment variables
+  - [file](src/util/file.sh) - file and filesystem related operations
+  - [kwargs](src/util/kwargs.sh) - for handling keyword arguments
+  - [list](src/util/list.sh) - common list operations
+  - [math](src/util/math.sh) - common math operations
+  - [prof](src/util/profi.sh) - runtime profiling routines
+  - [string](src/util/string.sh) - common string operations
 
 You have the choice of loading an entire module, or select certain packages from them.
 

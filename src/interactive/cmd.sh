@@ -1,7 +1,7 @@
 # @package: interactive/cmd
 # Miscellaneous interactive commands
 
-_bb_on_first_load "bb_interactive_cmd" || return
+_bb_onfirstload "bb_interactive_cmd" || return
 
 ################################################################################
 # Globals

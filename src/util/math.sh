@@ -1,7 +1,7 @@
 # @package: util/math
 # Routines for common math operations
 
-_bb_on_first_load "bb_util_math" || return
+_bb_onfirstload "bb_util_math" || return
 
 ################################################################################
 # Globals
@@ -23,7 +23,7 @@ function bb_util_math_sum () {
     for n in "$@"; do
         (( sum += n ))
     done
-    echo -n "$sum"
+    _bb_result "$sum"
 }
 
 # min NUM ...
@@ -36,7 +36,7 @@ function bb_util_math_min () {
     for n in "${@:2}"; do
         [[ $n -lt $min ]] && min="$n"
     done
-    echo -n "$min"
+    _bb_result "$min"
 }
 
 # max NUM ...
@@ -49,7 +49,7 @@ function bb_util_math_max () {
     for n in "${@:2}"; do
         [[ $n -gt $max ]] && max="$n"
     done
-    echo -n "$max"
+    _bb_result "$max"
 }
 
 # abs NUM
@@ -59,7 +59,7 @@ function bb_util_math_max () {
 function bb_util_math_abs () {
     local abs="$1"
     [[ $abs -lt 0 ]] && abs="${abs#-}"
-    echo -n "$abs"
+    _bb_result "$abs"
 }
 
 # isint NUM ...
@@ -73,5 +73,71 @@ function bb_util_math_isint () {
     for n in "$@"; do
         [[ $n =~ $re ]] || return $__bb_false
     done
+    return $__bb_true
+}
+
+# hex2dec NUM ...
+# Converts numbers from hexademical (base 16) to decimal (base 10)
+# @arguments:
+# - NUM: a number to convert
+# @returns: 1 if any number is invalid hexadecimal, 0 otherwise
+function bb_util_math_hex2dec () {
+    local n
+    local res=()
+    for n in "$@"; do
+        [[ $n == '0' ]] && { res+=("$n"); continue; }
+        (( n=16#$n )) 2>/dev/null || return $__bb_false
+        res+=( "$n" )
+    done
+    _bb_result "${res[*]}"
+    return $__bb_true
+}
+
+# dec2hex NUM ...
+# Converts numbers from decimal (base 10) to hexademical (base 16)
+# @arguments:
+# - NUM: a number to convert
+# @returns: 1 if any number is invalid decimal, 0 otherwise
+function bb_util_math_dec2hex () {
+    local n
+    local res=()
+    for n in "$@"; do
+        printf -v n '%x' "$n" 2>/dev/null || return $__bb_false
+        res+=( "$n" )
+    done
+    _bb_result "${res[*]}"
+    return $__bb_true
+}
+
+# oct2dec NUM ...
+# Converts numbers from octal (base 8) to decimal (base 10)
+# @arguments:
+# - NUM: a number to convert
+# @returns: 1 if any number is invalid octal, 0 otherwise
+function bb_util_math_oct2dec () {
+    local n
+    local res=()
+    for n in "$@"; do
+        [[ $n == '0' ]] && { res+=("$n"); continue; }
+        (( n=8#$n )) 2>/dev/null || return $__bb_false
+        res+=( "$n" )
+    done
+    _bb_result "${res[*]}"
+    return $__bb_true
+}
+
+# dec2oct NUM ...
+# Converts numbers from decimal (base 10) to octal (base 8)
+# @arguments:
+# - NUM: a number to convert
+# @returns: 1 if any number is invalid decimal, 0 otherwise
+function bb_util_math_dec2oct () {
+    local n
+    local res=()
+    for n in "$@"; do
+        printf -v n '%o' "$n" || return $__bb_false
+        res+=( "$n" )
+    done
+    _bb_result "${res[*]}"
     return $__bb_true
 }

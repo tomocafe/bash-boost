@@ -36,25 +36,25 @@ function bb_load () {
     done
 }
 
-# is_loaded PKG
+# isloaded PKG
 # Checks if a package is loaded already
 # @arguments:
 # - PKG: package name in internal format, e.g. bb_cli_arg
 # @returns: 0 if loaded, 1 otherwise
-function bb_is_loaded () {
+function bb_isloaded () {
     [[ ${__bb_loaded["$1"]+set} ]]
 }
 
-# set_loaded PKG
-function _bb_set_loaded () {
+# setloaded PKG
+function _bb_setloaded () {
     __bb_loaded["$1"]=1
     bb_debug "loaded $1"
 }
 
-# on_first_load PKG
-function _bb_on_first_load () {
-    bb_is_loaded "$1" && return $__bb_false
-    _bb_set_loaded "$1"
+# onfirstload PKG
+function _bb_onfirstload () {
+    bb_isloaded "$1" && return $__bb_false
+    _bb_setloaded "$1"
     return $__bb_true
 }
 
@@ -100,4 +100,33 @@ function bb_namespace () {
 #   Set environment variable BB_DEBUG to enable debug mode
 function bb_debug () {
     [[ -n $BB_DEBUG ]] && echo "[bb_debug:$$] $1"
+}
+
+# issourced
+# Check if the script is being sourced
+# @returns: 0 if sourced, 1 otherwise
+function bb_issourced () {
+    # Note: use the bottom of the call stack
+    [[ ${BASH_SOURCE[-1]} != $0 ]]
+}
+
+# stacktrace
+# Print a stack trace to stderr
+function bb_stacktrace () {
+    local -i i
+    local depth="${#FUNCNAME[@]}"
+    local maxwidth=0
+    for (( i=1; i<$depth; i++ )); do
+        [[ ${#FUNCNAME[$i]} -gt $maxwidth ]] && maxwidth=${#FUNCNAME[$i]}
+    done
+    for (( i=1; i<$depth; i++ )); do
+        printf "%-${#depth}d  %-${maxwidth}s  %s:%d\n" "$i" "${FUNCNAME[$i]}" "${BASH_SOURCE[$i]}" "${BASH_LINENO[$i-1]}" 1>&2
+    done
+}
+
+# result VAL
+# Prints result to stdout for capturing by caller, and also save to BB_RESULT variable
+function _bb_result () {
+    export BB_RESULT="$1"
+    echo "$1"
 }

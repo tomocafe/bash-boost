@@ -1,7 +1,7 @@
 # @package: cli/msg
 # Messaging routines
 
-_bb_on_first_load "bb_cli_msg" || return
+_bb_onfirstload "bb_cli_msg" || return
 
 bb_load "cli/color"
 
@@ -49,7 +49,7 @@ function bb_cli_msg_error () {
 function bb_cli_msg_fatal () {
     bb_cli_color_colorize 'bright_red' 'fatal error:' 1>&2
     echo " $1" 1>&2
-    exit ${2:-1}
+    bb_issourced && return ${2:-1} || exit ${2:-1}
 }
 
 # expect VAL1 VAL2 [MESSAGE] [RETURNCODE]

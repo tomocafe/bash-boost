@@ -1,7 +1,7 @@
 # @package: cli/input
 # Routines for handling user input
 
-_bb_on_first_load "bb_cli_input" || return
+_bb_onfirstload "bb_cli_input" || return
 
 ################################################################################
 # Globals

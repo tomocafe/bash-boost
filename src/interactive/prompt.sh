@@ -1,7 +1,7 @@
 # @package: interactive/prompt
 # Routines for managing a dynamic shell prompt
 
-_bb_on_first_load "bb_interactive_prompt" || return
+_bb_onfirstload "bb_interactive_prompt" || return
 
 bb_load "cli/color"
 

@@ -1,7 +1,7 @@
 # @package: util/file
 # Routines for common file operations
 
-_bb_on_first_load "bb_util_file" || return
+_bb_onfirstload "bb_util_file" || return
 
 bb_load "util/list"
 
@@ -37,7 +37,7 @@ function bb_util_file_canonicalize () {
                 ;;
         esac
     done
-    echo -n "/$(bb_util_list_join '/' "${fixed[@]}")"
+    _bb_result "/$(bb_util_list_join '/' "${fixed[@]}")"
     return $__bb_true
 }
 
@@ -50,7 +50,7 @@ function bb_util_file_canonicalize () {
 function bb_util_file_abspath () {
     local target="$1"
     local from="${2:-$PWD}"
-    echo -n "$(bb_util_file_canonicalize "$from/$target")"
+    _bb_result "$(bb_util_file_canonicalize "$from/$target")"
 }
 
 # relpath TARGET [FROM]
@@ -81,6 +81,6 @@ function bb_util_file_relpath () {
     done
     # Append
     result+="${target#$common}"
-    echo -n "$result"
+    _bb_result "$result"
     return $__bb_true
 }

@@ -136,6 +136,11 @@ bb_expect "$?" "$__bb_false" "isint float false"
 bb_util_math_isint "abcd"
 bb_expect "$?" "$__bb_false" "isint string false"
 
+__bb_tmp_nums=({0..20})
+bb_expect "$(bb_util_math_hex2dec $(bb_util_math_dec2hex "${__bb_tmp_nums[@]}"))" "${__bb_tmp_nums[*]}" "hex2dec(dec2hex())"
+bb_expect "$(bb_util_math_oct2dec $(bb_util_math_dec2oct "${__bb_tmp_nums[@]}"))" "${__bb_tmp_nums[*]}" "oct2dec(dec2oct())"
+unset __bb_tmp_nums
+
 ################################################################################
 # util/string
 ################################################################################
@@ -152,3 +157,19 @@ bb_expect "$(bb_util_string_sentcase "foo bar. baz")" "Foo bar. Baz" "sentcase"
 
 bb_expect "$(bb_util_string_urlencode "hello world")" "hello%20world" "urlencode"
 bb_expect "$(bb_util_string_urldecode "hello%20world")" "hello world" "urldecode"
+
+################################################################################
+# util/time
+################################################################################
+
+chkdelta () {
+    local delta
+    (( delta = $1 - $2 ))
+    delta="${delta#-}" # absolute value
+    [[ $delta -le 1 ]] # difference less than 1 second
+}
+
+chkdelta "$(bb_util_time_now)" "$(date +%s)" || bb_fatal "bb_util_time_now gave incorrect value"
+chkdelta "$(bb_util_time_now -2d +1h)" "$(date --date="now - 2 days + 1 hour" +%s)" || bb_fatal "bb_util_time_now -2d +1h gave incorrect value"
+
+bb_expect "$(TZ=UTC bb_util_time_timefmt %Y-%m-%d_%H%M%S 0)" "1970-01-01_000000"

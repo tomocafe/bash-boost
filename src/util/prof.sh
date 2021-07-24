@@ -1,7 +1,7 @@
 # @package: util/prof
 # Routines for runtime profiling of bash scripts
 
-_bb_on_first_load "bb_util_prof" || return
+_bb_onfirstload "bb_util_prof" || return
 
 bb_load "cli/msg"
 

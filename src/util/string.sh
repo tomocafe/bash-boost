@@ -1,7 +1,7 @@
 # @package: util/string
 # Routines for common string operations
 
-_bb_on_first_load "bb_util_string" || return
+_bb_onfirstload "bb_util_string" || return
 
 ################################################################################
 # Globals
@@ -23,7 +23,7 @@ function bb_util_string_lstrip () {
         shopt -s extglob
         resetopt=true
     fi
-    echo -n "${1##+([[:space:]])}"
+    _bb_result "${1##+([[:space:]])}"
     $resetopt && shopt -u extglob
 }
 
@@ -37,7 +37,7 @@ function bb_util_string_rstrip () {
         shopt -s extglob
         resetopt=true
     fi
-    echo -n "${1%%+([[:space:]])}"
+    _bb_result "${1%%+([[:space:]])}"
     $resetopt && shopt -u extglob
 }
 
@@ -46,7 +46,7 @@ function bb_util_string_rstrip () {
 # @arguments:
 # - TEXT: text to strip whitespace from
 function bb_util_string_strip () {
-    echo -n "$(bb_util_string_lstrip "$(bb_util_string_rstrip "$1")")"
+    _bb_result "$(bb_util_string_lstrip "$(bb_util_string_rstrip "$1")")"
 }
 
 # snake2camel TEXT
@@ -57,7 +57,7 @@ function bb_util_string_strip () {
 #   Leading underscores are preserved
 function bb_util_string_snake2camel () {
     local str="$1"
-    local i
+    local -i i
     local camel=""
     local start=false # preserve leading underscores
     local caps=false
@@ -75,7 +75,7 @@ function bb_util_string_snake2camel () {
                 ;;
         esac
     done
-    echo -n "$camel"
+    _bb_result "$camel"
 }
 
 # camel2snake TEXT
@@ -84,7 +84,7 @@ function bb_util_string_snake2camel () {
 # - TEXT: text in camel case
 function bb_util_string_camel2snake () {
     local str="$1"
-    local i
+    local -i i
     local snake=""
     for (( i=0; i<${#str}; i++ )); do
         local char="${str:$i:1}"
@@ -98,7 +98,7 @@ function bb_util_string_camel2snake () {
                 ;;
         esac
     done
-    echo -n "$snake"
+    _bb_result "$snake"
 }
 
 # titlecase TEXT
@@ -110,7 +110,7 @@ function bb_util_string_camel2snake () {
 #   respect grammatical rules, e.g. "And" will be capitalized
 function bb_util_string_titlecase () {
     local str="$1"
-    local i
+    local -i i
     local title=""
     local caps=true
     for (( i=0; i<${#str}; i++ )); do
@@ -126,7 +126,7 @@ function bb_util_string_titlecase () {
         esac
         title+="$char"
     done
-    echo -n "$title"
+    _bb_result "$title"
 }
 
 # sentcase TEXT
@@ -135,7 +135,7 @@ function bb_util_string_titlecase () {
 # - TEXT: text to transform
 function bb_util_string_sentcase () {
     local str="$1"
-    local i
+    local -i i
     local sent=""
     local caps=true
     for (( i=0; i<${#str}; i++ )); do
@@ -153,7 +153,7 @@ function bb_util_string_sentcase () {
         esac
         sent+="$char"
     done
-    echo -n "$sent"
+    _bb_result "$sent"
 }
 
 # urlencode TEXT
@@ -163,7 +163,7 @@ function bb_util_string_sentcase () {
 function bb_util_string_urlencode () {
     local LC_ALL=C
     local text="$1"
-    local i
+    local -i i
     for (( i=0; i<${#text}; i++ )); do
         local char="${text:$i:1}"
         case "$char" in
@@ -181,7 +181,7 @@ function bb_util_string_urlencode () {
 function bb_util_string_urldecode () {
     local LC_ALL=C
     local text="$1"
-    local i
+    local -i i
     for (( i=0; i<${#text}; i++ )); do
         local char="${text:$i:1}"
         case "$char" in

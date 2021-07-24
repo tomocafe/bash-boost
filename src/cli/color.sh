@@ -1,7 +1,7 @@
 # @package: cli/color
 # Routines for printing text in color using ANSI escape codes
 
-_bb_on_first_load "bb_cli_color" || return
+_bb_onfirstload "bb_cli_color" || return
 
 ################################################################################
 # Globals

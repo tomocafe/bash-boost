@@ -1,7 +1,7 @@
 # @package: cli/arg
 # Routines for parsing command line arguments
 
-_bb_on_first_load "bb_cli_arg" || return
+_bb_onfirstload "bb_cli_arg" || return
 
 bb_load "cli/color"
 
@@ -124,7 +124,7 @@ function bb_cli_arg_help () {
 function bb_cli_arg_errusage () {
     echo "usage error: $1" 1>&2
     bb_cli_arg_usage
-    exit ${2:-1}
+    bb_issourced && return ${2:-1} || exit ${2:-1}
 }
 
 # isflag LONGNAME
@@ -166,7 +166,7 @@ function bb_cli_arg_parseargs () {
                 ;;
             -h|--help)
                 bb_cli_arg_help
-                exit 0
+                bb_issourced && return 0 || exit 0
                 ;;
             --*)
                 # Long form options, e.g., --foo, --foo=bar, --foo bar
@@ -191,7 +191,7 @@ function bb_cli_arg_parseargs () {
             -*)
                 # Short form options, e.g., -f, -f bar, -rf (implies -r -f)
                 local optstr="${1:1}"
-                local i
+                local -i i
                 for (( i=0; i<${#optstr}; i++ )); do
                     local shortname="${optstr:$i:1}"
                     local longname="${__bb_cli_arg_short["$shortname"]}"
@@ -230,7 +230,7 @@ function bb_cli_arg_parseargs () {
 # @arguments:
 # - LONGNAME: long name of the option
 function bb_cli_arg_getopt () {
-    echo -n "${__bb_cli_arg_optvals["$1"]}"
+    _bb_result "${__bb_cli_arg_optvals["$1"]}"
 }
 
 # checkopt LONGNAME
@@ -245,7 +245,7 @@ function bb_cli_arg_checkopt () {
 # getpositionals
 # Gets the list of positional argument values
 function bb_cli_arg_getpositionals () {
-    echo -n "${__bb_cli_arg_positionals[@]}"
+    _bb_result "${__bb_cli_arg_positionals[*]}"
 }
 
 # argclear
