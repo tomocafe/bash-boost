@@ -261,7 +261,7 @@ function bb_argclear () {
 
     __bb_cli_arg_progname=""
     __bb_cli_arg_opts=()
-    BB_POSARGS=()
     __bb_cli_arg_positional_name=""
     __bb_cli_arg_positional_desc=""
+    BB_POSARGS=()
 }
