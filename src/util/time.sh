@@ -18,7 +18,7 @@ bb_load "util/math"
 # now [OFFSET ...]
 # Returns a timestamp relative to the current time (in seconds after epoch)
 # @arguments:
-# - OFFSET: {+,-}N{s,m,h,D,W} where N is an integer
+# - OFFSET: {+,-}N{s,m,h,d,w} where N is an integer
 # @returns: 1 if any offset is invalid, 0 otherwise
 # @notes:
 #   s: seconds
@@ -27,8 +27,11 @@ bb_load "util/math"
 #   d: days
 #   w: weeks
 function bb_now () {
+    _bb_glopts "$@" || shift $?
+    local result
     if [[ $# -eq 0 ]]; then
-        printf '%(%s)T' -1
+        printf -v result '%(%s)T' -1
+        _bb_result "$result"
         return $__bb_true
     fi
     local ts="$(printf '%(%s)T' -1)"
@@ -53,7 +56,8 @@ function bb_now () {
         bb_isint "$val" || return $__bb_false
         $isadd && (( ts += val * unit )) || (( ts -= val * unit ))
     done
-    printf '%(%s)T' "$ts"
+    printf -v result '%(%s)T' "$ts"
+    _bb_result "$result"
     return $__bb_true
 }
 
@@ -63,5 +67,8 @@ function bb_now () {
 # - FORMAT: date format string, refer to man strftime
 # - TIMESTAMP: epoch time, defaults to current time (now)
 function bb_timefmt () {
-    printf "%($1)T" "${2:--1}"
+    _bb_glopts "$@" || shift $?
+    local result
+    printf -v result "%($1)T" "${2:--1}"
+    _bb_result "$result"
 }

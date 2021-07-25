@@ -1004,7 +1004,7 @@ Returns a timestamp relative to the current time (in seconds after epoch)
 
 **Arguments:**
 
-- `OFFSET`: {+,-}N{s,m,h,D,W} where N is an integer
+- `OFFSET`: {+,-}N{s,m,h,d,w} where N is an integer
 
 **Returns:** 1 if any offset is invalid, 0 otherwise
 
