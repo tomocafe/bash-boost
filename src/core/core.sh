@@ -90,11 +90,40 @@ function bb_stacktrace () {
     done
 }
 
-# result VAL
-# Prints result to stdout for capturing by caller, and also save to BB_RESULT variable
+# glopts
+# Parse global command opts
+# @notes:
+#   -v VAR: saves the result into VAR
+#   -V LISTVAR: saves the list result into LISTVAR
+#   --: stops parsing for global opts
+#   Usage: _bb_glopts "$@" || shift $?; ...; _bb_result "$result"
+# @returns: the number of times needed to shift past the global opts
+function _bb_glopts () {
+    unset __bb_outvar __bb_outvarlist
+    case "$1" in
+        -v) __bb_outvar="$2"; return 2;;
+        -V) __bb_outvarlist="$2"; return 2;;
+        --) return 1;;
+    esac
+    return 0
+}
+
+# result VAL ...
+# Outputs the result either to a variable or to stdout
 function _bb_result () {
-    export BB_RESULT="$1"
-    echo "$1"
+    if [[ -n $__bb_outvar ]]; then
+        printf -v "$__bb_outvar" '%s' "$1"
+    elif [[ -n $__bb_outvarlist ]]; then
+        local quoted=()
+        local item
+        for item in "$@"; do
+            quoted+=("\"$item\"")
+        done
+        eval "$__bb_outvarlist=("${quoted[@]}")"
+    else
+        echo "$*"
+    fi
+    unset __bb_outvar __bb_outvarlist
 }
 
 # cleanup

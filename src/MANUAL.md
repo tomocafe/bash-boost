@@ -632,23 +632,23 @@ Clears the global dictionary
 
 Routines for common list operations
 
-### `join SEP ITEM ...`
+### `join [-v VAR] SEP ITEM ...`
 
 Joins the list of items into a string with the given separator
 
 **Arguments:**
 
+- `VAR`: variable to store result (if not given, prints to stdout)
 - `SEP`: separator
 - `ITEM`: a list item 
 
-### `split LISTVAR SEP STR`
+### `split [-V LISTVAR] SEP STR`
 
-Splits a string based on a separator and stores the resulting list into
-the specified list variable
+Splits a string into a list based on a separator
 
 **Arguments:**
 
-- `LISTVAR`: name of variable to store resulting list into (do not include $)
+- `LISTVAR`: list variable to store result (if not given, prints to stdout)
 - `SEP`: separator
 - `STR`: string to split
 
@@ -697,76 +697,84 @@ Shifts an item from a list (stack)
 
 - `LISTVAR`: name of the list variable (do not include $)
 
-### `sort ITEM ...`
+### `sort [-V LISTVAR] ITEM ...`
 
 Sorts the items of a list in lexicographic ascending order
 
 **Arguments:**
 
+- `LISTVAR`: list variable to store result (if not given, prints to stdout)
 - `ITEM`: a list item
 
-### `sortdesc ITEM ...`
+### `sortdesc [-V LISTVAR] ITEM ...`
 
 Sorts the items of a list in lexicographic descending order
 
 **Arguments:**
 
+- `LISTVAR`: list variable to store result (if not given, prints to stdout)
 - `ITEM`: a list item
 
-### `sortnums ITEM ...`
+### `sortnums [-V LISTVAR] ITEM ...`
 
 Sorts the items of a list in numerical ascending order
 
 **Arguments:**
 
+- `LISTVAR`: list variable to store result (if not given, prints to stdout)
 - `ITEM`: a list item
 
-### `sortnumsdesc ITEM ...`
+### `sortnumsdesc [-V LISTVAR] ITEM ...`
 
 Sorts the items of a list in numerical descending order
 
 **Arguments:**
 
+- `LISTVAR`: list variable to store result (if not given, prints to stdout)
 - `ITEM`: a list item
 
-### `sorthuman ITEM ...`
+### `sorthuman [-V LISTVAR] ITEM ...`
 
 Sorts the items of a list in human-readable ascending order
 
 **Arguments:**
 
+- `LISTVAR`: list variable to store result (if not given, prints to stdout)
 - `ITEM`: a list item
 
 **Notes:**
 
 Human readable, e.g., 1K, 2M, 3G
 
-### `sorthumandesc ITEM ...`
+### `sorthumandesc [-V LISTVAR] ITEM ...`
 
 Sorts the items of a list in human-readable descending order
 
 **Arguments:**
 
+- `LISTVAR`: list variable to store result (if not given, prints to stdout)
 - `ITEM`: a list item
 
 **Notes:**
 
 Human readable, e.g., 1K, 2M, 3G
 
-### `uniq ITEM ...`
+### `uniq [-V LISTVAR] ITEM ...`
 
 Filters an unsorted list to include only unique items
 
 **Arguments:**
 
+- `LISTVAR`: list variable to store result (if not given, prints to stdout)
 - `ITEM`: a list item
 
-### `uniqsorted ITEM ...`
+### `uniqsorted [-V LISTVAR] ITEM ...`
 
 Filters an sorted list to include only unique items
 
 **Arguments:**
 
+- `LISTVAR`: list variable to store result (if not given, prints to stdout)
 - `ITEM`: a list item
 
 **Notes:**

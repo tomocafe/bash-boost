@@ -21,10 +21,11 @@ bb_load "util/list"
 # - PATH: an absolute path
 # @returns: 1 if PATH is invalid, 0 otherwise
 function bb_canonicalize () {
+    _bb_glopts "$@" || shift $?
     local path="$1"
     [[ "${path:0:1}" == '/' ]] || return $__bb_false
     local patharr=()
-    bb_split patharr '/' "$path"
+    bb_split -V patharr '/' "$path"
     local fixed=()
     for dir in "${patharr[@]}"; do
         case $dir in

@@ -13,39 +13,36 @@ _bb_onfirstload "bb_util_list" || return
 # Functions
 ################################################################################
 
-# join SEP ITEM ...
+# join [-v VAR] SEP ITEM ...
 # Joins the list of items into a string with the given separator
 # @arguments:
+# - VAR: variable to store result (if not given, prints to stdout)
 # - SEP: separator
 # - ITEM: a list item 
 function bb_join () {
+    _bb_glopts "$@" || shift $?
     local IFS="$1"
     shift
-    echo "$*"
+    _bb_result "$*"
 }
 
-# split LISTVAR SEP STR
-# Splits a string based on a separator and stores the resulting list into
-# the specified list variable
+# split [-V LISTVAR] SEP STR
+# Splits a string into a list based on a separator
 # @arguments:
-# - LISTVAR: name of variable to store resulting list into (do not include $)
+# - LISTVAR: list variable to store result (if not given, prints to stdout)
 # - SEP: separator
 # - STR: string to split
 function bb_split () {
-    local IFS=$2
+    _bb_glopts "$@" || shift $?
+    local IFS=$1
     local -
     set -f # turn off globbing, local to this function
     local arr=()
     local token
     while IFS= read -r token; do
         arr+=( $token ) # no quotes around $token -- important!
-    done <<< "$3"
-    # Quote tokens
-    local quoted=()
-    for token in "${arr[@]}"; do
-        quoted+=( "\"$token\"" )
-    done
-    eval "$1=( "${quoted[@]}" )"
+    done <<< "$2"
+    IFS=' ' _bb_result "${arr[@]}"
 }
 
 # inlist TARGET LIST ...
@@ -99,23 +96,26 @@ function bb_shift () {
 }
 
 function _bb_util_list_base_sort () {
+    _bb_glopts "$@" || shift $?
     local IFS=$'\n'
     local sorted=( $(sort "${__bb_util_list_sort_opts[@]}" <<<"$*") )
     unset IFS
-    echo "${sorted[*]}"
+    _bb_result "${sorted[@]}"
 }
 
-# sort ITEM ...
+# sort [-V LISTVAR] ITEM ...
 # Sorts the items of a list in lexicographic ascending order
 # @arguments:
+# - LISTVAR: list variable to store result (if not given, prints to stdout)
 # - ITEM: a list item
 function bb_sort () {
     _bb_util_list_base_sort "$@"
 }
 
-# sortdesc ITEM ...
+# sortdesc [-V LISTVAR] ITEM ...
 # Sorts the items of a list in lexicographic descending order
 # @arguments:
+# - LISTVAR: list variable to store result (if not given, prints to stdout)
 # - ITEM: a list item
 function bb_sortdesc () {
     __bb_util_list_sort_opts=(-r)
@@ -123,9 +123,10 @@ function bb_sortdesc () {
     unset __bb_util_list_sort_opts
 }
 
-# sortnums ITEM ...
+# sortnums [-V LISTVAR] ITEM ...
 # Sorts the items of a list in numerical ascending order
 # @arguments:
+# - LISTVAR: list variable to store result (if not given, prints to stdout)
 # - ITEM: a list item
 function bb_sortnums () {
     __bb_util_list_sort_opts=(-g)
@@ -133,9 +134,10 @@ function bb_sortnums () {
     unset __bb_util_list_sort_opts
 }
 
-# sortnumsdesc ITEM ...
+# sortnumsdesc [-V LISTVAR] ITEM ...
 # Sorts the items of a list in numerical descending order
 # @arguments:
+# - LISTVAR: list variable to store result (if not given, prints to stdout)
 # - ITEM: a list item
 function bb_sortnumsdesc () {
     __bb_util_list_sort_opts=(-g -r)
@@ -143,9 +145,10 @@ function bb_sortnumsdesc () {
     unset __bb_util_list_sort_opts
 }
 
-# sorthuman ITEM ...
+# sorthuman [-V LISTVAR] ITEM ...
 # Sorts the items of a list in human-readable ascending order
 # @arguments:
+# - LISTVAR: list variable to store result (if not given, prints to stdout)
 # - ITEM: a list item
 # @notes:
 #   Human readable, e.g., 1K, 2M, 3G
@@ -155,9 +158,10 @@ function bb_sorthuman () {
     unset __bb_util_list_sort_opts
 }
 
-# sorthumandesc ITEM ...
+# sorthumandesc [-V LISTVAR] ITEM ...
 # Sorts the items of a list in human-readable descending order
 # @arguments:
+# - LISTVAR: list variable to store result (if not given, prints to stdout)
 # - ITEM: a list item
 # @notes:
 #   Human readable, e.g., 1K, 2M, 3G
@@ -167,11 +171,13 @@ function bb_sorthumandesc () {
     unset __bb_util_list_sort_opts
 }
 
-# uniq ITEM ...
+# uniq [-V LISTVAR] ITEM ...
 # Filters an unsorted list to include only unique items
 # @arguments:
+# - LISTVAR: list variable to store result (if not given, prints to stdout)
 # - ITEM: a list item
 function bb_uniq () {
+    _bb_glopts "$@" || shift $?
     declare -A __bb_util_list_uniq_items=()
     local dedup=()
     local item
@@ -181,16 +187,18 @@ function bb_uniq () {
         dedup+=("$item")
     done
     unset __bb_util_list_uniq_items
-    echo "${dedup[*]}"
+    _bb_result "${dedup[@]}"
 }
 
-# uniqsorted ITEM ...
+# uniqsorted [-V LISTVAR] ITEM ...
 # Filters an sorted list to include only unique items
 # @arguments:
+# - LISTVAR: list variable to store result (if not given, prints to stdout)
 # - ITEM: a list item
 # @notes:
 #   Faster than uniq, but requires the list to be pre-sorted
 function bb_uniqsorted () {
+    _bb_glopts "$@" || shift $?
     local dedup=("$1")
     local prev="$1"
     local item
@@ -199,5 +207,5 @@ function bb_uniqsorted () {
         prev="$item"
         dedup+=("$item")
     done
-    echo "${dedup[*]}"
+    _bb_result "${dedup[@]}"
 }
