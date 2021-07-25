@@ -34,11 +34,11 @@ Adds a command line flag to be parsed
 -h and --help are reserved for automatically-generated
 command usage and help
 
-### `usage`
+### `argusage`
 
 Print the command line usage string
 
-### `help`
+### `arghelp`
 
 Print the command line help
 
@@ -87,6 +87,12 @@ Parses command line arguments after registering valid flags and options
 
 - `ARGS`: the list of command line arguments, usually "$@"
 
+**Notes:**
+
+Check flags with checkopt LONGNAME
+Get option setting values with getopt LONGNAME
+Get positional arguments with ${BB_POSARGS[@]} array
+
 ### `getopt LONGNAME`
 
 Gets the value of option named LONGNAME
@@ -104,10 +110,6 @@ Returns the value of flag named LONGNAME
 - `LONGNAME`: long name of the flag
 
 **Returns:** the flag value
-
-### `getpositionals`
-
-Gets the list of positional argument values
 
 ### `argclear`
 
