@@ -785,36 +785,40 @@ Faster than uniq, but requires the list to be pre-sorted
 
 Routines for common math operations
 
-### `sum NUM ...`
+### `sum [-v VAR] NUM ...`
 
 Returns the sum of the given numbers
 
 **Arguments:**
 
+- `VAR`: variable to store result (if not given, prints to stdout)
 - `NUM`: a valid number
 
-### `min NUM ...`
+### `min [-v VAR] NUM ...`
 
 Returns the minimum of the given numbers
 
 **Arguments:**
 
+- `VAR`: variable to store result (if not given, prints to stdout)
 - `NUM`: a valid number
 
-### `max NUM ...`
+### `max [-v VAR] NUM ...`
 
 Returns the maximum of the given numbers
 
 **Arguments:**
 
+- `VAR`: variable to store result (if not given, prints to stdout)
 - `NUM`: a valid number
 
-### `abs NUM`
+### `abs [-v VAR] NUM`
 
 Returns the absolute value of a given number
 
 **Arguments:**
 
+- `VAR`: variable to store result (if not given, prints to stdout)
 - `NUM`: a valid number
 
 ### `isint NUM ...`
@@ -827,42 +831,46 @@ Checks if all the given numbers are valid integers
 
 **Returns:** 0 if all arguments are integers, 1 otherwise
 
-### `hex2dec NUM ...`
+### `hex2dec [-V LISTVAR] NUM ...`
 
 Converts numbers from hexademical (base 16) to decimal (base 10)
 
 **Arguments:**
 
+- `LISTVAR`: list variable to store result (if not given, prints to stdout)
 - `NUM`: a number to convert
 
 **Returns:** 1 if any number is invalid hexadecimal, 0 otherwise
 
-### `dec2hex NUM ...`
+### `dec2hex [-V LISTVAR] NUM ...`
 
 Converts numbers from decimal (base 10) to hexademical (base 16)
 
 **Arguments:**
 
+- `LISTVAR`: list variable to store result (if not given, prints to stdout)
 - `NUM`: a number to convert
 
 **Returns:** 1 if any number is invalid decimal, 0 otherwise
 
-### `oct2dec NUM ...`
+### `oct2dec [-V LISTVAR] NUM ...`
 
 Converts numbers from octal (base 8) to decimal (base 10)
 
 **Arguments:**
 
+- `LISTVAR`: list variable to store result (if not given, prints to stdout)
 - `NUM`: a number to convert
 
 **Returns:** 1 if any number is invalid octal, 0 otherwise
 
-### `dec2oct NUM ...`
+### `dec2oct [-V LISTVAR] NUM ...`
 
 Converts numbers from decimal (base 10) to octal (base 8)
 
 **Arguments:**
 
+- `LISTVAR`: list variable to store result (if not given, prints to stdout)
 - `NUM`: a number to convert
 
 **Returns:** 1 if any number is invalid decimal, 0 otherwise
