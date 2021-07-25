@@ -902,56 +902,62 @@ Stops runtime profiling
 
 Routines for common string operations
 
-### `lstrip TEXT`
+### `lstrip [-v VAR] TEXT`
 
 Strips leading (left) whitespace from text
 
 **Arguments:**
 
+- `VAR`: variable to store result (if not given, prints to stdout)
 - `TEXT`: text to strip whitespace from
 
-### `rstrip TEXT`
+### `rstrip [-v VAR] TEXT`
 
 Strips trailing (right) whitespace from text
 
 **Arguments:**
 
+- `VAR`: variable to store result (if not given, prints to stdout)
 - `TEXT`: text to strip whitespace from
 
-### `strip TEXT`
+### `strip [-v VAR] TEXT`
 
 Strips leading and trailing whitespace from text
 
 **Arguments:**
 
+- `VAR`: variable to store result (if not given, prints to stdout)
 - `TEXT`: text to strip whitespace from
 
-### `snake2camel TEXT`
+### `snake2camel [-v VAR] TEXT`
 
 Converts text from snake to camel case
 
 **Arguments:**
 
+- `VAR`: variable to store result (if not given, prints to stdout)
 - `TEXT`: text in snake case
 
 **Notes:**
 
 Leading underscores are preserved
 
-### `camel2snake TEXT`
+### `camel2snake [-v VAR] TEXT`
 
 Converts text from camel to snake case
 
 **Arguments:**
 
+- `VAR`: variable to store result (if not given, prints to stdout)
 - `TEXT`: text in camel case
 
-### `titlecase TEXT`
+### `titlecase [-v VAR] TEXT`
 
 Converts text into title case (every word capitalized)
 
 **Arguments:**
 
+- `VAR`: variable to store result (if not given, prints to stdout)
 - `TEXT`: text to transform
 
 **Notes:**
@@ -959,28 +965,31 @@ Converts text into title case (every word capitalized)
 This does not check the content of the words itself and may not
 respect grammatical rules, e.g. "And" will be capitalized
 
-### `sentcase TEXT`
+### `sentcase [-v VAR] TEXT`
 
 Converts text into sentence case (every first word capitalized)
 
 **Arguments:**
 
+- `VAR`: variable to store result (if not given, prints to stdout)
 - `TEXT`: text to transform
 
-### `urlencode TEXT`
+### `urlencode [-v VAR] TEXT`
 
 Performs URL (percent) encoding on the given string
 
 **Arguments:**
 
+- `VAR`: variable to store result (if not given, prints to stdout)
 - `TEXT`: text to be encoded
 
-### `urldecode TEXT`
+### `urldecode [-v VAR] TEXT`
 
 Decodes URL-encoded text
 
 **Arguments:**
 
+- `VAR`: variable to store result (if not given, prints to stdout)
 - `TEXT`: text to be decoded
 
 **Returns:** 1 if the input URL encoding is malformed, 0 otherwise
