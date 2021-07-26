@@ -17,8 +17,7 @@ function testcmd () {
         echo "saw extra"
     fi
 
-    posargs=( $(bb_getpositionals) )
-    for pos in "${posargs[@]}"; do
+    for pos in "${BB_POSARGS[@]}"; do
         echo "posarg=$pos"
     done
 }

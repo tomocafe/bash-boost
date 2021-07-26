@@ -13,11 +13,13 @@ _bb_onfirstload "bb_util_math" || return
 # Functions
 ################################################################################
 
-# sum NUM ...
+# sum [-v VAR] NUM ...
 # Returns the sum of the given numbers
 # @arguments:
+# - VAR: variable to store result (if not given, prints to stdout)
 # - NUM: a valid number
 function bb_sum () {
+    _bb_glopts "$@"; set -- "${__bb_args[@]}"
     local sum=0
     local n
     for n in "$@"; do
@@ -26,11 +28,13 @@ function bb_sum () {
     _bb_result "$sum"
 }
 
-# min NUM ...
+# min [-v VAR] NUM ...
 # Returns the minimum of the given numbers
 # @arguments:
+# - VAR: variable to store result (if not given, prints to stdout)
 # - NUM: a valid number
 function bb_min () {
+    _bb_glopts "$@"; set -- "${__bb_args[@]}"
     local min="$1"
     local n
     for n in "${@:2}"; do
@@ -39,11 +43,13 @@ function bb_min () {
     _bb_result "$min"
 }
 
-# max NUM ...
+# max [-v VAR] NUM ...
 # Returns the maximum of the given numbers
 # @arguments:
+# - VAR: variable to store result (if not given, prints to stdout)
 # - NUM: a valid number
 function bb_max () {
+    _bb_glopts "$@"; set -- "${__bb_args[@]}"
     local max="$1"
     local n
     for n in "${@:2}"; do
@@ -52,11 +58,13 @@ function bb_max () {
     _bb_result "$max"
 }
 
-# abs NUM
+# abs [-v VAR] NUM
 # Returns the absolute value of a given number
 # @arguments:
+# - VAR: variable to store result (if not given, prints to stdout)
 # - NUM: a valid number
 function bb_abs () {
+    _bb_glopts "$@"; set -- "${__bb_args[@]}"
     local abs="$1"
     [[ $abs -lt 0 ]] && abs="${abs#-}"
     _bb_result "$abs"
@@ -76,12 +84,14 @@ function bb_isint () {
     return $__bb_true
 }
 
-# hex2dec NUM ...
+# hex2dec [-V LISTVAR] NUM ...
 # Converts numbers from hexademical (base 16) to decimal (base 10)
 # @arguments:
+# - LISTVAR: list variable to store result (if not given, prints to stdout)
 # - NUM: a number to convert
 # @returns: 1 if any number is invalid hexadecimal, 0 otherwise
 function bb_hex2dec () {
+    _bb_glopts "$@"; set -- "${__bb_args[@]}"
     local n
     local res=()
     for n in "$@"; do
@@ -89,32 +99,36 @@ function bb_hex2dec () {
         (( n=16#$n )) 2>/dev/null || return $__bb_false
         res+=( "$n" )
     done
-    _bb_result "${res[*]}"
+    _bb_result "${res[@]}"
     return $__bb_true
 }
 
-# dec2hex NUM ...
+# dec2hex [-V LISTVAR] NUM ...
 # Converts numbers from decimal (base 10) to hexademical (base 16)
 # @arguments:
+# - LISTVAR: list variable to store result (if not given, prints to stdout)
 # - NUM: a number to convert
 # @returns: 1 if any number is invalid decimal, 0 otherwise
 function bb_dec2hex () {
+    _bb_glopts "$@"; set -- "${__bb_args[@]}"
     local n
     local res=()
     for n in "$@"; do
         printf -v n '%x' "$n" 2>/dev/null || return $__bb_false
         res+=( "$n" )
     done
-    _bb_result "${res[*]}"
+    _bb_result "${res[@]}"
     return $__bb_true
 }
 
-# oct2dec NUM ...
+# oct2dec [-V LISTVAR] NUM ...
 # Converts numbers from octal (base 8) to decimal (base 10)
 # @arguments:
+# - LISTVAR: list variable to store result (if not given, prints to stdout)
 # - NUM: a number to convert
 # @returns: 1 if any number is invalid octal, 0 otherwise
 function bb_oct2dec () {
+    _bb_glopts "$@"; set -- "${__bb_args[@]}"
     local n
     local res=()
     for n in "$@"; do
@@ -122,22 +136,24 @@ function bb_oct2dec () {
         (( n=8#$n )) 2>/dev/null || return $__bb_false
         res+=( "$n" )
     done
-    _bb_result "${res[*]}"
+    _bb_result "${res[@]}"
     return $__bb_true
 }
 
-# dec2oct NUM ...
+# dec2oct [-V LISTVAR] NUM ...
 # Converts numbers from decimal (base 10) to octal (base 8)
 # @arguments:
+# - LISTVAR: list variable to store result (if not given, prints to stdout)
 # - NUM: a number to convert
 # @returns: 1 if any number is invalid decimal, 0 otherwise
 function bb_dec2oct () {
+    _bb_glopts "$@"; set -- "${__bb_args[@]}"
     local n
     local res=()
     for n in "$@"; do
         printf -v n '%o' "$n" || return $__bb_false
         res+=( "$n" )
     done
-    _bb_result "${res[*]}"
+    _bb_result "${res[@]}"
     return $__bb_true
 }

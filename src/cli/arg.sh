@@ -17,9 +17,9 @@ __bb_cli_arg_short["h"]="help"
 
 __bb_cli_arg_progname="" # see setprog()
 __bb_cli_arg_opts=() # [SHORTNAME:]LONGNAME in order of registry
-__bb_cli_arg_positionals=() # remaining args
 __bb_cli_arg_positional_name="" # see setpositional()
 __bb_cli_arg_positional_desc="" # see setpositional()
+BB_POSARGS=() # remaining (positional) args
 
 ################################################################################
 # Functions
@@ -68,7 +68,7 @@ function bb_addflag () {
     __bb_cli_arg_flags["$longname"]=1
 }
 
-# usage
+# argusage
 # Print the command line usage string
 function bb_argusage () {
     {
@@ -95,7 +95,7 @@ function bb_argusage () {
     } 1>&2
 }
 
-# help
+# arghelp
 # Print the command line help
 # @notes:
 #   Includes the usage string and a list of flags and options with their
@@ -156,8 +156,12 @@ function bb_setpositional () {
 # Parses command line arguments after registering valid flags and options
 # @arguments:
 # - ARGS: the list of command line arguments, usually "$@"
+# @notes:
+#   Check flags with checkopt LONGNAME
+#   Get option setting values with getopt LONGNAME
+#   Get positional arguments with ${BB_POSARGS[@]} array
 function bb_parseargs () {
-    __bb_cli_arg_positionals=()
+    BB_POSARGS=()
     while [[ $# -gt 0 ]]; do
         case "$1" in
             --)
@@ -213,23 +217,25 @@ function bb_parseargs () {
                 ;;
             *)
                 # Positional args
-                __bb_cli_arg_positionals+=("$1")
+                BB_POSARGS+=("$1")
                 ;;
         esac
         shift
     done
     # Accumulate remaining args in the event -- was used
     while [[ $# -gt 0 ]]; do
-        __bb_cli_arg_positionals+=("$1")
+        BB_POSARGS+=("$1")
         shift
     done
 }
 
-# getopt LONGNAME
+# getopt [-v VAR] LONGNAME
 # Gets the value of option named LONGNAME
 # @arguments:
+# - VAR: variable to store result (if not given, prints to stdout)
 # - LONGNAME: long name of the option
 function bb_getopt () {
+    _bb_glopts "$@"; set -- "${__bb_args[@]}"
     _bb_result "${__bb_cli_arg_optvals["$1"]}"
 }
 
@@ -240,12 +246,6 @@ function bb_getopt () {
 # @returns: the flag value
 function bb_checkopt () {
     return ${__bb_cli_arg_optvals["$1"]}
-}
-
-# getpositionals
-# Gets the list of positional argument values
-function bb_getpositionals () {
-    _bb_result "${__bb_cli_arg_positionals[*]}"
 }
 
 # argclear
@@ -263,7 +263,7 @@ function bb_argclear () {
 
     __bb_cli_arg_progname=""
     __bb_cli_arg_opts=()
-    __bb_cli_arg_positionals=()
     __bb_cli_arg_positional_name=""
     __bb_cli_arg_positional_desc=""
+    BB_POSARGS=()
 }

@@ -34,11 +34,11 @@ Adds a command line flag to be parsed
 -h and --help are reserved for automatically-generated
 command usage and help
 
-### `usage`
+### `argusage`
 
 Print the command line usage string
 
-### `help`
+### `arghelp`
 
 Print the command line help
 
@@ -87,12 +87,19 @@ Parses command line arguments after registering valid flags and options
 
 - `ARGS`: the list of command line arguments, usually "$@"
 
-### `getopt LONGNAME`
+**Notes:**
+
+Check flags with checkopt LONGNAME
+Get option setting values with getopt LONGNAME
+Get positional arguments with ${BB_POSARGS[@]} array
+
+### `getopt [-v VAR] LONGNAME`
 
 Gets the value of option named LONGNAME
 
 **Arguments:**
 
+- `VAR`: variable to store result (if not given, prints to stdout)
 - `LONGNAME`: long name of the option
 
 ### `checkopt LONGNAME`
@@ -104,10 +111,6 @@ Returns the value of flag named LONGNAME
 - `LONGNAME`: long name of the flag
 
 **Returns:** the flag value
-
-### `getpositionals`
-
-Gets the list of positional argument values
 
 ### `argclear`
 
@@ -568,32 +571,35 @@ Prints a path variable separated by SEP, one item per line
 
 Routines for common file operations
 
-### `canonicalize PATH`
+### `canonicalize [-v VAR] PATH`
 
 Resolves . and .. in a given absolute path
 
 **Arguments:**
 
+- `VAR`: variable to store result (if not given, prints to stdout)
 - `PATH`: an absolute path
 
 **Returns:** 1 if PATH is invalid, 0 otherwise
 
-### `abspath TARGET [FROM]`
+### `abspath [-v VAR] TARGET [FROM]`
 
 Returns the absolute path from a relative one
 
 **Arguments:**
 
+- `VAR`: variable to store result (if not given, prints to stdout)
 - `TARGET`: target relative path (can be file or directory)
 - `FROM`: the absolute directory path from which the absolute path is formed
 (Defaults to $PWD)
 
-### `relpath TARGET [FROM]`
+### `relpath [-v VAR] TARGET [FROM]`
 
 Returns the relative path from a directory to the target
 
 **Arguments:**
 
+- `VAR`: variable to store result (if not given, prints to stdout)
 - `TARGET`: target absolute path (can be file or directory)
 - `FROM`: the absolute directory path from which the relative path is formed
 (Defaults to $PWD)
@@ -616,12 +622,13 @@ Parses a list of KEY=VAL pairs and stores them into a global dictionary
 
 kwparse stores key-value pairs into a single, global dictionary
 
-### `kwget KEY`
+### `kwget [-v VAR] KEY`
 
 Gets the value associated with a key stored with kwparse
 
 **Arguments:**
 
+- `VAR`: variable to store result (if not given, prints to stdout)
 - `KEY`: the key
 
 ### `kwclear`
@@ -632,23 +639,23 @@ Clears the global dictionary
 
 Routines for common list operations
 
-### `join SEP ITEM ...`
+### `join [-v VAR] SEP ITEM ...`
 
 Joins the list of items into a string with the given separator
 
 **Arguments:**
 
+- `VAR`: variable to store result (if not given, prints to stdout)
 - `SEP`: separator
 - `ITEM`: a list item 
 
-### `split LISTVAR SEP STR`
+### `split [-V LISTVAR] SEP STR`
 
-Splits a string based on a separator and stores the resulting list into
-the specified list variable
+Splits a string into a list based on a separator
 
 **Arguments:**
 
-- `LISTVAR`: name of variable to store resulting list into (do not include $)
+- `LISTVAR`: list variable to store result (if not given, prints to stdout)
 - `SEP`: separator
 - `STR`: string to split
 
@@ -697,76 +704,84 @@ Shifts an item from a list (stack)
 
 - `LISTVAR`: name of the list variable (do not include $)
 
-### `sort ITEM ...`
+### `sort [-V LISTVAR] ITEM ...`
 
 Sorts the items of a list in lexicographic ascending order
 
 **Arguments:**
 
+- `LISTVAR`: list variable to store result (if not given, prints to stdout)
 - `ITEM`: a list item
 
-### `sortdesc ITEM ...`
+### `sortdesc [-V LISTVAR] ITEM ...`
 
 Sorts the items of a list in lexicographic descending order
 
 **Arguments:**
 
+- `LISTVAR`: list variable to store result (if not given, prints to stdout)
 - `ITEM`: a list item
 
-### `sortnums ITEM ...`
+### `sortnums [-V LISTVAR] ITEM ...`
 
 Sorts the items of a list in numerical ascending order
 
 **Arguments:**
 
+- `LISTVAR`: list variable to store result (if not given, prints to stdout)
 - `ITEM`: a list item
 
-### `sortnumsdesc ITEM ...`
+### `sortnumsdesc [-V LISTVAR] ITEM ...`
 
 Sorts the items of a list in numerical descending order
 
 **Arguments:**
 
+- `LISTVAR`: list variable to store result (if not given, prints to stdout)
 - `ITEM`: a list item
 
-### `sorthuman ITEM ...`
+### `sorthuman [-V LISTVAR] ITEM ...`
 
 Sorts the items of a list in human-readable ascending order
 
 **Arguments:**
 
+- `LISTVAR`: list variable to store result (if not given, prints to stdout)
 - `ITEM`: a list item
 
 **Notes:**
 
 Human readable, e.g., 1K, 2M, 3G
 
-### `sorthumandesc ITEM ...`
+### `sorthumandesc [-V LISTVAR] ITEM ...`
 
 Sorts the items of a list in human-readable descending order
 
 **Arguments:**
 
+- `LISTVAR`: list variable to store result (if not given, prints to stdout)
 - `ITEM`: a list item
 
 **Notes:**
 
 Human readable, e.g., 1K, 2M, 3G
 
-### `uniq ITEM ...`
+### `uniq [-V LISTVAR] ITEM ...`
 
 Filters an unsorted list to include only unique items
 
 **Arguments:**
 
+- `LISTVAR`: list variable to store result (if not given, prints to stdout)
 - `ITEM`: a list item
 
-### `uniqsorted ITEM ...`
+### `uniqsorted [-V LISTVAR] ITEM ...`
 
 Filters an sorted list to include only unique items
 
 **Arguments:**
 
+- `LISTVAR`: list variable to store result (if not given, prints to stdout)
 - `ITEM`: a list item
 
 **Notes:**
@@ -777,36 +792,40 @@ Faster than uniq, but requires the list to be pre-sorted
 
 Routines for common math operations
 
-### `sum NUM ...`
+### `sum [-v VAR] NUM ...`
 
 Returns the sum of the given numbers
 
 **Arguments:**
 
+- `VAR`: variable to store result (if not given, prints to stdout)
 - `NUM`: a valid number
 
-### `min NUM ...`
+### `min [-v VAR] NUM ...`
 
 Returns the minimum of the given numbers
 
 **Arguments:**
 
+- `VAR`: variable to store result (if not given, prints to stdout)
 - `NUM`: a valid number
 
-### `max NUM ...`
+### `max [-v VAR] NUM ...`
 
 Returns the maximum of the given numbers
 
 **Arguments:**
 
+- `VAR`: variable to store result (if not given, prints to stdout)
 - `NUM`: a valid number
 
-### `abs NUM`
+### `abs [-v VAR] NUM`
 
 Returns the absolute value of a given number
 
 **Arguments:**
 
+- `VAR`: variable to store result (if not given, prints to stdout)
 - `NUM`: a valid number
 
 ### `isint NUM ...`
@@ -819,42 +838,46 @@ Checks if all the given numbers are valid integers
 
 **Returns:** 0 if all arguments are integers, 1 otherwise
 
-### `hex2dec NUM ...`
+### `hex2dec [-V LISTVAR] NUM ...`
 
 Converts numbers from hexademical (base 16) to decimal (base 10)
 
 **Arguments:**
 
+- `LISTVAR`: list variable to store result (if not given, prints to stdout)
 - `NUM`: a number to convert
 
 **Returns:** 1 if any number is invalid hexadecimal, 0 otherwise
 
-### `dec2hex NUM ...`
+### `dec2hex [-V LISTVAR] NUM ...`
 
 Converts numbers from decimal (base 10) to hexademical (base 16)
 
 **Arguments:**
 
+- `LISTVAR`: list variable to store result (if not given, prints to stdout)
 - `NUM`: a number to convert
 
 **Returns:** 1 if any number is invalid decimal, 0 otherwise
 
-### `oct2dec NUM ...`
+### `oct2dec [-V LISTVAR] NUM ...`
 
 Converts numbers from octal (base 8) to decimal (base 10)
 
 **Arguments:**
 
+- `LISTVAR`: list variable to store result (if not given, prints to stdout)
 - `NUM`: a number to convert
 
 **Returns:** 1 if any number is invalid octal, 0 otherwise
 
-### `dec2oct NUM ...`
+### `dec2oct [-V LISTVAR] NUM ...`
 
 Converts numbers from decimal (base 10) to octal (base 8)
 
 **Arguments:**
 
+- `LISTVAR`: list variable to store result (if not given, prints to stdout)
 - `NUM`: a number to convert
 
 **Returns:** 1 if any number is invalid decimal, 0 otherwise
@@ -884,56 +907,62 @@ Stops runtime profiling
 
 Routines for common string operations
 
-### `lstrip TEXT`
+### `lstrip [-v VAR] TEXT`
 
 Strips leading (left) whitespace from text
 
 **Arguments:**
 
+- `VAR`: variable to store result (if not given, prints to stdout)
 - `TEXT`: text to strip whitespace from
 
-### `rstrip TEXT`
+### `rstrip [-v VAR] TEXT`
 
 Strips trailing (right) whitespace from text
 
 **Arguments:**
 
+- `VAR`: variable to store result (if not given, prints to stdout)
 - `TEXT`: text to strip whitespace from
 
-### `strip TEXT`
+### `strip [-v VAR] TEXT`
 
 Strips leading and trailing whitespace from text
 
 **Arguments:**
 
+- `VAR`: variable to store result (if not given, prints to stdout)
 - `TEXT`: text to strip whitespace from
 
-### `snake2camel TEXT`
+### `snake2camel [-v VAR] TEXT`
 
 Converts text from snake to camel case
 
 **Arguments:**
 
+- `VAR`: variable to store result (if not given, prints to stdout)
 - `TEXT`: text in snake case
 
 **Notes:**
 
 Leading underscores are preserved
 
-### `camel2snake TEXT`
+### `camel2snake [-v VAR] TEXT`
 
 Converts text from camel to snake case
 
 **Arguments:**
 
+- `VAR`: variable to store result (if not given, prints to stdout)
 - `TEXT`: text in camel case
 
-### `titlecase TEXT`
+### `titlecase [-v VAR] TEXT`
 
 Converts text into title case (every word capitalized)
 
 **Arguments:**
 
+- `VAR`: variable to store result (if not given, prints to stdout)
 - `TEXT`: text to transform
 
 **Notes:**
@@ -941,28 +970,31 @@ Converts text into title case (every word capitalized)
 This does not check the content of the words itself and may not
 respect grammatical rules, e.g. "And" will be capitalized
 
-### `sentcase TEXT`
+### `sentcase [-v VAR] TEXT`
 
 Converts text into sentence case (every first word capitalized)
 
 **Arguments:**
 
+- `VAR`: variable to store result (if not given, prints to stdout)
 - `TEXT`: text to transform
 
-### `urlencode TEXT`
+### `urlencode [-v VAR] TEXT`
 
 Performs URL (percent) encoding on the given string
 
 **Arguments:**
 
+- `VAR`: variable to store result (if not given, prints to stdout)
 - `TEXT`: text to be encoded
 
-### `urldecode TEXT`
+### `urldecode [-v VAR] TEXT`
 
 Decodes URL-encoded text
 
 **Arguments:**
 
+- `VAR`: variable to store result (if not given, prints to stdout)
 - `TEXT`: text to be decoded
 
 **Returns:** 1 if the input URL encoding is malformed, 0 otherwise
@@ -977,7 +1009,7 @@ Returns a timestamp relative to the current time (in seconds after epoch)
 
 **Arguments:**
 
-- `OFFSET`: {+,-}N{s,m,h,D,W} where N is an integer
+- `OFFSET`: {+,-}N{s,m,h,d,w} where N is an integer
 
 **Returns:** 1 if any offset is invalid, 0 otherwise
 

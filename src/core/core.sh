@@ -11,6 +11,8 @@ __bb_false=1
 declare -Ag __bb_loaded=() # _bb_loaded[PKGSTR] = 1
 declare -Ag __bb_alias_completions=()
 
+__bb_outvars=()
+
 ################################################################################
 # Functions
 ################################################################################
@@ -90,11 +92,57 @@ function bb_stacktrace () {
     done
 }
 
-# result VAL
-# Prints result to stdout for capturing by caller, and also save to BB_RESULT variable
+# glopts
+# Parse global command opts
+# @notes:
+#   Leading global options (at start of args):
+#     -v VAR: saves the result into VAR
+#     -V LISTVAR: saves the list result into LISTVAR
+#     --: stops parsing global opts
+#   Trailing global options (at end of args):
+#     -: read remaining arguments from stdin
+#   Usage: _bb_glopts "$@"; set -- "${__bb_args[@]}"
+function _bb_glopts () {
+    # Look for starting -v, -V, --
+    local stop=false
+    __bb_outvars+=("") # push empty
+    case "$1" in
+        -v) __bb_outvars[-1]="v:$2"; shift 2;;
+        -V) __bb_outvars[-1]="V:$2"; shift 2;;
+        --) stop=true; shift 1;;
+    esac
+    __bb_args=("$@") # copy args after shifting out -v, -V, --
+    $stop && return # encountered --
+    # Look for trailing - (read args from stdin)
+    case "${@: -1}" in
+        -)
+            unset __bb_args[-1]
+            readarray -t -O ${#__bb_args[@]} __bb_args # append args from stdin to __bb_args
+            ;;
+    esac
+}
+
+# result VAL ...
+# Outputs the result either to a variable or to stdout
 function _bb_result () {
-    export BB_RESULT="$1"
-    echo "$1"
+    local outvar="${__bb_outvars[-1]}"
+    case "${outvar:0:1}" in
+        v) # to scalar variable
+            printf -v "${outvar:2}" '%s' "$1"
+            ;;
+        V) # to list variable
+            local quoted=()
+            local item
+            for item in "$@"; do
+                quoted+=("\"$item\"")
+            done
+            eval "${outvar:2}=("${quoted[@]}")"
+            ;;
+        *) # to stdout
+            echo "$*"
+            ;;
+    esac
+    unset __bb_outvars[-1] # pop
 }
 
 # cleanup

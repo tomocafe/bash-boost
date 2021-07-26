@@ -68,10 +68,10 @@ bb_expect "$(bb_kwget NOT_A_KEY)" "" "kwget NOT_A_KEY"
 __bb_tmp_list=(foo bar baz)
 
 bb_expect "$(bb_join : "${__bb_tmp_list[@]}")" "foo:bar:baz"
-bb_split "__bb_tmp_rebuilt_list" ":" "foo:bar:baz"
+bb_split -V __bb_tmp_rebuilt_list ":" "foo:bar:baz"
 bb_expect "${__bb_tmp_rebuilt_list[*]}" "foo bar baz" "split foo:bar:baz by :"
 bb_expect "${#__bb_tmp_rebuilt_list[@]}" "3" "split foo:bar:baz by :"
-bb_split "__bb_tmp_rebuilt_list" "z" "aazb bzcc"
+bb_split -V __bb_tmp_rebuilt_list "z" "aazb bzcc"
 bb_expect "${#__bb_tmp_rebuilt_list[@]}" "3" "split aazb bzcc by z"
 bb_expect "${__bb_tmp_rebuilt_list[1]}" "b b" "split aazb bzcc by z"
 unset __bb_tmp_rebuilt_list

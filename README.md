@@ -36,8 +36,9 @@ bash-boost consists of the following _modules_, each with different _packages_
   - [kwargs](src/util/kwargs.sh) - for handling keyword arguments
   - [list](src/util/list.sh) - common list operations
   - [math](src/util/math.sh) - common math operations
-  - [prof](src/util/profi.sh) - runtime profiling routines
+  - [prof](src/util/prof.sh) - runtime profiling routines
   - [string](src/util/string.sh) - common string operations
+  - [time](src/util/time.sh) - common time and date operations
 
 You have the choice of loading an entire module, or select certain packages from them.
 
