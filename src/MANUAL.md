@@ -93,12 +93,13 @@ Check flags with checkopt LONGNAME
 Get option setting values with getopt LONGNAME
 Get positional arguments with ${BB_POSARGS[@]} array
 
-### `getopt LONGNAME`
+### `getopt [-v VAR] LONGNAME`
 
 Gets the value of option named LONGNAME
 
 **Arguments:**
 
+- `VAR`: variable to store result (if not given, prints to stdout)
 - `LONGNAME`: long name of the option
 
 ### `checkopt LONGNAME`
@@ -570,32 +571,35 @@ Prints a path variable separated by SEP, one item per line
 
 Routines for common file operations
 
-### `canonicalize PATH`
+### `canonicalize [-v VAR] PATH`
 
 Resolves . and .. in a given absolute path
 
 **Arguments:**
 
+- `VAR`: variable to store result (if not given, prints to stdout)
 - `PATH`: an absolute path
 
 **Returns:** 1 if PATH is invalid, 0 otherwise
 
-### `abspath TARGET [FROM]`
+### `abspath [-v VAR] TARGET [FROM]`
 
 Returns the absolute path from a relative one
 
 **Arguments:**
 
+- `VAR`: variable to store result (if not given, prints to stdout)
 - `TARGET`: target relative path (can be file or directory)
 - `FROM`: the absolute directory path from which the absolute path is formed
 (Defaults to $PWD)
 
-### `relpath TARGET [FROM]`
+### `relpath [-v VAR] TARGET [FROM]`
 
 Returns the relative path from a directory to the target
 
 **Arguments:**
 
+- `VAR`: variable to store result (if not given, prints to stdout)
 - `TARGET`: target absolute path (can be file or directory)
 - `FROM`: the absolute directory path from which the relative path is formed
 (Defaults to $PWD)
@@ -618,12 +622,13 @@ Parses a list of KEY=VAL pairs and stores them into a global dictionary
 
 kwparse stores key-value pairs into a single, global dictionary
 
-### `kwget KEY`
+### `kwget [-v VAR] KEY`
 
 Gets the value associated with a key stored with kwparse
 
 **Arguments:**
 
+- `VAR`: variable to store result (if not given, prints to stdout)
 - `KEY`: the key
 
 ### `kwclear`

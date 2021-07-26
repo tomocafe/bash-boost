@@ -27,7 +27,7 @@ bb_load "util/math"
 #   d: days
 #   w: weeks
 function bb_now () {
-    _bb_glopts "$@" || shift $?
+    _bb_glopts "$@"; set -- "${__bb_args[@]}"
     local result
     if [[ $# -eq 0 ]]; then
         printf -v result '%(%s)T' -1
@@ -67,7 +67,7 @@ function bb_now () {
 # - FORMAT: date format string, refer to man strftime
 # - TIMESTAMP: epoch time, defaults to current time (now)
 function bb_timefmt () {
-    _bb_glopts "$@" || shift $?
+    _bb_glopts "$@"; set -- "${__bb_args[@]}"
     local result
     printf -v result "%($1)T" "${2:--1}"
     _bb_result "$result"

@@ -20,7 +20,7 @@ _bb_onfirstload "bb_util_list" || return
 # - SEP: separator
 # - ITEM: a list item 
 function bb_join () {
-    _bb_glopts "$@" || shift $?
+    _bb_glopts "$@"; set -- "${__bb_args[@]}"
     local IFS="$1"
     shift
     _bb_result "$*"
@@ -33,7 +33,7 @@ function bb_join () {
 # - SEP: separator
 # - STR: string to split
 function bb_split () {
-    _bb_glopts "$@" || shift $?
+    _bb_glopts "$@"; set -- "${__bb_args[@]}"
     local IFS=$1
     local -
     set -f # turn off globbing, local to this function
@@ -96,7 +96,7 @@ function bb_shift () {
 }
 
 function _bb_util_list_base_sort () {
-    _bb_glopts "$@" || shift $?
+    _bb_glopts "$@"; set -- "${__bb_args[@]}"
     local IFS=$'\n'
     local sorted=( $(sort "${__bb_util_list_sort_opts[@]}" <<<"$*") )
     unset IFS
@@ -177,7 +177,7 @@ function bb_sorthumandesc () {
 # - LISTVAR: list variable to store result (if not given, prints to stdout)
 # - ITEM: a list item
 function bb_uniq () {
-    _bb_glopts "$@" || shift $?
+    _bb_glopts "$@"; set -- "${__bb_args[@]}"
     declare -A __bb_util_list_uniq_items=()
     local dedup=()
     local item
@@ -198,7 +198,7 @@ function bb_uniq () {
 # @notes:
 #   Faster than uniq, but requires the list to be pre-sorted
 function bb_uniqsorted () {
-    _bb_glopts "$@" || shift $?
+    _bb_glopts "$@"; set -- "${__bb_args[@]}"
     local dedup=("$1")
     local prev="$1"
     local item

@@ -30,11 +30,13 @@ function bb_kwparse () {
     return $__bb_true
 }
 
-# kwget KEY
+# kwget [-v VAR] KEY
 # Gets the value associated with a key stored with kwparse
 # @arguments:
+# - VAR: variable to store result (if not given, prints to stdout)
 # - KEY: the key
 function bb_kwget () {
+    _bb_glopts "$@"; set -- "${__bb_args[@]}"
     _bb_result "${__bb_util_kwargs_dict["$1"]}"
 }
 

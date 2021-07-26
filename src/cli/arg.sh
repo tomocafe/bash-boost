@@ -229,11 +229,13 @@ function bb_parseargs () {
     done
 }
 
-# getopt LONGNAME
+# getopt [-v VAR] LONGNAME
 # Gets the value of option named LONGNAME
 # @arguments:
+# - VAR: variable to store result (if not given, prints to stdout)
 # - LONGNAME: long name of the option
 function bb_getopt () {
+    _bb_glopts "$@"; set -- "${__bb_args[@]}"
     _bb_result "${__bb_cli_arg_optvals["$1"]}"
 }
 

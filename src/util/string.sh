@@ -19,7 +19,7 @@ _bb_onfirstload "bb_util_string" || return
 # - VAR: variable to store result (if not given, prints to stdout)
 # - TEXT: text to strip whitespace from
 function bb_lstrip () {
-    _bb_glopts "$@" || shift $?
+    _bb_glopts "$@"; set -- "${__bb_args[@]}"
     local resetopt=false
     if [[ ! -o extglob ]]; then
         shopt -s extglob
@@ -35,7 +35,7 @@ function bb_lstrip () {
 # - VAR: variable to store result (if not given, prints to stdout)
 # - TEXT: text to strip whitespace from
 function bb_rstrip () {
-    _bb_glopts "$@" || shift $?
+    _bb_glopts "$@"; set -- "${__bb_args[@]}"
     local resetopt=false
     if [[ ! -o extglob ]]; then
         shopt -s extglob
@@ -51,12 +51,10 @@ function bb_rstrip () {
 # - VAR: variable to store result (if not given, prints to stdout)
 # - TEXT: text to strip whitespace from
 function bb_strip () {
-    _bb_glopts "$@" || shift $?
-    local outvar="$__bb_outvar" # FIXME: change to a stack for nested calls
+    _bb_glopts "$@"; set -- "${__bb_args[@]}"
     local stripped="$1"
     bb_lstrip -v stripped "$stripped"
     bb_rstrip -v stripped "$stripped"
-    __bb_outvar="$outvar"
     _bb_result "$stripped"
 }
 
@@ -68,7 +66,7 @@ function bb_strip () {
 # @notes:
 #   Leading underscores are preserved
 function bb_snake2camel () {
-    _bb_glopts "$@" || shift $?
+    _bb_glopts "$@"; set -- "${__bb_args[@]}"
     local str="$1"
     local -i i
     local camel=""
@@ -97,7 +95,7 @@ function bb_snake2camel () {
 # - VAR: variable to store result (if not given, prints to stdout)
 # - TEXT: text in camel case
 function bb_camel2snake () {
-    _bb_glopts "$@" || shift $?
+    _bb_glopts "$@"; set -- "${__bb_args[@]}"
     local str="$1"
     local -i i
     local snake=""
@@ -125,7 +123,7 @@ function bb_camel2snake () {
 #   This does not check the content of the words itself and may not
 #   respect grammatical rules, e.g. "And" will be capitalized
 function bb_titlecase () {
-    _bb_glopts "$@" || shift $?
+    _bb_glopts "$@"; set -- "${__bb_args[@]}"
     local str="$1"
     local -i i
     local title=""
@@ -152,7 +150,7 @@ function bb_titlecase () {
 # - VAR: variable to store result (if not given, prints to stdout)
 # - TEXT: text to transform
 function bb_sentcase () {
-    _bb_glopts "$@" || shift $?
+    _bb_glopts "$@"; set -- "${__bb_args[@]}"
     local str="$1"
     local -i i
     local sent=""
@@ -181,7 +179,7 @@ function bb_sentcase () {
 # - VAR: variable to store result (if not given, prints to stdout)
 # - TEXT: text to be encoded
 function bb_urlencode () {
-    _bb_glopts "$@" || shift $?
+    _bb_glopts "$@"; set -- "${__bb_args[@]}"
     local LC_ALL=C
     local text="$1"
     local encoded=""
@@ -204,7 +202,7 @@ function bb_urlencode () {
 # - TEXT: text to be decoded
 # @returns: 1 if the input URL encoding is malformed, 0 otherwise
 function bb_urldecode () {
-    _bb_glopts "$@" || shift $?
+    _bb_glopts "$@"; set -- "${__bb_args[@]}"
     local LC_ALL=C
     local text="$1"
     local decoded=""

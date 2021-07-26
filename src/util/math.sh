@@ -19,7 +19,7 @@ _bb_onfirstload "bb_util_math" || return
 # - VAR: variable to store result (if not given, prints to stdout)
 # - NUM: a valid number
 function bb_sum () {
-    _bb_glopts "$@" || shift $?
+    _bb_glopts "$@"; set -- "${__bb_args[@]}"
     local sum=0
     local n
     for n in "$@"; do
@@ -34,7 +34,7 @@ function bb_sum () {
 # - VAR: variable to store result (if not given, prints to stdout)
 # - NUM: a valid number
 function bb_min () {
-    _bb_glopts "$@" || shift $?
+    _bb_glopts "$@"; set -- "${__bb_args[@]}"
     local min="$1"
     local n
     for n in "${@:2}"; do
@@ -49,7 +49,7 @@ function bb_min () {
 # - VAR: variable to store result (if not given, prints to stdout)
 # - NUM: a valid number
 function bb_max () {
-    _bb_glopts "$@" || shift $?
+    _bb_glopts "$@"; set -- "${__bb_args[@]}"
     local max="$1"
     local n
     for n in "${@:2}"; do
@@ -64,7 +64,7 @@ function bb_max () {
 # - VAR: variable to store result (if not given, prints to stdout)
 # - NUM: a valid number
 function bb_abs () {
-    _bb_glopts "$@" || shift $?
+    _bb_glopts "$@"; set -- "${__bb_args[@]}"
     local abs="$1"
     [[ $abs -lt 0 ]] && abs="${abs#-}"
     _bb_result "$abs"
@@ -91,7 +91,7 @@ function bb_isint () {
 # - NUM: a number to convert
 # @returns: 1 if any number is invalid hexadecimal, 0 otherwise
 function bb_hex2dec () {
-    _bb_glopts "$@" || shift $?
+    _bb_glopts "$@"; set -- "${__bb_args[@]}"
     local n
     local res=()
     for n in "$@"; do
@@ -110,7 +110,7 @@ function bb_hex2dec () {
 # - NUM: a number to convert
 # @returns: 1 if any number is invalid decimal, 0 otherwise
 function bb_dec2hex () {
-    _bb_glopts "$@" || shift $?
+    _bb_glopts "$@"; set -- "${__bb_args[@]}"
     local n
     local res=()
     for n in "$@"; do
@@ -128,7 +128,7 @@ function bb_dec2hex () {
 # - NUM: a number to convert
 # @returns: 1 if any number is invalid octal, 0 otherwise
 function bb_oct2dec () {
-    _bb_glopts "$@" || shift $?
+    _bb_glopts "$@"; set -- "${__bb_args[@]}"
     local n
     local res=()
     for n in "$@"; do
@@ -147,7 +147,7 @@ function bb_oct2dec () {
 # - NUM: a number to convert
 # @returns: 1 if any number is invalid decimal, 0 otherwise
 function bb_dec2oct () {
-    _bb_glopts "$@" || shift $?
+    _bb_glopts "$@"; set -- "${__bb_args[@]}"
     local n
     local res=()
     for n in "$@"; do
