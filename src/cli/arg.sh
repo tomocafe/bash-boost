@@ -160,7 +160,17 @@ function bb_setpositional () {
 #   Check flags with checkopt LONGNAME
 #   Get option setting values with getopt LONGNAME
 #   Get positional arguments with ${BB_POSARGS[@]} array
+#   If the last argument is a single dash (-), read remaining arguments from stdin
 function bb_parseargs () {
+    # Read arguments from stdin if last argument is -
+    local arglist=("$@")
+    case "${@: -1}" in
+        -)
+            unset arglist[-1]
+            readarray -t -O ${#arglist[@]} arglist # append args from stdin to arglist
+            ;;
+    esac
+    set -- "${arglist[@]}" # replace original $@ with expanded arglist
     BB_POSARGS=()
     while [[ $# -gt 0 ]]; do
         case "$1" in

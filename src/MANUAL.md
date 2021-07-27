@@ -92,6 +92,7 @@ Parses command line arguments after registering valid flags and options
 Check flags with checkopt LONGNAME
 Get option setting values with getopt LONGNAME
 Get positional arguments with ${BB_POSARGS[@]} array
+If the last argument is a single dash (-), read remaining arguments from stdin
 
 ### `getopt [-v VAR] LONGNAME`
 
