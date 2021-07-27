@@ -1,0 +1,7 @@
+#!/bin/bash
+
+set -e
+
+# Check for function collision
+test "$(grep -h "^function" "$@" | wc -l)" -eq "$(grep -h "^function" "$@" | sort -u | wc -l)"
+

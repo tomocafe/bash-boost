@@ -3,7 +3,7 @@ VERSION=0.9
 TARGET := bash-boost-$(VERSION)
 SRCS := $(shell find src -type f -name "*.sh" | sort)
 
-$(TARGET): doc $(SRCS) flatten
+$(TARGET): check doc $(SRCS) flatten
 	$(RM) -r $@
 	cp -r src $@
 	cp LICENSE $@
@@ -31,5 +31,8 @@ src/MANUAL.md: $(SRCS) docgen
 
 doc: src/MANUAL.md
 
-.PHONY: release clean test doc
+check: $(SRCS)
+	@./check $(SRCS)
+
+.PHONY: release clean test doc check
 
