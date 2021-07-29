@@ -126,6 +126,7 @@ function _bb_glopts () {
 # Outputs the result either to a variable or to stdout
 function _bb_result () {
     local outvar="${__bb_outvars[-1]}"
+    unset __bb_outvars[-1] # pop
     case "${outvar:0:1}" in
         v) # to scalar variable
             printf -v "${outvar:2}" '%s' "$1"
@@ -142,7 +143,6 @@ function _bb_result () {
             echo "$*"
             ;;
     esac
-    unset __bb_outvars[-1] # pop
 }
 
 # cleanup
