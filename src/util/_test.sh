@@ -119,6 +119,7 @@ bb_expect "$(bb_abspath "../leaf2" "/base/leaf1")" "/base/leaf2"
 bb_expect "$(bb_relpath "/base/leaf2" "/base/leaf1")" "../leaf2"
 bb_expect "$(bb_relpath "/foo/bar/baz" "/foo/bar")" "baz"
 bb_expect "$(bb_relpath "/foo/bar" "/foo/bar/baz")" ".."
+bb_expect "$(bb_relpath "/foo/./bar//" "/foo/bar")" "."
 
 ################################################################################
 # util/math

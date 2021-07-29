@@ -81,9 +81,15 @@ function bb_relpath () {
     # Canonicalize paths
     bb_canonicalize -v target "$target"
     bb_canonicalize -v from "$from"
+    # Handle trivial . case
+    if [[ "$target" == "$from" ]]; then
+        _bb_result "."
+        return $__bb_true
+    fi
     # Find the common parent directory
-    local common="$from"
+    local common="$from/"
     while [[ ${target#$common} == ${target} ]]; do
+        common="${common%/}"
         common="${common%/*}"
         result+="${result:+/}.."
     done
