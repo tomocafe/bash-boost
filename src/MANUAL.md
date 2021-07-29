@@ -619,6 +619,8 @@ Parses a list of KEY=VAL pairs and stores them into a global dictionary
 
 - `KEY=VAL`: a key-value pair separated by =
 
+**Returns:** 1 if there is a malformed key-value pair, 0 otherwise
+
 **Notes:**
 
 kwparse stores key-value pairs into a single, global dictionary
