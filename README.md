@@ -4,11 +4,12 @@ bash-boost is a set of library functions for bash, useful for both scripting and
 
 ## Philosophy
 
-- Always prefer pure-bash solutions whenever reasonable
-- Don't reimplement existing bash features; complement them
+- Prefer pure-bash solutions
+- Don't reimplement existing bash features, complement them
 - Functions should have a single purpose, without complicated options
+- Avoid cluttering the user's environment
 
-
+For examples and further details, see [CONTRIBUTING.md](CONTRIBUTING.md)
 
 ## Requirements
 
@@ -41,6 +42,29 @@ bash-boost consists of the following _modules_, each with different _packages_
   - [time](src/util/time.sh) - common time and date operations
 
 You have the choice of loading an entire module, or select certain packages from them.
+
+## Usage
+
+Source the `bash-boost.sh` script and use `bb_load` to load modules and/or packages
+
+```bash
+source /path/to/bash-boost.sh
+
+bb_load MODULE      # e.g. cli
+bb_load MODULE/PKG  # e.g. cli/arg
+```
+
+Alternatively, you can list modules and packages to load by argument when sourcing `bash-boost.sh`:
+
+```bash
+source /path/to/bash-boost.sh MODULE MODULE/PKG ...
+```
+
+If you want to distribute bash-boost as a single file, you can use `bash-boost-portable.sh` and all modules and packages will be available for use. Please use proper attribution if distributing bash-boost. See [LICENSE](LICENSE) for details.
+
+```bash
+source /path/to/bash-boost-portable.sh
+```
 
 ## Documentation
 
