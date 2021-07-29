@@ -98,3 +98,47 @@ function bb_relpath () {
     _bb_result "$result"
     return $__bb_true
 }
+
+# countlines FILENAME ...
+# Counts the number of lines in a list of files
+# @arguments:
+# - FILENAME: a valid filename
+# @returns: 1 if any of the filenames are invalid, 0 otherwise
+function bb_countlines () {
+    _bb_glopts "$@"; set -- "${__bb_args[@]}"
+    local f line
+    local -i ct=0
+    for f in "$@"; do
+        [[ -f "$f" ]] || return $__bb_false
+        while read -r line; do
+            if [[ -n $__bb_util_file_countlines_filter ]]; then
+                $__bb_util_file_countlines_filter "$line" || continue
+            fi
+            (( ct++ ))
+        done < "$f"
+    done
+    _bb_result "$ct"
+    return $__bb_true
+}
+
+# countmatches PATTERN FILENAME ...
+# Counts the number of matching lines in a list of files
+# @arguments:
+# - PATTERN: a valid bash regular expression
+# - FILENAME: a valid filename
+# @returns: 1 if any of the filenames are invalid, 0 otherwise
+function bb_countmatches () {
+    _bb_glopts "$@"; set -- "${__bb_args[@]}"
+    __bb_util_file_grep_pattern="$1"
+    shift
+    _bb_util_file_grep () { [[ $1 =~ $__bb_util_file_grep_pattern ]]; }
+    __bb_util_file_countlines_filter=_bb_util_file_grep
+    local result
+    bb_countlines -v result "$@"
+    local rc=$?
+    unset __bb_util_file_countlines_filter
+    unset __bb_util_file_grep_pattern
+    unset -f _bb_util_file_grep
+    _bb_result "$result"
+    return $rc
+}

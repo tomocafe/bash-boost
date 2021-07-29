@@ -607,6 +607,27 @@ Returns the relative path from a directory to the target
 
 **Returns:** 1 if either TARGET or FROM is invalid, 0 otherwise
 
+### `countlines FILENAME ...`
+
+Counts the number of lines in a list of files
+
+**Arguments:**
+
+- `FILENAME`: a valid filename
+
+**Returns:** 1 if any of the filenames are invalid, 0 otherwise
+
+### `countmatches PATTERN FILENAME ...`
+
+Counts the number of matching lines in a list of files
+
+**Arguments:**
+
+- `PATTERN`: a valid bash regular expression
+- `FILENAME`: a valid filename
+
+**Returns:** 1 if any of the filenames are invalid, 0 otherwise
+
 ## Package util/kwargs
 
 Routines for parsing keyword arg strings

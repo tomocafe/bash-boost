@@ -121,6 +121,22 @@ bb_expect "$(bb_relpath "/foo/bar/baz" "/foo/bar")" "baz"
 bb_expect "$(bb_relpath "/foo/bar" "/foo/bar/baz")" ".."
 bb_expect "$(bb_relpath "/foo/./bar//" "/foo/bar")" "."
 
+__bb_tmp_file="$(mktemp)"
+cat <<EOF > $__bb_tmp_file
+foo
+bar
+baz
+hello
+world
+EOF
+
+bb_expect "$(bb_countlines "$__bb_tmp_file")" "5"
+bb_expect "$(bb_countmatches 'o' "$__bb_tmp_file")" "3"
+bb_expect "$(bb_countmatches '^...$' "$__bb_tmp_file")" "3"
+
+rm -f "$__bb_tmp_file"
+unset __bb_tmp_file
+
 ################################################################################
 # util/math
 ################################################################################
