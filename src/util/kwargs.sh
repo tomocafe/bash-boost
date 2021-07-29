@@ -17,6 +17,7 @@ declare -Ag __bb_util_kwargs_dict=()
 # Parses a list of KEY=VAL pairs and stores them into a global dictionary
 # @arguments:
 # - KEY=VAL: a key-value pair separated by =
+# @returns: 1 if there is a malformed key-value pair, 0 otherwise
 # @notes:
 #   kwparse stores key-value pairs into a single, global dictionary
 function bb_kwparse () {
