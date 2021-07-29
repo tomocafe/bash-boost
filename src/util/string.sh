@@ -219,6 +219,7 @@ function bb_urldecode () {
                 let i+=2
                 printf -v char '%b' "\\x${char:1}"
                 ;;
+            +) printf -v char ' ' ;;
             *) printf -v char '%s' "$char" ;;
         esac
         decoded+="$char"

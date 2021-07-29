@@ -176,6 +176,7 @@ bb_expect "$(bb_sentcase "foo bar. baz")" "Foo bar. Baz" "sentcase"
 
 bb_expect "$(bb_urlencode "hello world")" "hello%20world" "urlencode"
 bb_expect "$(bb_urldecode "hello%20world")" "hello world" "urldecode"
+bb_expect "$(bb_urldecode "hello+world")" "hello world" "urldecode"
 
 ################################################################################
 # util/time
