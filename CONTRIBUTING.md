@@ -26,3 +26,84 @@ Use `local` in functions to avoid leaking internal variables. Carefully consider
 - Internal functions start with `_bb_MODULE_PKG_` where `MODULE` and `PKG` are replaced by the module and package containing the internal function.
 - Public variables start with `BB_` and are in all caps (e.g., `BB_ROOT`).
 - Internal variables start with `__bb_MODULE_PKG_` where `MODULE` and `PKG` are replaced by the module and package containing the internal variable.
+
+## Logistics
+
+### Packages
+
+When developing a new package, choose an appropriate module.
+
+- **cli** -- for command line scripts
+- **interactive** -- for use in the interactive shell
+- **util** -- helpers for both CLI and interactive use
+
+A script developer may wish to include only the **cli** module to avoid sourcing unneeded interactive features. Likewise, a user may load the **interactive** module in their `bashrc` file and not the **cli** module.
+
+A new module may be considered if it poses a use case that is truly unique to the existing ones.
+
+For the package `bar` under module `foo`, a file `foo/bar.sh` should be created under `src` which starts with:
+
+```shell
+# @package: foo/bar
+# Description of the package here
+
+_bb_onfirstload "bb_foo_bar" || return
+
+################################################################################
+# Globals
+################################################################################
+
+################################################################################
+# Functions
+################################################################################
+
+```
+
+Any global variables should go in the _Globals_ section and follow the naming conventions outline in the _Style Guidelines_ section.
+
+Functions go in the _Functions_ section.
+
+After adding a new package, you must add it to the module's `_load.sh` file. For example, in `foo/_load.sh`:
+
+```shell
+source "$BB_ROOT/foo/bar.sh"
+```
+
+### Functions
+
+Function names must be unique across packages _and_ modules! Use `make check` to find collisions.
+
+When creating a function (e.g. `baz`) within a package, follow this convention:
+
+```shell
+# baz [-v VAR] ARGS ...
+# Brief description of the function
+# @arguments:
+# - VAR: variable to store result (if not given, prints to stdout)
+# - ARGS: argument description
+function bb_baz () {
+    _bb_glopts "$@"; set -- "${__bb_args[@]}"
+    # Implement function here
+    # Access function arguments with $@ ($1, $2, ...)
+    # e.g. put result in $result
+    _bb_result "$result"
+}
+```
+
+The header (function contract) above the function is used in the auto-generated manual.
+
+Though not technically needed, the `function` keyword is required for parsing purposes.
+
+Use the boilerplate code
+
+```shell
+_bb_glopts "$@"; set -- "${__bb_args[@]}"
+```
+
+to interpret global function options (`-v`, `-V`, `--`, `-`) and clean up the argument list for use in your function.
+
+If your function returns a value, pass it to the `_bb_result` function, which handles the output based on the global options (i.e., prints to stdout or stores to variable)
+
+### Testing
+
+All functions should be tested in the module's `_test.sh` script. This is exercised with `make test`. See existing tests for examples. The `bb_expect` function is handy for creating such tests.
