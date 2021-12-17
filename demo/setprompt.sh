@@ -12,9 +12,7 @@ bb_addflag n:twoline "Use two-line prompt"
 bb_setprog "${BASH_SOURCE[0]##*/}"
 bb_parseargs "$@"
 
-if [[ ${BASH_SOURCE[0]} == $0 ]]; then
-    bb_fatal "this script must be sourced"
-fi
+bb_issourced || bb_fatal "this script must be sourced"
 
 # Cache TTY_NUM
 TTY_NUM="$(command tty)"
