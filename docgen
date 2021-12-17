@@ -19,10 +19,10 @@ sub formatmd {
     $type = 'text' unless $type;
     $text =~ s/^\s*#\s*//;
     if ($type eq 'package') {
-        print "\n## Package $text\n\n";
+        print "\n# Package $text\n\n";
     }
     elsif ($type eq 'function') {
-        print "\n### \`$text\`\n\n";
+        print "\n## \`$text\`\n\n";
     }
     else {
         if ($text =~ m/^\s*\@arguments:/) {
@@ -113,10 +113,12 @@ sub maketitle {
 
 sub mdtitle {
     my ($version) = @_;
-    print "% BASH-BOOST(1)\n";
-    print "% github.com/tomocafe\n";
+    print "---\n";
+    print "title: BASH-BOOST(1)\n";
+    print "author: github.com/tomocafe\n";
     my $datestr = strftime "%B %-d, %Y", localtime;
-    print "% $datestr\n\n";
+    print "date: $datestr\n";
+    print "---\n\n";
 }
 
 ###
