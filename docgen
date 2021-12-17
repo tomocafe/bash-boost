@@ -3,15 +3,15 @@
 use warnings;
 use strict;
 
+use POSIX qw(strftime);
+
 my $OUTPUT = 'md';
 
 sub formatout {
     if ($OUTPUT eq 'md') {
         formatmd (@_);
     }
-    elsif ($OUTPUT eq 'man') {
-        formatman (@_);
-    }
+    # Note: instead of using this script to output to other formats, use pandoc to convert Markdown to other formats
 }
 
 sub formatmd {
@@ -105,9 +105,28 @@ sub parsefcns {
     close $fd;
 }
 
+sub maketitle {
+    if ($OUTPUT eq 'md') {
+        mdtitle (@_);
+    }
+}
+
+sub mdtitle {
+    my ($version) = @_;
+    print "% BASH-BOOST(1)\n";
+    print "% github.com/tomocafe\n";
+    my $datestr = strftime "%B %-d, %Y", localtime;
+    print "% $datestr\n\n";
+}
+
 ###
 ### Main
 ###
+
+if ($ARGV[0] eq "--title") {
+    my $version = "$ARGV[1]";
+    maketitle $version;
+}
 
 foreach my $fn (sort @ARGV) {
     parsepkg $fn;

@@ -1,3 +1,7 @@
+% BASH-BOOST(1)
+% github.com/tomocafe
+% December 17, 2021
+
 
 ## Package cli/arg
 

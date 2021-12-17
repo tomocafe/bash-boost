@@ -1,4 +1,4 @@
-VERSION=0.10
+VERSION=1.0
 
 TARGET := bash-boost-$(VERSION)
 SRCS := $(shell find src -type f -name "*.sh" | sort)
@@ -27,9 +27,15 @@ test: $(TARGET)/bash-boost.sh $(TARGET)/bash-boost-portable.sh
 
 src/MANUAL.md: $(SRCS) docgen
 	$(RM) $@
+	./docgen --title $(VERSION) > $@
 	for f in $(SRCS); do ./docgen "$$f" >> $@; done
 
-doc: src/MANUAL.md
+src/man/man1/bash-boost.1: src/MANUAL.md
+	$(RM) $@
+	mkdir -p src/man/man1
+	pandoc -s src/MANUAL.md -t man -o $@
+
+doc: src/MANUAL.md src/man/man1/bash-boost.1
 
 check: $(SRCS)
 	@./check $(SRCS)
