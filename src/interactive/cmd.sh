@@ -13,7 +13,7 @@ _bb_onfirstload "bb_interactive_cmd" || return
 # Functions
 ################################################################################
 
-# mcd DIR
+# bb_mcd DIR
 # Make director(ies) and change directory to the last one
 # @arguments:
 # - DIR: usually a single directory to be made, but all arguments are passed to 
@@ -22,7 +22,7 @@ function bb_mcd () {
     command mkdir "$@" && command cd "${@: -1}"
 }
 
-# up [DIR]
+# bb_up [DIR]
 # Change directory up
 # @arguments:
 # - DIR: go to this directory, otherwise defaults to .. if no DIR specified

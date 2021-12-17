@@ -25,7 +25,7 @@ BB_POSARGS=() # remaining (positional) args
 # Functions
 ################################################################################
 
-# addopt [SHORTNAME:]LONGNAME [DESCRIPTION] [DEFAULT]
+# bb_addopt [SHORTNAME:]LONGNAME [DESCRIPTION] [DEFAULT]
 # Adds a command line option to be parsed
 # @arguments:
 # - SHORTNAME: optional single character, e.g. "f" for an -f FOO option
@@ -52,7 +52,7 @@ function bb_addopt () {
     fi
 }
 
-# addflag [SHORTNAME:]LONGNAME [DESCRIPTION]
+# bb_addflag [SHORTNAME:]LONGNAME [DESCRIPTION]
 # Adds a command line flag to be parsed
 # @arguments:
 # - SHORTNAME: optional single character, e.g. "f" for an -f flag
@@ -68,7 +68,7 @@ function bb_addflag () {
     __bb_cli_arg_flags["$longname"]=1
 }
 
-# argusage
+# bb_argusage
 # Print the command line usage string
 function bb_argusage () {
     {
@@ -95,7 +95,7 @@ function bb_argusage () {
     } 1>&2
 }
 
-# arghelp
+# bb_arghelp
 # Print the command line help
 # @notes:
 #   Includes the usage string and a list of flags and options with their
@@ -116,7 +116,7 @@ function bb_arghelp () {
     } 1>&2
 }
 
-# errusage MESSAGE [RETURNVAL]
+# bb_errusage MESSAGE [RETURNVAL]
 # Issues an error message, prints the command usage, and exits the shell
 # @arguments:
 # - MESSAGE: error message to be printed
@@ -127,14 +127,14 @@ function bb_errusage () {
     bb_issourced && return ${2:-1} || exit ${2:-1}
 }
 
-# isflag LONGNAME
+# bb_isflag LONGNAME
 # Check if LONGNAME is a registered flag (not an option)
 # @returns: 0 if LONGNAME is a flag, 1 otherwise (i.e. it is an option)
 function bb_isflag () {
     [[ ${__bb_cli_arg_flags["$1"]+set} ]]
 }
 
-# setprog PROGNAME
+# bb_setprog PROGNAME
 # Sets the name of the program for printing usage and help
 # @arguments:
 # - PROGNAME: name of the program
@@ -142,7 +142,7 @@ function bb_setprog () {
     __bb_cli_arg_progname="$1"
 }
 
-# setpositional NAME DESCRIPTION
+# bb_setpositional NAME DESCRIPTION
 # Sets the name and description of the positional arguments
 # @arguments:
 # - NAME: one-word name of the positional arguments (auto-capitalized)
@@ -152,7 +152,7 @@ function bb_setpositional () {
     __bb_cli_arg_positional_desc="$2"
 }
 
-# parseargs ARGS
+# bb_parseargs ARGS
 # Parses command line arguments after registering valid flags and options
 # @arguments:
 # - ARGS: the list of command line arguments, usually "$@"
@@ -239,7 +239,7 @@ function bb_parseargs () {
     done
 }
 
-# getopt [-v VAR] LONGNAME
+# bb_getopt [-v VAR] LONGNAME
 # Gets the value of option named LONGNAME
 # @arguments:
 # - VAR: variable to store result (if not given, prints to stdout)
@@ -249,7 +249,7 @@ function bb_getopt () {
     _bb_result "${__bb_cli_arg_optvals["$1"]}"
 }
 
-# checkopt LONGNAME
+# bb_checkopt LONGNAME
 # Returns the value of flag named LONGNAME
 # @arguments:
 # - LONGNAME: long name of the flag
@@ -258,7 +258,7 @@ function bb_checkopt () {
     return ${__bb_cli_arg_optvals["$1"]}
 }
 
-# argclear
+# bb_argclear
 # Clears all registered argument parsing settings
 # @notes:
 #   Only one "command" can be registered for parsing at once

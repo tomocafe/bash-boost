@@ -15,7 +15,7 @@ bb_load "util/list"
 # Functions
 ################################################################################
 
-# canonicalize [-v VAR] PATH
+# bb_canonicalize [-v VAR] PATH
 # Resolves . and .. in a given absolute path
 # @arguments:
 # - VAR: variable to store result (if not given, prints to stdout)
@@ -43,7 +43,7 @@ function bb_canonicalize () {
     return $__bb_true
 }
 
-# abspath [-v VAR] TARGET [FROM]
+# bb_abspath [-v VAR] TARGET [FROM]
 # Returns the absolute path from a relative one
 # @arguments:
 # - VAR: variable to store result (if not given, prints to stdout)
@@ -59,7 +59,7 @@ function bb_abspath () {
     _bb_result "$result"
 }
 
-# relpath [-v VAR] TARGET [FROM]
+# bb_relpath [-v VAR] TARGET [FROM]
 # Returns the relative path from a directory to the target
 # @arguments:
 # - VAR: variable to store result (if not given, prints to stdout)
@@ -99,7 +99,7 @@ function bb_relpath () {
     return $__bb_true
 }
 
-# countlines FILENAME ...
+# bb_countlines FILENAME ...
 # Counts the number of lines in a list of files
 # @arguments:
 # - FILENAME: a valid filename
@@ -121,7 +121,7 @@ function bb_countlines () {
     return $__bb_true
 }
 
-# countmatches PATTERN FILENAME ...
+# bb_countmatches PATTERN FILENAME ...
 # Counts the number of matching lines in a list of files
 # @arguments:
 # - PATTERN: a valid bash regular expression

@@ -13,7 +13,7 @@ _bb_onfirstload "bb_util_string" || return
 # Functions
 ################################################################################
 
-# lstrip [-v VAR] TEXT
+# bb_lstrip [-v VAR] TEXT
 # Strips leading (left) whitespace from text
 # @arguments:
 # - VAR: variable to store result (if not given, prints to stdout)
@@ -29,7 +29,7 @@ function bb_lstrip () {
     $resetopt && shopt -u extglob
 }
 
-# rstrip [-v VAR] TEXT
+# bb_rstrip [-v VAR] TEXT
 # Strips trailing (right) whitespace from text
 # @arguments:
 # - VAR: variable to store result (if not given, prints to stdout)
@@ -45,7 +45,7 @@ function bb_rstrip () {
     $resetopt && shopt -u extglob
 }
 
-# strip [-v VAR] TEXT
+# bb_strip [-v VAR] TEXT
 # Strips leading and trailing whitespace from text
 # @arguments:
 # - VAR: variable to store result (if not given, prints to stdout)
@@ -58,7 +58,7 @@ function bb_strip () {
     _bb_result "$stripped"
 }
 
-# snake2camel [-v VAR] TEXT
+# bb_snake2camel [-v VAR] TEXT
 # Converts text from snake to camel case
 # @arguments:
 # - VAR: variable to store result (if not given, prints to stdout)
@@ -89,7 +89,7 @@ function bb_snake2camel () {
     _bb_result "$camel"
 }
 
-# camel2snake [-v VAR] TEXT
+# bb_camel2snake [-v VAR] TEXT
 # Converts text from camel to snake case
 # @arguments:
 # - VAR: variable to store result (if not given, prints to stdout)
@@ -114,7 +114,7 @@ function bb_camel2snake () {
     _bb_result "$snake"
 }
 
-# titlecase [-v VAR] TEXT
+# bb_titlecase [-v VAR] TEXT
 # Converts text into title case (every word capitalized)
 # @arguments:
 # - VAR: variable to store result (if not given, prints to stdout)
@@ -144,7 +144,7 @@ function bb_titlecase () {
     _bb_result "$title"
 }
 
-# sentcase [-v VAR] TEXT
+# bb_sentcase [-v VAR] TEXT
 # Converts text into sentence case (every first word capitalized)
 # @arguments:
 # - VAR: variable to store result (if not given, prints to stdout)
@@ -173,7 +173,7 @@ function bb_sentcase () {
     _bb_result "$sent"
 }
 
-# urlencode [-v VAR] TEXT
+# bb_urlencode [-v VAR] TEXT
 # Performs URL (percent) encoding on the given string
 # @arguments:
 # - VAR: variable to store result (if not given, prints to stdout)
@@ -195,7 +195,7 @@ function bb_urlencode () {
     _bb_result "$encoded"
 }
 
-# urldecode [-v VAR] TEXT
+# bb_urldecode [-v VAR] TEXT
 # Decodes URL-encoded text
 # @arguments:
 # - VAR: variable to store result (if not given, prints to stdout)

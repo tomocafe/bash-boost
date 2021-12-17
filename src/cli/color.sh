@@ -34,7 +34,7 @@ __bb_cli_color_reset='\e[0m'
 # Functions
 ################################################################################
 
-# colorize COLORSTR TEXT
+# bb_colorize COLORSTR TEXT
 # Prints the given text in color if outputting to a terminal
 # @arguments:
 # - COLORSTR: FGCOLOR[_on_[BGCOLOR]] (e.g. red, bright_red, white_on_blue)
@@ -93,7 +93,7 @@ function bb_colorize () {
     return $__bb_true
 }
 
-# rawcolor COLORSTR TEXT
+# bb_rawcolor COLORSTR TEXT
 # Like colorize but always uses prints in color
 # @arguments:
 # - COLORSTR: FGCOLOR[_on_[BGCOLOR]] (e.g. red, bright_red, white_on_blue)
@@ -108,7 +108,7 @@ function bb_rawcolor () {
     unset __bb_cli_color_rawcolor
 }
 
-# colorstrip TEXT
+# bb_colorstrip TEXT
 # Strips ANSI color codes from text colorized by colorize (or rawcolor)
 # @arguments:
 # - TEXT: text possibly with color escape codes to be removed

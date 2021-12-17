@@ -13,7 +13,7 @@ declare -Ag __bb_util_kwargs_dict=()
 # Functions
 ################################################################################
 
-# kwparse KEY=VAL ...
+# bb_kwparse KEY=VAL ...
 # Parses a list of KEY=VAL pairs and stores them into a global dictionary
 # @arguments:
 # - KEY=VAL: a key-value pair separated by =
@@ -31,7 +31,7 @@ function bb_kwparse () {
     return $__bb_true
 }
 
-# kwget [-v VAR] KEY
+# bb_kwget [-v VAR] KEY
 # Gets the value associated with a key stored with kwparse
 # @arguments:
 # - VAR: variable to store result (if not given, prints to stdout)
@@ -41,7 +41,7 @@ function bb_kwget () {
     _bb_result "${__bb_util_kwargs_dict["$1"]}"
 }
 
-# kwclear
+# bb_kwclear
 # Clears the global dictionary
 function bb_kwclear () {
     __bb_util_kwargs_dict=()

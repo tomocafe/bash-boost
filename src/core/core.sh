@@ -17,7 +17,7 @@ __bb_outvars=()
 # Functions
 ################################################################################
 
-# load PKG ...
+# bb_load PKG ...
 # Loads a module or package
 # @arguments:
 # - PKG: either a package (e.g. cli/arg) or a whole module (e.g. cli)
@@ -38,7 +38,7 @@ function bb_load () {
     done
 }
 
-# isloaded PKG
+# bb_isloaded PKG
 # Checks if a package is loaded already
 # @arguments:
 # - PKG: package name in internal format, e.g. bb_cli_arg
@@ -60,7 +60,7 @@ function _bb_onfirstload () {
     return $__bb_true
 }
 
-# debug TEXT
+# bb_debug TEXT
 # Log text when debugging is enabled
 # @arguments:
 # - TEXT: message to be logged in debug mode
@@ -70,7 +70,7 @@ function bb_debug () {
     [[ -n $BB_DEBUG ]] && echo "[bb_debug:$$] $1"
 }
 
-# issourced
+# bb_issourced
 # Check if the script is being sourced
 # @returns: 0 if sourced, 1 otherwise
 function bb_issourced () {
@@ -78,7 +78,7 @@ function bb_issourced () {
     [[ ${BASH_SOURCE[-1]} != $0 ]]
 }
 
-# stacktrace
+# bb_stacktrace
 # Print a stack trace to stderr
 function bb_stacktrace () {
     local -i i
@@ -145,7 +145,7 @@ function _bb_result () {
     esac
 }
 
-# cleanup
+# bb_cleanup
 # Clears all functions and variables defined by bash-boost
 function bb_cleanup () {
     local line

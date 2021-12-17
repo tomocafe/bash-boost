@@ -21,7 +21,7 @@ __bb_interactive_prompt_resetopt=false
 # Functions
 ################################################################################
 
-# loadprompt
+# bb_loadprompt
 # Activates the registered dynamic prompt
 function bb_loadprompt () {
     if [[ ! -o checkwinsize ]]; then
@@ -33,7 +33,7 @@ function bb_loadprompt () {
     export PROMPT_COMMAND="_bb_interactive_prompt_promptimpl"
 }
 
-# unloadprompt
+# bb_unloadprompt
 # Deactivates the registered dynamic prompt
 # @notes:
 #   This will restore the prompt to the state it was in
@@ -48,7 +48,7 @@ function bb_unloadprompt () {
     fi
 }
 
-# setpromptleft FUNCTION ...
+# bb_setpromptleft FUNCTION ...
 # Sets the left prompt to the output of the list of given functions
 # @arguments:
 # - FUNCTION: a function whose stdout output will be added to the prompt
@@ -64,7 +64,7 @@ function bb_setpromptleft () {
     __bb_interactive_prompt_lhs=("$@")
 }
 
-# setpromptright FUNCTION ...
+# bb_setpromptright FUNCTION ...
 # Sets the right prompt to the output of the list of given functions
 # @arguments:
 # - FUNCTION: a function whose stdout output will be added to the prompt
@@ -72,7 +72,7 @@ function bb_setpromptright () {
     __bb_interactive_prompt_rhs=("$@")
 }
 
-# setpromptnextline FUNCTION ...
+# bb_setpromptnextline FUNCTION ...
 # Sets the next line prompt to the output of the list of given functions
 # @arguments:
 # - FUNCTION: a function whose stdout output will be added to the prompt
@@ -80,7 +80,7 @@ function bb_setpromptnextline () {
     __bb_interactive_prompt_nl=("$@")
 }
 
-# setwintitle FUNCTION
+# bb_setwintitle FUNCTION
 # Sets the window title to the output of the list of given functions
 # @arguments:
 # - FUNCTION: a function whose stdout output will used as the window title
@@ -88,7 +88,7 @@ function bb_setwintitle () {
     __bb_interactive_prompt_wintitle="$1"
 }
 
-# settabtitle FUNCTION
+# bb_settabtitle FUNCTION
 # Sets the tab title to the output of the list of given functions
 # @arguments:
 # - FUNCTION: a function whose stdout output will used as the tab title
@@ -98,7 +98,7 @@ function bb_settabtitle () {
     __bb_interactive_prompt_tabtitle="$1"
 }
 
-# promptcolor COLORSTR TEXT
+# bb_promptcolor COLORSTR TEXT
 # Prints text in color, for use specifically in prompts
 # @arguments:
 # - COLORSTR: valid color string, see bb_colorize

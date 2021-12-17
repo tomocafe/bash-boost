@@ -9,7 +9,7 @@ date: December 17, 2021
 
 Routines for parsing command line arguments
 
-## `addopt [SHORTNAME:]LONGNAME [DESCRIPTION] [DEFAULT]`
+## `bb_addopt [SHORTNAME:]LONGNAME [DESCRIPTION] [DEFAULT]`
 
 Adds a command line option to be parsed
 
@@ -25,7 +25,7 @@ Adds a command line option to be parsed
 -h and --help are reserved for automatically-generated
 command usage and help
 
-## `addflag [SHORTNAME:]LONGNAME [DESCRIPTION]`
+## `bb_addflag [SHORTNAME:]LONGNAME [DESCRIPTION]`
 
 Adds a command line flag to be parsed
 
@@ -40,11 +40,11 @@ Adds a command line flag to be parsed
 -h and --help are reserved for automatically-generated
 command usage and help
 
-## `argusage`
+## `bb_argusage`
 
 Print the command line usage string
 
-## `arghelp`
+## `bb_arghelp`
 
 Print the command line help
 
@@ -53,7 +53,7 @@ Print the command line help
 Includes the usage string and a list of flags and options with their
 descrptions.
 
-## `errusage MESSAGE [RETURNVAL]`
+## `bb_errusage MESSAGE [RETURNVAL]`
 
 Issues an error message, prints the command usage, and exits the shell
 
@@ -62,13 +62,13 @@ Issues an error message, prints the command usage, and exits the shell
 - `MESSAGE`: error message to be printed
 - `RETURNVAL`: return code to exit with (defaults to 1)
 
-## `isflag LONGNAME`
+## `bb_isflag LONGNAME`
 
 Check if LONGNAME is a registered flag (not an option)
 
 **Returns:** 0 if LONGNAME is a flag, 1 otherwise (i.e. it is an option)
 
-## `setprog PROGNAME`
+## `bb_setprog PROGNAME`
 
 Sets the name of the program for printing usage and help
 
@@ -76,7 +76,7 @@ Sets the name of the program for printing usage and help
 
 - `PROGNAME`: name of the program
 
-## `setpositional NAME DESCRIPTION`
+## `bb_setpositional NAME DESCRIPTION`
 
 Sets the name and description of the positional arguments
 
@@ -85,7 +85,7 @@ Sets the name and description of the positional arguments
 - `NAME`: one-word name of the positional arguments (auto-capitalized)
 - `DESCRIPTION`: description of the positionals used in help
 
-## `parseargs ARGS`
+## `bb_parseargs ARGS`
 
 Parses command line arguments after registering valid flags and options
 
@@ -100,7 +100,7 @@ Get option setting values with getopt LONGNAME
 Get positional arguments with ${BB_POSARGS[@]} array
 If the last argument is a single dash (-), read remaining arguments from stdin
 
-## `getopt [-v VAR] LONGNAME`
+## `bb_getopt [-v VAR] LONGNAME`
 
 Gets the value of option named LONGNAME
 
@@ -109,7 +109,7 @@ Gets the value of option named LONGNAME
 - `VAR`: variable to store result (if not given, prints to stdout)
 - `LONGNAME`: long name of the option
 
-## `checkopt LONGNAME`
+## `bb_checkopt LONGNAME`
 
 Returns the value of flag named LONGNAME
 
@@ -119,7 +119,7 @@ Returns the value of flag named LONGNAME
 
 **Returns:** the flag value
 
-## `argclear`
+## `bb_argclear`
 
 Clears all registered argument parsing settings
 
@@ -133,7 +133,7 @@ and start a new one
 
 Routines for printing text in color using ANSI escape codes
 
-## `colorize COLORSTR TEXT`
+## `bb_colorize COLORSTR TEXT`
 
 Prints the given text in color if outputting to a terminal
 
@@ -166,7 +166,7 @@ Supported colors:
 
 This does not print a new line at the end of TEXT
 
-## `rawcolor COLORSTR TEXT`
+## `bb_rawcolor COLORSTR TEXT`
 
 Like colorize but always uses prints in color
 
@@ -181,7 +181,7 @@ Use this instead of colorize if you need to still print in color even if
 not connected to a terminal, e.g. when saving the output to a variable.
 See colorize for supported colors
 
-## `colorstrip TEXT`
+## `bb_colorstrip TEXT`
 
 Strips ANSI color codes from text colorized by colorize (or rawcolor)
 
@@ -198,7 +198,7 @@ variants, but not for any generic string with ANSI escape codes.
 
 Routines for handling user input
 
-## `getinput VAR PROMPT`
+## `bb_getinput VAR PROMPT`
 
 Prompts for input and saves the response to VAR
 
@@ -207,7 +207,7 @@ Prompts for input and saves the response to VAR
 - `VAR`: variable to store response into (do not include $)
 - `PROMPT`: text displayed to the user
 
-## `yn PROMPT`
+## `bb_yn PROMPT`
 
 Prompts user to confirm an action by pressing Y
 
@@ -222,7 +222,7 @@ Prompts user to confirm an action by pressing Y
 If you want the user to type "yes", use getinput
 and check their response
 
-## `pause PROMPT`
+## `bb_pause PROMPT`
 
 Prompts user to press a key to continue
 
@@ -235,7 +235,7 @@ Default: Press any key to continue
 
 Messaging routines
 
-## `info MESSAGE`
+## `bb_info MESSAGE`
 
 Prints an informational message to stderr
 
@@ -243,7 +243,7 @@ Prints an informational message to stderr
 
 - `MESSAGE`: message to be printed
 
-## `warn MESSAGE`
+## `bb_warn MESSAGE`
 
 Prints a warning message to stderr
 
@@ -251,7 +251,7 @@ Prints a warning message to stderr
 
 - `MESSAGE`: message to be printed
 
-## `error MESSAGE`
+## `bb_error MESSAGE`
 
 Prints an error message to stderr
 
@@ -259,7 +259,7 @@ Prints an error message to stderr
 
 - `MESSAGE`: message to be printed
 
-## `fatal MESSAGE [RETURNCODE]`
+## `bb_fatal MESSAGE [RETURNCODE]`
 
 Prints an error message to stderr and then exits the shell
 
@@ -268,7 +268,7 @@ Prints an error message to stderr and then exits the shell
 - `MESSAGE`: message to be printed
 - `RETURNCODE`: return code to exit with (defaults to 1)
 
-## `expect VAL1 VAL2 [MESSAGE] [RETURNCODE]`
+## `bb_expect VAL1 VAL2 [MESSAGE] [RETURNCODE]`
 
 Issues a fatal error if two given values are not equal
 
@@ -279,7 +279,7 @@ Issues a fatal error if two given values are not equal
 - `MESSAGE`: optional prefix to the error message
 - `RETURNCODE`: return code to exit with (defaults to 1)
 
-## `expectsubstr VAL1 VAL2 [MESSAGE] [RETURNCODE]`
+## `bb_expectsubstr VAL1 VAL2 [MESSAGE] [RETURNCODE]`
 
 Issues a fatal error if a given substring is not found in some given text
 
@@ -294,7 +294,7 @@ Issues a fatal error if a given substring is not found in some given text
 
 Core routines
 
-## `load PKG ...`
+## `bb_load PKG ...`
 
 Loads a module or package
 
@@ -307,7 +307,7 @@ Loads a module or package
 Each package only loads once; if you happen to load one twice, the second 
 time has no effect
 
-## `isloaded PKG`
+## `bb_isloaded PKG`
 
 Checks if a package is loaded already
 
@@ -317,7 +317,7 @@ Checks if a package is loaded already
 
 **Returns:** 0 if loaded, 1 otherwise
 
-## `debug TEXT`
+## `bb_debug TEXT`
 
 Log text when debugging is enabled
 
@@ -329,17 +329,17 @@ Log text when debugging is enabled
 
 Set environment variable BB_DEBUG to enable debug mode
 
-## `issourced`
+## `bb_issourced`
 
 Check if the script is being sourced
 
 **Returns:** 0 if sourced, 1 otherwise
 
-## `stacktrace`
+## `bb_stacktrace`
 
 Print a stack trace to stderr
 
-## `cleanup`
+## `bb_cleanup`
 
 Clears all functions and variables defined by bash-boost
 
@@ -347,7 +347,7 @@ Clears all functions and variables defined by bash-boost
 
 Miscellaneous interactive commands
 
-## `mcd DIR`
+## `bb_mcd DIR`
 
 Make director(ies) and change directory to the last one
 
@@ -356,7 +356,7 @@ Make director(ies) and change directory to the last one
 - `DIR`: usually a single directory to be made, but all arguments are passed to 
 mkdir and the last argument is then passed to cd if mkdir is successful
 
-## `up [DIR]`
+## `bb_up [DIR]`
 
 Change directory up
 
@@ -375,11 +375,11 @@ the upward directory you want to go to, hit ENTER
 
 Routines for managing a dynamic shell prompt
 
-## `loadprompt`
+## `bb_loadprompt`
 
 Activates the registered dynamic prompt
 
-## `unloadprompt`
+## `bb_unloadprompt`
 
 Deactivates the registered dynamic prompt
 
@@ -388,7 +388,7 @@ Deactivates the registered dynamic prompt
 This will restore the prompt to the state it was in
 when loadprompt was called
 
-## `setpromptleft FUNCTION ...`
+## `bb_setpromptleft FUNCTION ...`
 
 Sets the left prompt to the output of the list of given functions
 
@@ -406,7 +406,7 @@ The prompt areas are as follows:
 +----------------------------------------+
 ```
 
-## `setpromptright FUNCTION ...`
+## `bb_setpromptright FUNCTION ...`
 
 Sets the right prompt to the output of the list of given functions
 
@@ -414,7 +414,7 @@ Sets the right prompt to the output of the list of given functions
 
 - `FUNCTION`: a function whose stdout output will be added to the prompt
 
-## `setpromptnextline FUNCTION ...`
+## `bb_setpromptnextline FUNCTION ...`
 
 Sets the next line prompt to the output of the list of given functions
 
@@ -422,7 +422,7 @@ Sets the next line prompt to the output of the list of given functions
 
 - `FUNCTION`: a function whose stdout output will be added to the prompt
 
-## `setwintitle FUNCTION`
+## `bb_setwintitle FUNCTION`
 
 Sets the window title to the output of the list of given functions
 
@@ -430,7 +430,7 @@ Sets the window title to the output of the list of given functions
 
 - `FUNCTION`: a function whose stdout output will used as the window title
 
-## `settabtitle FUNCTION`
+## `bb_settabtitle FUNCTION`
 
 Sets the tab title to the output of the list of given functions
 
@@ -442,7 +442,7 @@ Sets the tab title to the output of the list of given functions
 
 Not all terminals support this
 
-## `promptcolor COLORSTR TEXT`
+## `bb_promptcolor COLORSTR TEXT`
 
 Prints text in color, for use specifically in prompts
 
@@ -460,7 +460,7 @@ characters which are needed specifically in prompts
 
 Routines for checking and setting environment variables
 
-## `checkset VAR`
+## `bb_checkset VAR`
 
 Check if an environment variable is set or empty
 
@@ -470,7 +470,7 @@ Check if an environment variable is set or empty
 
 **Returns:** 1 if unset, 2 if set but empty, 0 otherwise
 
-## `iscmd COMMAND`
+## `bb_iscmd COMMAND`
 
 Check if COMMAND is a valid command
 
@@ -483,7 +483,7 @@ Check if COMMAND is a valid command
 This could be an executable in your PATH, or a function or
 bash builtin
 
-## `inpath VAR ITEM ...`
+## `bb_inpath VAR ITEM ...`
 
 Checks if items are in the colon-separated path variable VAR
 
@@ -494,7 +494,7 @@ Checks if items are in the colon-separated path variable VAR
 
 **Returns:** 0 if all items are in the path, 1 otherwise
 
-## `prependpath VAR ITEM ...`
+## `bb_prependpath VAR ITEM ...`
 
 Prepends items to the colon-separated path variable VAR
 
@@ -503,7 +503,7 @@ Prepends items to the colon-separated path variable VAR
 - `VAR`: path variable, e.g. PATH (do not use $)
 - `ITEM`: items to add to the path variable
 
-## `appendpath VAR ITEM ...`
+## `bb_appendpath VAR ITEM ...`
 
 Appends items to the colon-separated path variable VAR
 
@@ -512,7 +512,7 @@ Appends items to the colon-separated path variable VAR
 - `VAR`: path variable, e.g. PATH (do not use $)
 - `ITEM`: items to add to the path variable
 
-## `prependpathuniq VAR ITEM ...`
+## `bb_prependpathuniq VAR ITEM ...`
 
 Prepends unique items to the colon-separated path variable VAR
 
@@ -525,7 +525,7 @@ Prepends unique items to the colon-separated path variable VAR
 
 If an item is already in the path, it is not added twice
 
-## `appendpathuniq VAR ITEM ...`
+## `bb_appendpathuniq VAR ITEM ...`
 
 Appends unique items to the colon-separated path variable VAR
 
@@ -538,7 +538,7 @@ Appends unique items to the colon-separated path variable VAR
 
 If an item is already in the path, it is not added twice
 
-## `removefrompath VAR ITEM ...`
+## `bb_removefrompath VAR ITEM ...`
 
 Removes items from the colon-separated path variable VAR
 
@@ -549,7 +549,7 @@ Removes items from the colon-separated path variable VAR
 
 **Returns:** 0 if any item was removed, 1 otherwise
 
-## `swapinpath VAR ITEM1 ITEM2`
+## `bb_swapinpath VAR ITEM1 ITEM2`
 
 Swaps two items in a colon-separated path variable VAR
 
@@ -565,7 +565,7 @@ Swaps two items in a colon-separated path variable VAR
 2 if insufficient arguments were supplied (less than 3)
 3 for internal error
 
-## `printpath VAR [SEP]`
+## `bb_printpath VAR [SEP]`
 
 Prints a path variable separated by SEP, one item per line
 
@@ -578,7 +578,7 @@ Prints a path variable separated by SEP, one item per line
 
 Routines for common file operations
 
-## `canonicalize [-v VAR] PATH`
+## `bb_canonicalize [-v VAR] PATH`
 
 Resolves . and .. in a given absolute path
 
@@ -589,7 +589,7 @@ Resolves . and .. in a given absolute path
 
 **Returns:** 1 if PATH is invalid, 0 otherwise
 
-## `abspath [-v VAR] TARGET [FROM]`
+## `bb_abspath [-v VAR] TARGET [FROM]`
 
 Returns the absolute path from a relative one
 
@@ -600,7 +600,7 @@ Returns the absolute path from a relative one
 - `FROM`: the absolute directory path from which the absolute path is formed
 (Defaults to $PWD)
 
-## `relpath [-v VAR] TARGET [FROM]`
+## `bb_relpath [-v VAR] TARGET [FROM]`
 
 Returns the relative path from a directory to the target
 
@@ -613,7 +613,7 @@ Returns the relative path from a directory to the target
 
 **Returns:** 1 if either TARGET or FROM is invalid, 0 otherwise
 
-## `countlines FILENAME ...`
+## `bb_countlines FILENAME ...`
 
 Counts the number of lines in a list of files
 
@@ -623,7 +623,7 @@ Counts the number of lines in a list of files
 
 **Returns:** 1 if any of the filenames are invalid, 0 otherwise
 
-## `countmatches PATTERN FILENAME ...`
+## `bb_countmatches PATTERN FILENAME ...`
 
 Counts the number of matching lines in a list of files
 
@@ -638,7 +638,7 @@ Counts the number of matching lines in a list of files
 
 Routines for parsing keyword arg strings
 
-## `kwparse KEY=VAL ...`
+## `bb_kwparse KEY=VAL ...`
 
 Parses a list of KEY=VAL pairs and stores them into a global dictionary
 
@@ -652,7 +652,7 @@ Parses a list of KEY=VAL pairs and stores them into a global dictionary
 
 kwparse stores key-value pairs into a single, global dictionary
 
-## `kwget [-v VAR] KEY`
+## `bb_kwget [-v VAR] KEY`
 
 Gets the value associated with a key stored with kwparse
 
@@ -661,7 +661,7 @@ Gets the value associated with a key stored with kwparse
 - `VAR`: variable to store result (if not given, prints to stdout)
 - `KEY`: the key
 
-## `kwclear`
+## `bb_kwclear`
 
 Clears the global dictionary
 
@@ -669,7 +669,7 @@ Clears the global dictionary
 
 Routines for common list operations
 
-## `join [-v VAR] SEP ITEM ...`
+## `bb_join [-v VAR] SEP ITEM ...`
 
 Joins the list of items into a string with the given separator
 
@@ -679,7 +679,7 @@ Joins the list of items into a string with the given separator
 - `SEP`: separator
 - `ITEM`: a list item 
 
-## `split [-V LISTVAR] SEP STR`
+## `bb_split [-V LISTVAR] SEP STR`
 
 Splits a string into a list based on a separator
 
@@ -689,7 +689,7 @@ Splits a string into a list based on a separator
 - `SEP`: separator
 - `STR`: string to split
 
-## `inlist TARGET LIST ...`
+## `bb_inlist TARGET LIST ...`
 
 Checks if a target item exists in a given list
 
@@ -700,7 +700,7 @@ Checks if a target item exists in a given list
 
 **Returns:** 0 if found, 1 otherwise
 
-## `push LISTVAR ITEM`
+## `bb_push LISTVAR ITEM`
 
 Pushes an item to a list (stack)
 
@@ -709,7 +709,7 @@ Pushes an item to a list (stack)
 - `LISTVAR`: name of the list variable (do not include $)
 - `ITEM`: item to push
 
-## `pop LISTVAR`
+## `bb_pop LISTVAR`
 
 Pops an item from a list (stack)
 
@@ -717,7 +717,7 @@ Pops an item from a list (stack)
 
 - `LISTVAR`: name of the list variable (do not include $)
 
-## `unshift LISTVAR ITEM`
+## `bb_unshift LISTVAR ITEM`
 
 Unshifts an item from a list (stack)
 
@@ -726,7 +726,7 @@ Unshifts an item from a list (stack)
 - `LISTVAR`: name of the list variable (do not include $)
 - `ITEM`: item to unshift
 
-## `shift LISTVAR`
+## `bb_shift LISTVAR`
 
 Shifts an item from a list (stack)
 
@@ -734,7 +734,7 @@ Shifts an item from a list (stack)
 
 - `LISTVAR`: name of the list variable (do not include $)
 
-## `sort [-V LISTVAR] ITEM ...`
+## `bb_sort [-V LISTVAR] ITEM ...`
 
 Sorts the items of a list in lexicographic ascending order
 
@@ -743,7 +743,7 @@ Sorts the items of a list in lexicographic ascending order
 - `LISTVAR`: list variable to store result (if not given, prints to stdout)
 - `ITEM`: a list item
 
-## `sortdesc [-V LISTVAR] ITEM ...`
+## `bb_sortdesc [-V LISTVAR] ITEM ...`
 
 Sorts the items of a list in lexicographic descending order
 
@@ -752,7 +752,7 @@ Sorts the items of a list in lexicographic descending order
 - `LISTVAR`: list variable to store result (if not given, prints to stdout)
 - `ITEM`: a list item
 
-## `sortnums [-V LISTVAR] ITEM ...`
+## `bb_sortnums [-V LISTVAR] ITEM ...`
 
 Sorts the items of a list in numerical ascending order
 
@@ -761,7 +761,7 @@ Sorts the items of a list in numerical ascending order
 - `LISTVAR`: list variable to store result (if not given, prints to stdout)
 - `ITEM`: a list item
 
-## `sortnumsdesc [-V LISTVAR] ITEM ...`
+## `bb_sortnumsdesc [-V LISTVAR] ITEM ...`
 
 Sorts the items of a list in numerical descending order
 
@@ -770,7 +770,7 @@ Sorts the items of a list in numerical descending order
 - `LISTVAR`: list variable to store result (if not given, prints to stdout)
 - `ITEM`: a list item
 
-## `sorthuman [-V LISTVAR] ITEM ...`
+## `bb_sorthuman [-V LISTVAR] ITEM ...`
 
 Sorts the items of a list in human-readable ascending order
 
@@ -783,7 +783,7 @@ Sorts the items of a list in human-readable ascending order
 
 Human readable, e.g., 1K, 2M, 3G
 
-## `sorthumandesc [-V LISTVAR] ITEM ...`
+## `bb_sorthumandesc [-V LISTVAR] ITEM ...`
 
 Sorts the items of a list in human-readable descending order
 
@@ -796,7 +796,7 @@ Sorts the items of a list in human-readable descending order
 
 Human readable, e.g., 1K, 2M, 3G
 
-## `uniq [-V LISTVAR] ITEM ...`
+## `bb_uniq [-V LISTVAR] ITEM ...`
 
 Filters an unsorted list to include only unique items
 
@@ -805,7 +805,7 @@ Filters an unsorted list to include only unique items
 - `LISTVAR`: list variable to store result (if not given, prints to stdout)
 - `ITEM`: a list item
 
-## `uniqsorted [-V LISTVAR] ITEM ...`
+## `bb_uniqsorted [-V LISTVAR] ITEM ...`
 
 Filters an sorted list to include only unique items
 
@@ -822,7 +822,7 @@ Faster than uniq, but requires the list to be pre-sorted
 
 Routines for common math operations
 
-## `sum [-v VAR] NUM ...`
+## `bb_sum [-v VAR] NUM ...`
 
 Returns the sum of the given numbers
 
@@ -831,7 +831,7 @@ Returns the sum of the given numbers
 - `VAR`: variable to store result (if not given, prints to stdout)
 - `NUM`: a valid number
 
-## `min [-v VAR] NUM ...`
+## `bb_min [-v VAR] NUM ...`
 
 Returns the minimum of the given numbers
 
@@ -840,7 +840,7 @@ Returns the minimum of the given numbers
 - `VAR`: variable to store result (if not given, prints to stdout)
 - `NUM`: a valid number
 
-## `max [-v VAR] NUM ...`
+## `bb_max [-v VAR] NUM ...`
 
 Returns the maximum of the given numbers
 
@@ -849,7 +849,7 @@ Returns the maximum of the given numbers
 - `VAR`: variable to store result (if not given, prints to stdout)
 - `NUM`: a valid number
 
-## `abs [-v VAR] NUM`
+## `bb_abs [-v VAR] NUM`
 
 Returns the absolute value of a given number
 
@@ -858,7 +858,7 @@ Returns the absolute value of a given number
 - `VAR`: variable to store result (if not given, prints to stdout)
 - `NUM`: a valid number
 
-## `isint NUM ...`
+## `bb_isint NUM ...`
 
 Checks if all the given numbers are valid integers
 
@@ -868,7 +868,7 @@ Checks if all the given numbers are valid integers
 
 **Returns:** 0 if all arguments are integers, 1 otherwise
 
-## `hex2dec [-V LISTVAR] NUM ...`
+## `bb_hex2dec [-V LISTVAR] NUM ...`
 
 Converts numbers from hexademical (base 16) to decimal (base 10)
 
@@ -879,7 +879,7 @@ Converts numbers from hexademical (base 16) to decimal (base 10)
 
 **Returns:** 1 if any number is invalid hexadecimal, 0 otherwise
 
-## `dec2hex [-V LISTVAR] NUM ...`
+## `bb_dec2hex [-V LISTVAR] NUM ...`
 
 Converts numbers from decimal (base 10) to hexademical (base 16)
 
@@ -890,7 +890,7 @@ Converts numbers from decimal (base 10) to hexademical (base 16)
 
 **Returns:** 1 if any number is invalid decimal, 0 otherwise
 
-## `oct2dec [-V LISTVAR] NUM ...`
+## `bb_oct2dec [-V LISTVAR] NUM ...`
 
 Converts numbers from octal (base 8) to decimal (base 10)
 
@@ -901,7 +901,7 @@ Converts numbers from octal (base 8) to decimal (base 10)
 
 **Returns:** 1 if any number is invalid octal, 0 otherwise
 
-## `dec2oct [-V LISTVAR] NUM ...`
+## `bb_dec2oct [-V LISTVAR] NUM ...`
 
 Converts numbers from decimal (base 10) to octal (base 8)
 
@@ -916,7 +916,7 @@ Converts numbers from decimal (base 10) to octal (base 8)
 
 Routines for runtime profiling of bash scripts
 
-## `startprof LOGFILE`
+## `bb_startprof LOGFILE`
 
 Starts runtime profiling
 
@@ -929,7 +929,7 @@ Default: TMPDIR/bbprof.PID.out
 
 Use the bbprof-read utility script to parse and analyze profile data
 
-## `stopprof`
+## `bb_stopprof`
 
 Stops runtime profiling
 
@@ -937,7 +937,7 @@ Stops runtime profiling
 
 Routines for common string operations
 
-## `lstrip [-v VAR] TEXT`
+## `bb_lstrip [-v VAR] TEXT`
 
 Strips leading (left) whitespace from text
 
@@ -946,7 +946,7 @@ Strips leading (left) whitespace from text
 - `VAR`: variable to store result (if not given, prints to stdout)
 - `TEXT`: text to strip whitespace from
 
-## `rstrip [-v VAR] TEXT`
+## `bb_rstrip [-v VAR] TEXT`
 
 Strips trailing (right) whitespace from text
 
@@ -955,7 +955,7 @@ Strips trailing (right) whitespace from text
 - `VAR`: variable to store result (if not given, prints to stdout)
 - `TEXT`: text to strip whitespace from
 
-## `strip [-v VAR] TEXT`
+## `bb_strip [-v VAR] TEXT`
 
 Strips leading and trailing whitespace from text
 
@@ -964,7 +964,7 @@ Strips leading and trailing whitespace from text
 - `VAR`: variable to store result (if not given, prints to stdout)
 - `TEXT`: text to strip whitespace from
 
-## `snake2camel [-v VAR] TEXT`
+## `bb_snake2camel [-v VAR] TEXT`
 
 Converts text from snake to camel case
 
@@ -977,7 +977,7 @@ Converts text from snake to camel case
 
 Leading underscores are preserved
 
-## `camel2snake [-v VAR] TEXT`
+## `bb_camel2snake [-v VAR] TEXT`
 
 Converts text from camel to snake case
 
@@ -986,7 +986,7 @@ Converts text from camel to snake case
 - `VAR`: variable to store result (if not given, prints to stdout)
 - `TEXT`: text in camel case
 
-## `titlecase [-v VAR] TEXT`
+## `bb_titlecase [-v VAR] TEXT`
 
 Converts text into title case (every word capitalized)
 
@@ -1000,7 +1000,7 @@ Converts text into title case (every word capitalized)
 This does not check the content of the words itself and may not
 respect grammatical rules, e.g. "And" will be capitalized
 
-## `sentcase [-v VAR] TEXT`
+## `bb_sentcase [-v VAR] TEXT`
 
 Converts text into sentence case (every first word capitalized)
 
@@ -1009,7 +1009,7 @@ Converts text into sentence case (every first word capitalized)
 - `VAR`: variable to store result (if not given, prints to stdout)
 - `TEXT`: text to transform
 
-## `urlencode [-v VAR] TEXT`
+## `bb_urlencode [-v VAR] TEXT`
 
 Performs URL (percent) encoding on the given string
 
@@ -1018,7 +1018,7 @@ Performs URL (percent) encoding on the given string
 - `VAR`: variable to store result (if not given, prints to stdout)
 - `TEXT`: text to be encoded
 
-## `urldecode [-v VAR] TEXT`
+## `bb_urldecode [-v VAR] TEXT`
 
 Decodes URL-encoded text
 
@@ -1033,7 +1033,7 @@ Decodes URL-encoded text
 
 Routines for common time and date operations
 
-## `now [OFFSET ...]`
+## `bb_now [OFFSET ...]`
 
 Returns a timestamp relative to the current time (in seconds after epoch)
 
@@ -1051,7 +1051,7 @@ h: hours
 d: days
 w: weeks
 
-## `timefmt FORMAT [TIMESTAMP]`
+## `bb_timefmt FORMAT [TIMESTAMP]`
 
 Formats a timestamp into a desired date format
 

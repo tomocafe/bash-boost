@@ -13,7 +13,7 @@ _bb_onfirstload "bb_cli_input" || return
 # Functions
 ################################################################################
 
-# getinput VAR PROMPT
+# bb_getinput VAR PROMPT
 # Prompts for input and saves the response to VAR
 # @arguments:
 # - VAR: variable to store response into (do not include $)
@@ -22,7 +22,7 @@ function bb_getinput () {
     eval "read -r -p \"${2% }${2:+ }$PS2\" $1"
 }
 
-# yn PROMPT
+# bb_yn PROMPT
 # Prompts user to confirm an action by pressing Y
 # @arguments:
 # - PROMPT: text displayed to the user
@@ -36,7 +36,7 @@ function bb_yn () {
     [[ $resp =~ [Yy] ]]
 }
 
-# pause PROMPT
+# bb_pause PROMPT
 # Prompts user to press a key to continue
 # @arguments:
 # - PROMPT: text displayed to the user

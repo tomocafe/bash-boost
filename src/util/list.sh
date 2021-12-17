@@ -13,7 +13,7 @@ _bb_onfirstload "bb_util_list" || return
 # Functions
 ################################################################################
 
-# join [-v VAR] SEP ITEM ...
+# bb_join [-v VAR] SEP ITEM ...
 # Joins the list of items into a string with the given separator
 # @arguments:
 # - VAR: variable to store result (if not given, prints to stdout)
@@ -26,7 +26,7 @@ function bb_join () {
     _bb_result "$*"
 }
 
-# split [-V LISTVAR] SEP STR
+# bb_split [-V LISTVAR] SEP STR
 # Splits a string into a list based on a separator
 # @arguments:
 # - LISTVAR: list variable to store result (if not given, prints to stdout)
@@ -45,7 +45,7 @@ function bb_split () {
     IFS=' ' _bb_result "${arr[@]}"
 }
 
-# inlist TARGET LIST ...
+# bb_inlist TARGET LIST ...
 # Checks if a target item exists in a given list
 # @arguments:
 # - TARGET: the search target
@@ -61,7 +61,7 @@ function bb_inlist () {
     return $__bb_false
 }
 
-# push LISTVAR ITEM
+# bb_push LISTVAR ITEM
 # Pushes an item to a list (stack)
 # @arguments:
 # - LISTVAR: name of the list variable (do not include $)
@@ -70,7 +70,7 @@ function bb_push () {
     eval "$1=("\${$1[@]}" "$2")"
 }
 
-# pop LISTVAR
+# bb_pop LISTVAR
 # Pops an item from a list (stack)
 # @arguments:
 # - LISTVAR: name of the list variable (do not include $)
@@ -78,7 +78,7 @@ function bb_pop () {
     eval "unset $1[-1]"
 }
 
-# unshift LISTVAR ITEM
+# bb_unshift LISTVAR ITEM
 # Unshifts an item from a list (stack)
 # @arguments:
 # - LISTVAR: name of the list variable (do not include $)
@@ -87,7 +87,7 @@ function bb_unshift () {
     eval "$1=("$2" "\${$1[@]}")"
 }
 
-# shift LISTVAR
+# bb_shift LISTVAR
 # Shifts an item from a list (stack)
 # @arguments:
 # - LISTVAR: name of the list variable (do not include $)
@@ -103,7 +103,7 @@ function _bb_util_list_base_sort () {
     _bb_result "${sorted[@]}"
 }
 
-# sort [-V LISTVAR] ITEM ...
+# bb_sort [-V LISTVAR] ITEM ...
 # Sorts the items of a list in lexicographic ascending order
 # @arguments:
 # - LISTVAR: list variable to store result (if not given, prints to stdout)
@@ -112,7 +112,7 @@ function bb_sort () {
     _bb_util_list_base_sort "$@"
 }
 
-# sortdesc [-V LISTVAR] ITEM ...
+# bb_sortdesc [-V LISTVAR] ITEM ...
 # Sorts the items of a list in lexicographic descending order
 # @arguments:
 # - LISTVAR: list variable to store result (if not given, prints to stdout)
@@ -123,7 +123,7 @@ function bb_sortdesc () {
     unset __bb_util_list_sort_opts
 }
 
-# sortnums [-V LISTVAR] ITEM ...
+# bb_sortnums [-V LISTVAR] ITEM ...
 # Sorts the items of a list in numerical ascending order
 # @arguments:
 # - LISTVAR: list variable to store result (if not given, prints to stdout)
@@ -134,7 +134,7 @@ function bb_sortnums () {
     unset __bb_util_list_sort_opts
 }
 
-# sortnumsdesc [-V LISTVAR] ITEM ...
+# bb_sortnumsdesc [-V LISTVAR] ITEM ...
 # Sorts the items of a list in numerical descending order
 # @arguments:
 # - LISTVAR: list variable to store result (if not given, prints to stdout)
@@ -145,7 +145,7 @@ function bb_sortnumsdesc () {
     unset __bb_util_list_sort_opts
 }
 
-# sorthuman [-V LISTVAR] ITEM ...
+# bb_sorthuman [-V LISTVAR] ITEM ...
 # Sorts the items of a list in human-readable ascending order
 # @arguments:
 # - LISTVAR: list variable to store result (if not given, prints to stdout)
@@ -158,7 +158,7 @@ function bb_sorthuman () {
     unset __bb_util_list_sort_opts
 }
 
-# sorthumandesc [-V LISTVAR] ITEM ...
+# bb_sorthumandesc [-V LISTVAR] ITEM ...
 # Sorts the items of a list in human-readable descending order
 # @arguments:
 # - LISTVAR: list variable to store result (if not given, prints to stdout)
@@ -171,7 +171,7 @@ function bb_sorthumandesc () {
     unset __bb_util_list_sort_opts
 }
 
-# uniq [-V LISTVAR] ITEM ...
+# bb_uniq [-V LISTVAR] ITEM ...
 # Filters an unsorted list to include only unique items
 # @arguments:
 # - LISTVAR: list variable to store result (if not given, prints to stdout)
@@ -190,7 +190,7 @@ function bb_uniq () {
     _bb_result "${dedup[@]}"
 }
 
-# uniqsorted [-V LISTVAR] ITEM ...
+# bb_uniqsorted [-V LISTVAR] ITEM ...
 # Filters an sorted list to include only unique items
 # @arguments:
 # - LISTVAR: list variable to store result (if not given, prints to stdout)
