@@ -13,11 +13,42 @@ For examples and further details, see [CONTRIBUTING.md](CONTRIBUTING.md)
 
 ## Requirements
 
-`bash` 4.x or later
+`bash` 4.x or later.
+
+This has only been tested for Linux. YMMV for other platforms.
 
 ## Installation
 
-TO DO
+### From release tarball (recommended)
+
+Download and extract the [latest release](https://github.com/tomocafe/bash-boost/releases), then follow the instructions in the Usage section.
+
+### From `git`
+
+Clone this repository and run `make`. For man page generation, `pandoc` is required.
+
+## Usage
+
+Source the `bash-boost.sh` script and use `bb_load` to load modules and/or packages
+
+```bash
+source /path/to/bash-boost.sh
+
+bb_load MODULE      # e.g. cli
+bb_load MODULE/PKG  # e.g. cli/arg
+```
+
+Alternatively, you can list modules and packages to load by argument when sourcing `bash-boost.sh`:
+
+```bash
+source /path/to/bash-boost.sh MODULE MODULE/PKG ...
+```
+
+If you want to distribute bash-boost as a single file, you can use `bash-boost-portable.sh` and all modules and packages will be available for use. Please use proper attribution if distributing bash-boost. See [LICENSE](LICENSE) for details.
+
+```bash
+source /path/to/bash-boost-portable.sh
+```
 
 ## Organization
 
@@ -42,29 +73,6 @@ bash-boost consists of the following _modules_, each with different _packages_
   - [time](src/util/time.sh) - common time and date operations
 
 You have the choice of loading an entire module, or select certain packages from them.
-
-## Usage
-
-Source the `bash-boost.sh` script and use `bb_load` to load modules and/or packages
-
-```bash
-source /path/to/bash-boost.sh
-
-bb_load MODULE      # e.g. cli
-bb_load MODULE/PKG  # e.g. cli/arg
-```
-
-Alternatively, you can list modules and packages to load by argument when sourcing `bash-boost.sh`:
-
-```bash
-source /path/to/bash-boost.sh MODULE MODULE/PKG ...
-```
-
-If you want to distribute bash-boost as a single file, you can use `bash-boost-portable.sh` and all modules and packages will be available for use. Please use proper attribution if distributing bash-boost. See [LICENSE](LICENSE) for details.
-
-```bash
-source /path/to/bash-boost-portable.sh
-```
 
 ## Documentation
 
