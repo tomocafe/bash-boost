@@ -182,6 +182,6 @@ function _bb_interactive_prompt_promptimpl () {
     PS1+="${nextline}"
 
     # Clean up
-    unset BB_PROMPT_RC # important!
+    unset BB_PROMPT_LASTRC
     unset BB_PROMPT_REM
 }
