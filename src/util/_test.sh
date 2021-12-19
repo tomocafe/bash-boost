@@ -134,6 +134,17 @@ bb_expect "$(bb_countlines "$__bb_tmp_file")" "5"
 bb_expect "$(bb_countmatches 'o' "$__bb_tmp_file")" "3"
 bb_expect "$(bb_countmatches '^...$' "$__bb_tmp_file")" "3"
 
+checkfile () {
+    [[ -e "$1" ]]; echo "$?"
+}
+
+bb_extpush "ext" "$__bb_tmp_file"
+bb_expect "$(checkfile "$__bb_tmp_file.ext")" "$__bb_true"
+bb_expect "$(checkfile "$__bb_tmp_file")" "$__bb_false"
+bb_extpop "$__bb_tmp_file.ext"
+bb_expect "$(checkfile "$__bb_tmp_file.ext")" "$__bb_false"
+bb_expect "$(checkfile "$__bb_tmp_file")" "$__bb_true"
+
 rm -f "$__bb_tmp_file"
 unset __bb_tmp_file
 

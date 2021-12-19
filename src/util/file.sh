@@ -4,6 +4,7 @@
 _bb_onfirstload "bb_util_file" || return
 
 bb_load "util/list"
+bb_load "util/env"
 
 ################################################################################
 # Globals
@@ -141,4 +142,43 @@ function bb_countmatches () {
     unset -f _bb_util_file_grep
     _bb_result "$result"
     return $rc
+}
+
+# bb_extpush EXT FILENAME ...
+# Adds the file extension EXT to all given files
+# @arguments:
+# - EXT: the file extension
+# - FILENAME: a valid filename
+function bb_extpush () {
+    local ext="$1"; shift;
+    bb_checkset ext || return
+    local f
+    for f in "$@"; do
+        mv "$f" "$f.$ext"
+    done
+}
+
+# bb_extpop FILENAME ...
+# Removes the last file extension from the given files
+# @arguments:
+# - FILENAME: a valid filename
+function bb_extpop () {
+    local f
+    for f in "$@"; do
+        local new="${f%.*}"
+        [[ $f == $new ]] || mv "$f" "$new"
+    done
+}
+
+# bb_hardcopy FILENAME ...
+# Replaces symbolic links with deep copies
+# @arguments:
+# - FILENAME: a valid symbolic link
+function bb_hardcopy () {
+    local f
+    for f in "$@"; do
+        [[ -L "$f" ]] || continue
+        local real="$(readlink -f "$f")"
+        unlink "$f" && cp -r "$real" "$f"
+    done
 }

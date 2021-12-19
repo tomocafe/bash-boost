@@ -6,6 +6,7 @@ SRCS := $(shell find src -type f -name "*.sh" | sort)
 $(TARGET): check doc $(SRCS) flatten
 	$(RM) -r $@
 	cp -r src $@
+	cp -r bin $@
 	cp LICENSE $@
 	m4 -DM4_VERSION=$(VERSION) $@/bash-boost.sh.m4 > $@/bash-boost.sh
 	$(RM) $@/bash-boost.sh.m4

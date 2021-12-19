@@ -624,6 +624,29 @@ Counts the number of matching lines in a list of files
 \f[C]FILENAME\f[R]: a valid filename
 .PP
 \f[B]Returns:\f[R] 1 if any of the filenames are invalid, 0 otherwise
+.SS \f[C]bb_extpush EXT FILENAME ...\f[R]
+.PP
+Adds the file extension EXT to all given files
+.PP
+\f[B]Arguments:\f[R]
+.IP \[bu] 2
+\f[C]EXT\f[R]: the file extension
+.IP \[bu] 2
+\f[C]FILENAME\f[R]: a valid filename
+.SS \f[C]bb_extpop FILENAME ...\f[R]
+.PP
+Removes the last file extension from the given files
+.PP
+\f[B]Arguments:\f[R]
+.IP \[bu] 2
+\f[C]FILENAME\f[R]: a valid filename
+.SS \f[C]bb_hardcopy FILENAME ...\f[R]
+.PP
+Replaces symbolic links with deep copies
+.PP
+\f[B]Arguments:\f[R]
+.IP \[bu] 2
+\f[C]FILENAME\f[R]: a valid symbolic link
 .SH Package util/kwargs
 .PP
 Routines for parsing keyword arg strings

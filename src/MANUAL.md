@@ -650,6 +650,31 @@ Counts the number of matching lines in a list of files
 
 **Returns:** 1 if any of the filenames are invalid, 0 otherwise
 
+## `bb_extpush EXT FILENAME ...`
+
+Adds the file extension EXT to all given files
+
+**Arguments:**
+
+- `EXT`: the file extension
+- `FILENAME`: a valid filename
+
+## `bb_extpop FILENAME ...`
+
+Removes the last file extension from the given files
+
+**Arguments:**
+
+- `FILENAME`: a valid filename
+
+## `bb_hardcopy FILENAME ...`
+
+Replaces symbolic links with deep copies
+
+**Arguments:**
+
+- `FILENAME`: a valid symbolic link
+
 # Package util/kwargs
 
 Routines for parsing keyword arg strings
