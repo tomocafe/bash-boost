@@ -3,6 +3,8 @@
 
 _bb_onfirstload "bb_interactive_cmd" || return
 
+bb_load "util/env"
+
 ################################################################################
 # Globals
 ################################################################################
@@ -49,3 +51,24 @@ function _bb_interactive_cmd_up_completion () {
     fi
 }
 complete -o nospace -F _bb_interactive_cmd_up_completion bb_up
+
+# bb_forkterm [ARGS ...]
+# Spawn a new terminal instance inheriting from this shell's environment
+# @arguments:
+# - ARGS: arguments to be appended to the terminal launch command
+# @notes:
+#   Uses the BB_TERMINAL or TERMINAL environment variable as the command
+#   to launch the new terminal instance. Sets the BB_FORKDIR variable
+#   for the spawned shell to read. In your shell init file, you can 
+#   detect when this variable is set and change to this directory, if
+#   desired.
+function bb_forkterm () {
+    local cmd="${BB_TERMINAL:-$TERMINAL}"
+    bb_checkset cmd || return $__bb_false
+    local args=( $cmd )
+    bb_iscmd "${args[0]}" || return $__bb_false
+    # Putting this in a (temporary) subshell silences the job messages
+    # from spawning a background process
+    ( BB_FORKDIR=$PWD "${args[@]}" $@ &>/dev/null & )
+}
+

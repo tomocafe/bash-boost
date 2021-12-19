@@ -1,7 +1,7 @@
 ---
 title: BASH-BOOST(1)
 author: github.com/tomocafe
-date: December 17, 2021
+date: December 19, 2021
 ---
 
 
@@ -370,6 +370,22 @@ Most useful with the associated command completion. After pressing TAB,
 the current working directory is populated, and with each further TAB,
 a directory is removed, moving you up the directory stack. Once you see
 the upward directory you want to go to, hit ENTER
+
+## `bb_forkterm [ARGS ...]`
+
+Spawn a new terminal instance inheriting from this shell's environment
+
+**Arguments:**
+
+- `ARGS`: arguments to be appended to the terminal launch command
+
+**Notes:**
+
+Uses the BB_TERMINAL or TERMINAL environment variable as the command
+to launch the new terminal instance. Sets the BB_FORKDIR variable
+for the spawned shell to read. In your shell init file, you can 
+detect when this variable is set and change to this directory, if
+desired.
 
 # Package interactive/prompt
 
