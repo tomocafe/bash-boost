@@ -124,11 +124,11 @@ function _bb_interactive_prompt_promptimpl () {
 
     # Set window title, tab title
     if [[ -n "${__bb_interactive_prompt_wintitle}" ]]; then
-        text="$(__bb_interactive_prompt_wintitle)"
+        text="$($__bb_interactive_prompt_wintitle)"
         echo -ne "\033]0;${text}\007"
     fi
     if [[ -n "${__bb_interactive_prompt_tabtitle}" ]]; then
-        text="$(__bb_interactive_prompt_tabtitle)"
+        text="$($__bb_interactive_prompt_tabtitle)"
         echo -ne "\033]30;${text}\007"
     fi
 
