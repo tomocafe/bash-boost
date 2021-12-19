@@ -10,8 +10,10 @@ $(TARGET): check doc $(SRCS) flatten
 	m4 -DM4_VERSION=$(VERSION) $@/bash-boost.sh.m4 > $@/bash-boost.sh
 	$(RM) $@/bash-boost.sh.m4
 	./flatten $@
+	$(RM) ./latest
+	ln -s $(TARGET) latest
 
-release: bash-boost-$(VERSION).tar.gz
+release: $(TARGET).tar.gz
 
 $(TARGET).tar.gz: $(TARGET)
 	tar czvf $@ $<
@@ -20,6 +22,7 @@ clean:
 	$(RM)    src/MANUAL.md
 	$(RM) -r $(TARGET)
 	$(RM)    $(TARGET).tar.gz
+	$(RM)    latest
 
 test: $(TARGET)/bash-boost.sh $(TARGET)/bash-boost-portable.sh
 	@./test
