@@ -80,7 +80,7 @@ function bb_colorize () {
             return $__bb_false
         fi
         (( colorcode += 40 ))
-        prefix+="\e[${colorcode}m"
+        prefix+="${__bb_cli_color_escapeprompt+\[}\e[${colorcode}m${__bb_cli_color_escapeprompt+\]}"
     fi
     colorcode=${__bb_cli_color_code["$fgcolor"]}
     if [[ -z "$colorcode" ]]; then
@@ -89,7 +89,8 @@ function bb_colorize () {
     fi
     (( colorcode += 30 ))
     prefix+="${__bb_cli_color_escapeprompt+\[}\e[${colorcode}m${__bb_cli_color_escapeprompt+\]}"
-    printf -- '%b%s%b' "$prefix" "$text" "${__bb_cli_color_escapeprompt+\[}$__bb_cli_color_reset${__bb_cli_color_escapeprompt+\]}"
+    local reset="${__bb_cli_color_escapeprompt+\[}$__bb_cli_color_reset${__bb_cli_color_escapeprompt+\]}"
+    printf -- '%b%s%b' "$prefix" "$text" "$reset"
     return $__bb_true
 }
 
