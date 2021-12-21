@@ -52,7 +52,7 @@ if [[ ${BASH_VERSINFO:-0} -lt 4 ]]; then
     return 1
 fi
 
-BB_ROOT="$(dirname "${BASH_SOURCE[0]}")"
+BB_ROOT="$(readlink -f "$(dirname "${BASH_SOURCE[0]}")")"
 # flatten-begin-exclude
 
 # Load the core
