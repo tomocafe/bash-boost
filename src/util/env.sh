@@ -20,8 +20,8 @@ _bb_onfirstload "bb_util_env" || return
 # @returns: 1 if unset, 2 if set but empty, 0 otherwise
 function bb_checkset () {
     local v="$1"
-    eval test -z \${$v+x} && return 1 # unset
-    eval test -z \${$v}   && return 2 # set, but empty
+    eval test -z \"\${$v+x}\" && return 1 # unset
+    eval test -z \"\${$v}\"   && return 2 # set, but empty
     return 0
 }
 
