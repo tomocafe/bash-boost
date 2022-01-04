@@ -61,13 +61,14 @@ function bb_inlist () {
     return $__bb_false
 }
 
-# bb_push LISTVAR ITEM
+# bb_push LISTVAR ITEM ...
 # Pushes an item to a list (stack)
 # @arguments:
 # - LISTVAR: name of the list variable (do not include $)
 # - ITEM: item to push
 function bb_push () {
-    eval "$1=("\${$1[@]}" "$2")"
+    local v="$1"; shift
+    eval "$v=("\${$v[@]}" "$@")"
 }
 
 # bb_pop LISTVAR
@@ -75,16 +76,17 @@ function bb_push () {
 # @arguments:
 # - LISTVAR: name of the list variable (do not include $)
 function bb_pop () {
-    eval "unset $1[-1]"
+    eval "[[ \${#$1[@]} -gt 0 ]] && unset $1[\${#$1[@]}-1]" # negative array index requires bash 4.3+
 }
 
-# bb_unshift LISTVAR ITEM
+# bb_unshift LISTVAR ITEM ...
 # Unshifts an item from a list (stack)
 # @arguments:
 # - LISTVAR: name of the list variable (do not include $)
 # - ITEM: item to unshift
 function bb_unshift () {
-    eval "$1=("$2" "\${$1[@]}")"
+    local v="$1"; shift
+    eval "$v=("$@" "\${$v[@]}")"
 }
 
 # bb_shift LISTVAR
@@ -92,7 +94,7 @@ function bb_unshift () {
 # @arguments:
 # - LISTVAR: name of the list variable (do not include $)
 function bb_shift () {
-    eval "unset $1[0]"
+    eval "[[ \${#$1[@]} -gt 0 ]] && unset $1[0]"
 }
 
 function _bb_util_list_base_sort () {

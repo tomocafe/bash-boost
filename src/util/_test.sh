@@ -82,8 +82,7 @@ bb_inlist "NOT_IN_LIST" "${__bb_tmp_list[@]}"
 bb_expect "$?" "$__bb_false" "inlist NOT_IN_LIST"
 
 __bb_tmp_list=()
-bb_push "__bb_tmp_list" "aa"
-bb_push "__bb_tmp_list" "bb"
+bb_push "__bb_tmp_list" "aa" "bb"
 bb_unshift "__bb_tmp_list" "cc"
 bb_expect "${__bb_tmp_list[*]}" "cc aa bb"
 bb_pop "__bb_tmp_list"

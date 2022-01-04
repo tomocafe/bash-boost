@@ -741,7 +741,7 @@ Checks if a target item exists in a given list
 
 **Returns:** 0 if found, 1 otherwise
 
-## `bb_push LISTVAR ITEM`
+## `bb_push LISTVAR ITEM ...`
 
 Pushes an item to a list (stack)
 
@@ -758,7 +758,7 @@ Pops an item from a list (stack)
 
 - `LISTVAR`: name of the list variable (do not include $)
 
-## `bb_unshift LISTVAR ITEM`
+## `bb_unshift LISTVAR ITEM ...`
 
 Unshifts an item from a list (stack)
 
