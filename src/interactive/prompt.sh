@@ -140,13 +140,10 @@ function _bb_interactive_prompt_promptimpl () {
         lhs+="$raw"
         (( BB_PROMPT_REM -= ${#text} ))
     done # for block
-
-    # Left-only: stop here, no new line
     PS1="${lhs}"
-    [[ -z "${__bb_interactive_prompt_rhs+1}" ]] && return
 
-    # Left and right side: full line prompt
-    PS1="\r${PS1}"
+    # Right side: carriage return
+    [[ -n "${__bb_interactive_prompt_rhs+1}" ]] && PS1="\r${PS1}"
 
     # Right hand side
     local rhs=""
@@ -158,16 +155,17 @@ function _bb_interactive_prompt_promptimpl () {
     done # for block  
 
     # Calculate center width
-    local center
-    if [[ $BB_PROMPT_REM -gt 0 ]]; then
-        center="$(printf "%${BB_PROMPT_REM}s" "")"
-    else
-        center=' '
+    local center=""
+    if [[ -n "${__bb_interactive_prompt_rhs+1}" ]]; then
+        if [[ $BB_PROMPT_REM -gt 0 ]]; then
+            center="$(printf "%${BB_PROMPT_REM}s" "")"
+        else
+            center=' '
+        fi
     fi
 
-    # No next line prompt: stop here
+    # Add center and right
     PS1+="${center}${rhs}\n"
-    [[ -z "${__bb_interactive_prompt_nl+1}" ]] && return
 
     # Next line prompt
     BB_PROMPT_REM=$COLUMNS
