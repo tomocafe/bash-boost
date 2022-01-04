@@ -7,7 +7,7 @@ _bb_onfirstload "bb_util_kwargs" || return
 # Globals
 ################################################################################
 
-declare -Ag __bb_util_kwargs_dict=()
+declare -Ag __bb_util_kwargs_dict
 
 ################################################################################
 # Functions

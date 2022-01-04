@@ -35,13 +35,21 @@ function bb_join () {
 function bb_split () {
     _bb_glopts "$@"; set -- "${__bb_args[@]}"
     local IFS=$1
-    local -
-    set -f # turn off globbing, local to this function
+    #local - # requires bash 4.4+ to keep shell settings local to function
+    # Turn off globbing, local to this function
+    local restore=""
+    case $- in
+        f) set -f; restore+="f" ;;
+    esac
     local arr=()
     local token
     while IFS= read -r token; do
         arr+=( $token ) # no quotes around $token -- important!
     done <<< "$2"
+    # Restore globbing
+    case $restore in
+        f) set +f ;;
+    esac
     IFS=' ' _bb_result "${arr[@]}"
 }
 

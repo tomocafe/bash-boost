@@ -7,7 +7,7 @@ _bb_onfirstload "bb_cli_color" || return
 # Globals
 ################################################################################
 
-declare -Ag __bb_cli_color_code=()
+declare -Ag __bb_cli_color_code
 __bb_cli_color_code['black']=0
 __bb_cli_color_code['red']=1
 __bb_cli_color_code['green']=2

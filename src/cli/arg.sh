@@ -9,10 +9,10 @@ bb_load "cli/color"
 # Globals
 ################################################################################
 
-declare -Ag __bb_cli_arg_optvals=() # optvals[LONGNAME] = VAL
-declare -Ag __bb_cli_arg_optdesc=() # optdesc[LONGNAME] = DESCRIPTION
-declare -Ag __bb_cli_arg_flags=() # flags[LONGNAME] = 1
-declare -Ag __bb_cli_arg_short=() # short[SHORTNAME] = LONGNAME
+declare -Ag __bb_cli_arg_optvals # optvals[LONGNAME] = VAL
+declare -Ag __bb_cli_arg_optdesc # optdesc[LONGNAME] = DESCRIPTION
+declare -Ag __bb_cli_arg_flags # flags[LONGNAME] = 1
+declare -Ag __bb_cli_arg_short # short[SHORTNAME] = LONGNAME
 __bb_cli_arg_short["h"]="help"
 
 __bb_cli_arg_progname="" # see setprog()

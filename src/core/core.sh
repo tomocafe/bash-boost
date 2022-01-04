@@ -8,8 +8,8 @@
 __bb_true=0
 __bb_false=1
 
-declare -Ag __bb_loaded=() # _bb_loaded[PKGSTR] = 1
-declare -Ag __bb_alias_completions=()
+declare -Ag __bb_loaded # _bb_loaded[PKGSTR] = 1
+declare -Ag __bb_alias_completions
 
 __bb_outvars=()
 

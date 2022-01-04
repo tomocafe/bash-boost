@@ -96,6 +96,7 @@ function bb_snake2camel () {
 # - TEXT: text in camel case
 function bb_camel2snake () {
     _bb_glopts "$@"; set -- "${__bb_args[@]}"
+    local LC_ALL=C # otherwise lowercase a-z will match [A-Z] in case statement
     local str="$1"
     local -i i
     local snake=""
