@@ -47,9 +47,10 @@ posarg=world"
 __bb_tmp_colorized="$(bb_colorize red hello)"
 bb_expect "${#__bb_tmp_colorized}" "5" "colorize"
 __bb_tmp_colorized="$(bb_rawcolor red hello)"
-bb_expect "${#__bb_tmp_colorized}" "14" "rawcolor"
+bb_expect "${#__bb_tmp_colorized}" "18" "rawcolor"
 __bb_tmp_colorstripped="$(bb_colorstrip "$__bb_tmp_colorized")"
 bb_expect "${#__bb_tmp_colorstripped}" "5" "colorstrip"
+bb_expect "$(bb_colorstrip "$(bb_promptcolor red hello)")" "hello"
 unset __bb_tmp_colorized
 unset __bb_tmp_colorstripped
 
