@@ -58,6 +58,32 @@ function bb_strip () {
     _bb_result "$stripped"
 }
 
+# bb_ord [-v VAR] CHAR
+# Converts character to its ASCII decimal code
+# @arguments:
+# - VAR: variable to store result (if not given, prints to stdout)
+# - CHAR: a single character 
+function bb_ord () {
+    _bb_glopts "$@"; set -- "${__bb_args[@]}"
+    local LC_CTYPE=C
+    local ord 
+    printf -v ord "%d" "'${1:0:1}" # note: intentional leading '
+    _bb_result "$ord"
+}
+
+# bb_chr [-v VAR] CODE
+# Converts ASCII decimal code to character
+# @arguments:
+# - VAR: variable to store result (if not given, prints to stdout)
+# - CODE: an integer ASCII character code
+function bb_chr () {
+    _bb_glopts "$@"; set -- "${__bb_args[@]}"
+    local oct chr
+    printf -v oct "%03o" "$1"
+    printf -v chr "\\$oct"
+    _bb_result "$chr"
+}
+
 # bb_snake2camel [-v VAR] TEXT
 # Converts text from snake to camel case
 # @arguments:

@@ -178,6 +178,9 @@ bb_expect "$(bb_lstrip "  hello world  ")" "hello world  " "lstrip"
 bb_expect "$(bb_rstrip "  hello world  ")" "  hello world" "rstrip"
 bb_expect "$(bb_strip "  hello world  ")" "hello world" "strip"
 
+bb_expect "$(bb_ord A)" "65" "ord"
+bb_expect "$(bb_chr 65)" "A" "chr"
+
 bb_expect "$(bb_snake2camel foo_bar_baz)" "fooBarBaz" "snake2camel"
 bb_expect "$(bb_snake2camel __foo_bar_baz)" "__fooBarBaz" "snake2camel leading underscore"
 bb_expect "$(bb_camel2snake fooBarBaz)" "foo_bar_baz" "camel2snake"
