@@ -3,10 +3,10 @@
 # Load everything
 if [[ $0 =~ -portable ]]; then
     echo "Testing bash-boost-portable"
-    source bash-boost-*/bash-boost-portable.sh
+    source latest/bash-boost-portable.sh
 else
     echo "Testing bash-boost"
-    source bash-boost-*/bash-boost.sh
+    source latest/bash-boost.sh
     bb_load "cli"
     bb_load "interactive"
     bb_load "util"

@@ -4,7 +4,7 @@
 
 here="${BASH_SOURCE[0]%/*}"
 
-source ../bash-boost-*/bash-boost.sh
+source ../latest/bash-boost.sh
 
 bb_load util/prof
 bb_load util/file # for bb_relpath, etc.

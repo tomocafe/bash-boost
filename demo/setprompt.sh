@@ -2,7 +2,7 @@
 
 # Demo: setting the dynamic prompt
 
-source ../bash-boost-*/bash-boost.sh
+source ../latest/bash-boost.sh
 
 bb_load cli
 bb_load interactive/prompt

@@ -122,10 +122,8 @@ function bb_colorstrip () {
     # escape characters. This isn't elegant, but it should be portable!
     local text="$1"
     local stripped=""
-    local collecting
     local -i i
     for (( i=0; i<${#text}-1; i++ )); do
-        collecting=false
         local c1="${text:$i:1}"
         local c2="${text:$i+1:1}"
         case "$c1$c2" in
@@ -142,11 +140,10 @@ function bb_colorstrip () {
                 ;;
             *)
                 stripped+="$c1"
-                collecting=true
                 ;;
         esac
     done
-    $collecting && stripped+="$c2" # pick up last character
+    [[ $i -eq ${#text}-1 ]] && stripped+="${text:$i:1}"
     printf -- "%s" "$stripped"
 }
 

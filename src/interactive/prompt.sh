@@ -117,7 +117,6 @@ function _bb_interactive_prompt_promptimpl () {
     BB_PROMPT_LASTRC=$? # keep this line first!
     BB_PROMPT_REM=${COLUMNS?set checkwinsize}
 
-    local unitsep=$'\x22'
     local block
     local raw
     local text
