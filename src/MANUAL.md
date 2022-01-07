@@ -1,7 +1,7 @@
 ---
 title: BASH-BOOST(1)
 author: github.com/tomocafe
-date: January 6, 2022
+date: January 7, 2022
 ---
 
 
@@ -679,32 +679,19 @@ Replaces symbolic links with deep copies
 
 Routines for parsing keyword arg strings
 
-## `bb_kwparse KEY=VAL ...`
+## `bb_kwparse MAP KEY=VAL ... ARGS ...`
 
-Parses a list of KEY=VAL pairs and stores them into a global dictionary
+Parses a list of KEY=VAL pairs and stores them into a dictionary
 
 **Arguments:**
 
+- `MAP`: name of an associative array to be created
 - `KEY=VAL`: a key-value pair separated by =
-
-**Returns:** 1 if there is a malformed key-value pair, 0 otherwise
+- `ARGS`: other arguments not in KEY=VAL format are ignored
 
 **Notes:**
 
-kwparse stores key-value pairs into a single, global dictionary
-
-## `bb_kwget [-v VAR] KEY`
-
-Gets the value associated with a key stored with kwparse
-
-**Arguments:**
-
-- `VAR`: variable to store result (if not given, prints to stdout)
-- `KEY`: the key
-
-## `bb_kwclear`
-
-Clears the global dictionary
+Get non-keyword arguments with ${BB_OTHERARGS[@]}
 
 # Package util/list
 
@@ -1087,6 +1074,16 @@ Decodes URL-encoded text
 - `TEXT`: text to be decoded
 
 **Returns:** 1 if the input URL encoding is malformed, 0 otherwise
+
+## `bb_repeatstr [-v VAR] NUM TEXT`
+
+Repeat TEXT NUM times
+
+**Arguments:**
+
+- `VAR`: variable to store result (if not given, prints to stdout)
+- `NUM`: repeat this many times (integer)
+- `TEXT`: text to repeat
 
 # Package util/time
 

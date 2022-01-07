@@ -7,42 +7,33 @@ _bb_onfirstload "bb_util_kwargs" || return
 # Globals
 ################################################################################
 
-declare -Ag __bb_util_kwargs_dict
+
 
 ################################################################################
 # Functions
 ################################################################################
 
-# bb_kwparse KEY=VAL ...
-# Parses a list of KEY=VAL pairs and stores them into a global dictionary
+# bb_kwparse MAP KEY=VAL ... ARGS ...
+# Parses a list of KEY=VAL pairs and stores them into a dictionary
 # @arguments:
+# - MAP: name of an associative array to be created
 # - KEY=VAL: a key-value pair separated by =
-# @returns: 1 if there is a malformed key-value pair, 0 otherwise
+# - ARGS: other arguments not in KEY=VAL format are ignored
 # @notes:
-#   kwparse stores key-value pairs into a single, global dictionary
+#   Get non-keyword arguments with ${BB_OTHERARGS[@]}
 function bb_kwparse () {
+    [[ $# -gt 0 ]] || return
+    local mapname="$1"; shift
+    eval "declare -Ag $mapname"
     local pair
+    BB_OTHERARGS=()
     for pair in "$@"; do
+        if [[ $pair != *=* ]]; then
+            BB_OTHERARGS+=("$pair")
+            continue
+        fi
         local key="${pair%%=*}"
         local val="${pair#*=}"
-        [[ "$key" == "$val" ]] && return $__bb_false
-        __bb_util_kwargs_dict["$key"]="$val"
+        eval "${mapname}["$key"]="$val""
     done
-    return $__bb_true
-}
-
-# bb_kwget [-v VAR] KEY
-# Gets the value associated with a key stored with kwparse
-# @arguments:
-# - VAR: variable to store result (if not given, prints to stdout)
-# - KEY: the key
-function bb_kwget () {
-    _bb_glopts "$@"; set -- "${__bb_args[@]}"
-    _bb_result "${__bb_util_kwargs_dict["$1"]}"
-}
-
-# bb_kwclear
-# Clears the global dictionary
-function bb_kwclear () {
-    __bb_util_kwargs_dict=()
 }

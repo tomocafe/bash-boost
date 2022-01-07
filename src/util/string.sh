@@ -254,3 +254,17 @@ function bb_urldecode () {
     _bb_result "$decoded"
     return $__bb_true
 }
+
+# bb_repeatstr [-v VAR] NUM TEXT
+# Repeat TEXT NUM times
+# @arguments:
+# - VAR: variable to store result (if not given, prints to stdout)
+# - NUM: repeat this many times (integer)
+# - TEXT: text to repeat
+function bb_repeatstr () {
+    _bb_glopts "$@"; set -- "${__bb_args[@]}"
+    local rep
+    printf -v rep '%*s' "$1"
+    printf -v rep "${rep// /$2}"
+    _bb_result "$rep"
+}

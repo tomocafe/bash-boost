@@ -56,10 +56,14 @@ unset __bb_tmp_prevpath
 # util/kwargs
 ################################################################################
 
-bb_kwparse "foo=bar" "hello=world"
-bb_expect "$(bb_kwget foo)" "bar" "kwget foo"
-bb_expect "$(bb_kwget hello)" "world" "kwget hello"
-bb_expect "$(bb_kwget NOT_A_KEY)" "" "kwget NOT_A_KEY"
+bb_kwparse __bb_kwmap "foo=bar" "positional" "hello=world"
+bb_expect "${__bb_kwmap[foo]:-x}" "bar"
+bb_expect "${__bb_kwmap[hello]:-x}" "world"
+bb_expect "${__bb_kwmap[NOT_A_KEY]:-none}" "none"
+bb_expect "${#BB_OTHERARGS[@]}" "1" "BB_OTHERARGS size"
+bb_expect "${BB_OTHERARGS[0]}" "positional"
+unset __bb_kwmap
+unset BB_OTHERARGS
 
 ################################################################################
 # util/list
@@ -190,6 +194,8 @@ bb_expect "$(bb_sentcase "foo bar. baz")" "Foo bar. Baz" "sentcase"
 bb_expect "$(bb_urlencode "hello world")" "hello%20world" "urlencode"
 bb_expect "$(bb_urldecode "hello%20world")" "hello world" "urldecode"
 bb_expect "$(bb_urldecode "hello+world")" "hello world" "urldecode"
+
+bb_expect "$(bb_repeatstr 5 ab)" "ababababab"
 
 ################################################################################
 # util/time
