@@ -16,7 +16,7 @@ bb_load "util/env"
 # Functions
 ################################################################################
 
-# bb_canonicalize [-v VAR] PATH
+# function: bb_canonicalize [-v VAR] PATH
 # Resolves . and .. in a given absolute path
 # @arguments:
 # - VAR: variable to store result (if not given, prints to stdout)
@@ -44,7 +44,7 @@ function bb_canonicalize () {
     return $__bb_true
 }
 
-# bb_abspath [-v VAR] TARGET [FROM]
+# function: bb_abspath [-v VAR] TARGET [FROM]
 # Returns the absolute path from a relative one
 # @arguments:
 # - VAR: variable to store result (if not given, prints to stdout)
@@ -60,7 +60,7 @@ function bb_abspath () {
     _bb_result "$result"
 }
 
-# bb_relpath [-v VAR] TARGET [FROM]
+# function: bb_relpath [-v VAR] TARGET [FROM]
 # Returns the relative path from a directory to the target
 # @arguments:
 # - VAR: variable to store result (if not given, prints to stdout)
@@ -100,7 +100,7 @@ function bb_relpath () {
     return $__bb_true
 }
 
-# bb_countlines FILENAME ...
+# function: bb_countlines FILENAME ...
 # Counts the number of lines in a list of files
 # @arguments:
 # - FILENAME: a valid filename
@@ -122,7 +122,7 @@ function bb_countlines () {
     return $__bb_true
 }
 
-# bb_countmatches PATTERN FILENAME ...
+# function: bb_countmatches PATTERN FILENAME ...
 # Counts the number of matching lines in a list of files
 # @arguments:
 # - PATTERN: a valid bash regular expression
@@ -144,7 +144,7 @@ function bb_countmatches () {
     return $rc
 }
 
-# bb_extpush EXT FILENAME ...
+# function: bb_extpush EXT FILENAME ...
 # Adds the file extension EXT to all given files
 # @arguments:
 # - EXT: the file extension
@@ -158,7 +158,7 @@ function bb_extpush () {
     done
 }
 
-# bb_extpop FILENAME ...
+# function: bb_extpop FILENAME ...
 # Removes the last file extension from the given files
 # @arguments:
 # - FILENAME: a valid filename
@@ -170,7 +170,7 @@ function bb_extpop () {
     done
 }
 
-# bb_hardcopy FILENAME ...
+# function: bb_hardcopy FILENAME ...
 # Replaces symbolic links with deep copies
 # @arguments:
 # - FILENAME: a valid symbolic link

@@ -15,7 +15,7 @@ bb_load "util/env"
 # Functions
 ################################################################################
 
-# bb_mcd DIR
+# function: bb_mcd DIR
 # Make director(ies) and change directory to the last one
 # @arguments:
 # - DIR: usually a single directory to be made, but all arguments are passed to 
@@ -24,7 +24,7 @@ function bb_mcd () {
     command mkdir "$@" && command cd "${@: -1}"
 }
 
-# bb_up [DIR]
+# function: bb_up [DIR]
 # Change directory up
 # @arguments:
 # - DIR: go to this directory, otherwise defaults to .. if no DIR specified
@@ -52,7 +52,7 @@ function _bb_interactive_cmd_up_completion () {
 }
 complete -o nospace -F _bb_interactive_cmd_up_completion bb_up
 
-# bb_forkterm [ARGS ...]
+# function: bb_forkterm [ARGS ...]
 # Spawn a new terminal instance inheriting from this shell's environment
 # @arguments:
 # - ARGS: arguments to be appended to the terminal launch command

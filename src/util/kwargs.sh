@@ -13,7 +13,7 @@ _bb_onfirstload "bb_util_kwargs" || return
 # Functions
 ################################################################################
 
-# bb_kwparse MAP KEY=VAL ... ARGS ...
+# function: bb_kwparse MAP KEY=VAL ... ARGS ...
 # Parses a list of KEY=VAL pairs and stores them into a dictionary
 # @arguments:
 # - MAP: name of an associative array to be created

@@ -22,6 +22,7 @@ sub formatmd {
         print "\n# Package $text\n\n";
     }
     elsif ($type eq 'function') {
+        $text =~ s/^\s*function:\s*//;
         print "\n## \`$text\`\n\n";
     }
     else {
@@ -33,6 +34,9 @@ sub formatmd {
         }
         elsif ($text =~ m/^\s*\@notes:/) {
            print "\n**Notes:**\n\n"; 
+        }
+        elsif ($text =~ m/^\s*\@example:/) {
+           print "\n**Example:**\n\n"; 
         }
         elsif ($text =~ m/^\s*- ([A-Z0-9_=]+):/) {
             $text =~ s/- ([A-Z0-9_=]+):/- `$1`:/;
@@ -95,7 +99,7 @@ sub parsefcns {
         elsif (@fcns == 0) {
             last;
         }
-        elsif (my ($f) = ($line =~ m/#\s*(\w+)/)) {
+        elsif (my ($f) = ($line =~ m/#\s*function:\s*(\w+)/)) {
             next unless $fcns[0] =~ $f;
             shift @fcns;
             $start = 1;

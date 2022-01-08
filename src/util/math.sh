@@ -13,7 +13,7 @@ _bb_onfirstload "bb_util_math" || return
 # Functions
 ################################################################################
 
-# bb_sum [-v VAR] NUM ...
+# function: bb_sum [-v VAR] NUM ...
 # Returns the sum of the given numbers
 # @arguments:
 # - VAR: variable to store result (if not given, prints to stdout)
@@ -28,7 +28,7 @@ function bb_sum () {
     _bb_result "$sum"
 }
 
-# bb_min [-v VAR] NUM ...
+# function: bb_min [-v VAR] NUM ...
 # Returns the minimum of the given numbers
 # @arguments:
 # - VAR: variable to store result (if not given, prints to stdout)
@@ -43,7 +43,7 @@ function bb_min () {
     _bb_result "$min"
 }
 
-# bb_max [-v VAR] NUM ...
+# function: bb_max [-v VAR] NUM ...
 # Returns the maximum of the given numbers
 # @arguments:
 # - VAR: variable to store result (if not given, prints to stdout)
@@ -58,7 +58,7 @@ function bb_max () {
     _bb_result "$max"
 }
 
-# bb_abs [-v VAR] NUM
+# function: bb_abs [-v VAR] NUM
 # Returns the absolute value of a given number
 # @arguments:
 # - VAR: variable to store result (if not given, prints to stdout)
@@ -70,7 +70,7 @@ function bb_abs () {
     _bb_result "$abs"
 }
 
-# bb_isint NUM ...
+# function: bb_isint NUM ...
 # Checks if all the given numbers are valid integers
 # @arguments:
 # - NUM: a number to check
@@ -84,7 +84,7 @@ function bb_isint () {
     return $__bb_true
 }
 
-# bb_hex2dec [-V LISTVAR] NUM ...
+# function: bb_hex2dec [-V LISTVAR] NUM ...
 # Converts numbers from hexademical (base 16) to decimal (base 10)
 # @arguments:
 # - LISTVAR: list variable to store result (if not given, prints to stdout)
@@ -103,7 +103,7 @@ function bb_hex2dec () {
     return $__bb_true
 }
 
-# bb_dec2hex [-V LISTVAR] NUM ...
+# function: bb_dec2hex [-V LISTVAR] NUM ...
 # Converts numbers from decimal (base 10) to hexademical (base 16)
 # @arguments:
 # - LISTVAR: list variable to store result (if not given, prints to stdout)
@@ -121,7 +121,7 @@ function bb_dec2hex () {
     return $__bb_true
 }
 
-# bb_oct2dec [-V LISTVAR] NUM ...
+# function: bb_oct2dec [-V LISTVAR] NUM ...
 # Converts numbers from octal (base 8) to decimal (base 10)
 # @arguments:
 # - LISTVAR: list variable to store result (if not given, prints to stdout)
@@ -140,7 +140,7 @@ function bb_oct2dec () {
     return $__bb_true
 }
 
-# bb_dec2oct [-V LISTVAR] NUM ...
+# function: bb_dec2oct [-V LISTVAR] NUM ...
 # Converts numbers from decimal (base 10) to octal (base 8)
 # @arguments:
 # - LISTVAR: list variable to store result (if not given, prints to stdout)

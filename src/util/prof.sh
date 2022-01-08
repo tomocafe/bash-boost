@@ -16,7 +16,7 @@ __bb_util_prof_backup_ps4="$PS4"
 # Functions
 ################################################################################
 
-# bb_startprof LOGFILE
+# function: bb_startprof LOGFILE
 # Starts runtime profiling
 # @arguments:
 # - LOGFILE: (optional) file use to log profiling data
@@ -39,7 +39,7 @@ function bb_startprof () {
     set -x
 }
 
-# bb_stopprof
+# function: bb_stopprof
 # Stops runtime profiling
 function bb_stopprof () {
     set +x

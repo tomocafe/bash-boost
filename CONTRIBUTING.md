@@ -76,7 +76,7 @@ Function names must be unique across packages _and_ modules! Use `make check` to
 When creating a function (e.g. `baz`) within a package, follow this convention:
 
 ```shell
-# baz [-v VAR] ARGS ...
+# function: bb_baz [-v VAR] ARGS ...
 # Brief description of the function
 # @arguments:
 # - VAR: variable to store result (if not given, prints to stdout)

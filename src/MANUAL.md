@@ -1,13 +1,31 @@
 ---
 title: BASH-BOOST(1)
 author: github.com/tomocafe
-date: January 7, 2022
+date: January 8, 2022
 ---
 
 
 # Package cli/arg
 
 Routines for parsing command line arguments
+
+**Example:**
+
+```bash
+bb_setprog "myprogram"
+bb_addopt f:foo "Number of foos (default: 2)" 2
+bb_addflag b:bar "Bar flag"
+bb_setpositional "THINGS" "Things to process"
+bb_parseargs "$@"
+set -- "${BB_POSARGS[@]}" # $@ now only contains the positional arguments
+bb_checkopt bar && echo "You gave the bar flag!"
+bb_getopt -v fooval foo
+[[ $fooval -gt 0 ]] || bb_errusage "foo val must be greater than 0"
+echo "You set foo to $fooval"
+for arg in "$@"; do
+echo "You have item $arg"
+done
+```
 
 ## `bb_addopt [SHORTNAME:]LONGNAME [DESCRIPTION] [DEFAULT]`
 

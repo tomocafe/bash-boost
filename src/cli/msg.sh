@@ -15,7 +15,7 @@ bb_load "cli/color"
 # Functions
 ################################################################################
 
-# bb_info MESSAGE
+# function: bb_info MESSAGE
 # Prints an informational message to stderr
 # @arguments:
 # - MESSAGE: message to be printed
@@ -23,7 +23,7 @@ function bb_info () {
     echo "info: $1" 1>&2
 }
 
-# bb_warn MESSAGE
+# function: bb_warn MESSAGE
 # Prints a warning message to stderr
 # @arguments:
 # - MESSAGE: message to be printed
@@ -32,7 +32,7 @@ function bb_warn () {
     echo " $1" 1>&2
 }
 
-# bb_error MESSAGE
+# function: bb_error MESSAGE
 # Prints an error message to stderr
 # @arguments:
 # - MESSAGE: message to be printed
@@ -41,7 +41,7 @@ function bb_error () {
     echo " $1" 1>&2
 }
 
-# bb_fatal MESSAGE [RETURNCODE]
+# function: bb_fatal MESSAGE [RETURNCODE]
 # Prints an error message to stderr and then exits the shell
 # @arguments:
 # - MESSAGE: message to be printed
@@ -52,7 +52,7 @@ function bb_fatal () {
     bb_issourced && return ${2:-1} || exit ${2:-1}
 }
 
-# bb_expect VAL1 VAL2 [MESSAGE] [RETURNCODE]
+# function: bb_expect VAL1 VAL2 [MESSAGE] [RETURNCODE]
 # Issues a fatal error if two given values are not equal
 # @arguments:
 # - VAL1: value to check
@@ -63,7 +63,7 @@ function bb_expect () {
     [[ "$1" == "$2" ]] || bb_fatal "${3:+$3: }expected $2 got $1" $4
 }
 
-# bb_expectsubstr VAL1 VAL2 [MESSAGE] [RETURNCODE]
+# function: bb_expectsubstr VAL1 VAL2 [MESSAGE] [RETURNCODE]
 # Issues a fatal error if a given substring is not found in some given text
 # @arguments:
 # - VAL1: text to check

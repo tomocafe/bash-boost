@@ -15,7 +15,7 @@ bb_load "util/math"
 # Functions
 ################################################################################
 
-# bb_now [OFFSET ...]
+# function: bb_now [OFFSET ...]
 # Returns a timestamp relative to the current time (in seconds after epoch)
 # @arguments:
 # - OFFSET: {+,-}N{s,m,h,d,w} where N is an integer
@@ -61,7 +61,7 @@ function bb_now () {
     return $__bb_true
 }
 
-# bb_timefmt FORMAT [TIMESTAMP]
+# function: bb_timefmt FORMAT [TIMESTAMP]
 # Formats a timestamp into a desired date format
 # @arguments:
 # - FORMAT: date format string, refer to man strftime

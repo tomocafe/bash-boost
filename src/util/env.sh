@@ -13,7 +13,7 @@ _bb_onfirstload "bb_util_env" || return
 # Functions
 ################################################################################
 
-# bb_checkset VAR
+# function: bb_checkset VAR
 # Check if an environment variable is set or empty
 # @arguments:
 # - VAR: name of the variable to check (don't include $)
@@ -25,7 +25,7 @@ function bb_checkset () {
     return 0
 }
 
-# bb_iscmd COMMAND
+# function: bb_iscmd COMMAND
 # Check if COMMAND is a valid command
 # @arguments:
 # - COMMAND: name of command to check (e.g., ls)
@@ -36,7 +36,7 @@ function bb_iscmd () {
     command -v "$1" &>/dev/null
 }
 
-# bb_inpath VAR ITEM ...
+# function: bb_inpath VAR ITEM ...
 # Checks if items are in the colon-separated path variable VAR
 # @arguments:
 # - VAR: path variable, e.g. PATH (do not use $)
@@ -51,7 +51,7 @@ function bb_inpath () {
     return $__bb_true
 }
 
-# bb_prependpath VAR ITEM ...
+# function: bb_prependpath VAR ITEM ...
 # Prepends items to the colon-separated path variable VAR
 # @arguments:
 # - VAR: path variable, e.g. PATH (do not use $)
@@ -63,7 +63,7 @@ function bb_prependpath () {
     eval "export $1=\${paths[*]}\${$1:+\${paths:+:}}\${$1}"
 }
 
-# bb_appendpath VAR ITEM ...
+# function: bb_appendpath VAR ITEM ...
 # Appends items to the colon-separated path variable VAR
 # @arguments:
 # - VAR: path variable, e.g. PATH (do not use $)
@@ -75,7 +75,7 @@ function bb_appendpath () {
     eval "export $1=\${$1}\${$1:+\${paths:+:}}\${paths[*]}"
 }
 
-# bb_prependpathuniq VAR ITEM ...
+# function: bb_prependpathuniq VAR ITEM ...
 # Prepends unique items to the colon-separated path variable VAR
 # @arguments:
 # - VAR: path variable, e.g. PATH (do not use $)
@@ -92,7 +92,7 @@ function bb_prependpathuniq () {
     bb_prependpath "$1" "${filtered[@]}"
 }
 
-# bb_appendpathuniq VAR ITEM ...
+# function: bb_appendpathuniq VAR ITEM ...
 # Appends unique items to the colon-separated path variable VAR
 # @arguments:
 # - VAR: path variable, e.g. PATH (do not use $)
@@ -109,7 +109,7 @@ function bb_appendpathuniq () {
     bb_appendpath "$1" "${filtered[@]}"
 }
 
-# bb_removefrompath VAR ITEM ...
+# function: bb_removefrompath VAR ITEM ...
 # Removes items from the colon-separated path variable VAR
 # @arguments:
 # - VAR: path variable, e.g. PATH (do not use $)
@@ -132,7 +132,7 @@ function bb_removefrompath () {
     return $found
 }
 
-# bb_swapinpath VAR ITEM1 ITEM2
+# function: bb_swapinpath VAR ITEM1 ITEM2
 # Swaps two items in a colon-separated path variable VAR
 # @arguments:
 # - VAR: path variable, e.g. PATH (do not use $)
@@ -159,7 +159,7 @@ function bb_swapinpath () {
     return $__bb_true
 }
 
-# bb_printpath VAR [SEP]
+# function: bb_printpath VAR [SEP]
 # Prints a path variable separated by SEP, one item per line
 # @arguments:
 # - VAR: path variable, e.g. PATH (do not use $)

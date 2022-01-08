@@ -13,7 +13,7 @@ _bb_onfirstload "bb_util_string" || return
 # Functions
 ################################################################################
 
-# bb_lstrip [-v VAR] TEXT
+# function: bb_lstrip [-v VAR] TEXT
 # Strips leading (left) whitespace from text
 # @arguments:
 # - VAR: variable to store result (if not given, prints to stdout)
@@ -29,7 +29,7 @@ function bb_lstrip () {
     $resetopt && shopt -u extglob
 }
 
-# bb_rstrip [-v VAR] TEXT
+# function: bb_rstrip [-v VAR] TEXT
 # Strips trailing (right) whitespace from text
 # @arguments:
 # - VAR: variable to store result (if not given, prints to stdout)
@@ -45,7 +45,7 @@ function bb_rstrip () {
     $resetopt && shopt -u extglob
 }
 
-# bb_strip [-v VAR] TEXT
+# function: bb_strip [-v VAR] TEXT
 # Strips leading and trailing whitespace from text
 # @arguments:
 # - VAR: variable to store result (if not given, prints to stdout)
@@ -58,7 +58,7 @@ function bb_strip () {
     _bb_result "$stripped"
 }
 
-# bb_ord [-v VAR] CHAR
+# function: bb_ord [-v VAR] CHAR
 # Converts character to its ASCII decimal code
 # @arguments:
 # - VAR: variable to store result (if not given, prints to stdout)
@@ -71,7 +71,7 @@ function bb_ord () {
     _bb_result "$ord"
 }
 
-# bb_chr [-v VAR] CODE
+# function: bb_chr [-v VAR] CODE
 # Converts ASCII decimal code to character
 # @arguments:
 # - VAR: variable to store result (if not given, prints to stdout)
@@ -84,7 +84,7 @@ function bb_chr () {
     _bb_result "$chr"
 }
 
-# bb_snake2camel [-v VAR] TEXT
+# function: bb_snake2camel [-v VAR] TEXT
 # Converts text from snake to camel case
 # @arguments:
 # - VAR: variable to store result (if not given, prints to stdout)
@@ -115,7 +115,7 @@ function bb_snake2camel () {
     _bb_result "$camel"
 }
 
-# bb_camel2snake [-v VAR] TEXT
+# function: bb_camel2snake [-v VAR] TEXT
 # Converts text from camel to snake case
 # @arguments:
 # - VAR: variable to store result (if not given, prints to stdout)
@@ -141,7 +141,7 @@ function bb_camel2snake () {
     _bb_result "$snake"
 }
 
-# bb_titlecase [-v VAR] TEXT
+# function: bb_titlecase [-v VAR] TEXT
 # Converts text into title case (every word capitalized)
 # @arguments:
 # - VAR: variable to store result (if not given, prints to stdout)
@@ -171,7 +171,7 @@ function bb_titlecase () {
     _bb_result "$title"
 }
 
-# bb_sentcase [-v VAR] TEXT
+# function: bb_sentcase [-v VAR] TEXT
 # Converts text into sentence case (every first word capitalized)
 # @arguments:
 # - VAR: variable to store result (if not given, prints to stdout)
@@ -200,7 +200,7 @@ function bb_sentcase () {
     _bb_result "$sent"
 }
 
-# bb_urlencode [-v VAR] TEXT
+# function: bb_urlencode [-v VAR] TEXT
 # Performs URL (percent) encoding on the given string
 # @arguments:
 # - VAR: variable to store result (if not given, prints to stdout)
@@ -222,7 +222,7 @@ function bb_urlencode () {
     _bb_result "$encoded"
 }
 
-# bb_urldecode [-v VAR] TEXT
+# function: bb_urldecode [-v VAR] TEXT
 # Decodes URL-encoded text
 # @arguments:
 # - VAR: variable to store result (if not given, prints to stdout)
@@ -255,7 +255,7 @@ function bb_urldecode () {
     return $__bb_true
 }
 
-# bb_repeatstr [-v VAR] NUM TEXT
+# function: bb_repeatstr [-v VAR] NUM TEXT
 # Repeat TEXT NUM times
 # @arguments:
 # - VAR: variable to store result (if not given, prints to stdout)
