@@ -62,7 +62,7 @@ function bb_addopt () {
     # Check for short name
     if [[ "${optdef:1:1}" == ":" ]]; then
         local shortname="${optdef:0:1}"
-        if ! [[ ${__bb_cli_arg_short["$shortname"]+set} ]]; then
+        if ! [[ ${__bb_cli_arg_short["$shortname"]+set} ]]; thenDESCR
             __bb_cli_arg_short["$shortname"]="$longname"
         fi
     fi
@@ -115,7 +115,7 @@ function bb_argusage () {
 # Print the command line help
 # @notes:
 #   Includes the usage string and a list of flags and options with their
-#   descrptions.
+#   descriptions.
 function bb_arghelp () {
     {
     bb_argusage

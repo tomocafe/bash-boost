@@ -1,5 +1,19 @@
 # @package: util/kwargs
 # Routines for parsing keyword arg strings
+# @example:
+# ```bash
+# talk() {
+#   bb_kwparse opts "$@"
+#   set -- "${BB_OTHERARGS[@]}" # $@ now only contains non-kwargs
+#   local verb="${opts[verb]:+have}"
+#   local item
+#   for item in "$@"; do
+#     echo "You $verb $item"
+#   done
+# }
+# talk eggs milk bread
+# talk verb=ate eggs milk bread
+# ```
 
 _bb_onfirstload "bb_util_kwargs" || return
 

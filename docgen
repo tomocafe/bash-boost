@@ -7,6 +7,9 @@ use POSIX qw(strftime);
 
 my $OUTPUT = 'md';
 
+# Global variable to track if we are inside a code block
+my $inCodeBlock = 0;
+
 sub formatout {
     if ($OUTPUT eq 'md') {
         formatmd (@_);
@@ -17,7 +20,22 @@ sub formatout {
 sub formatmd {
     my ($text, $type) = @_;
     $type = 'text' unless $type;
-    $text =~ s/^\s*#\s*//;
+    # Check for code block
+    if ($text =~ m/```/) {
+        $inCodeBlock = not $inCodeBlock;
+        # Always put at column 0
+        $text =~ s/^\s*#\s*//;
+        print "$text\n";
+        return;
+    }
+    if ($inCodeBlock) {
+        # Don't trim all leading space, just the first one (if it exists)
+        # since it may be part of the code being rendered
+        $text =~ s/^\s*#\s?//;
+    }
+    else {
+        $text =~ s/^\s*#\s*//;
+    }
     if ($type eq 'package') {
         print "\n# Package $text\n\n";
     }

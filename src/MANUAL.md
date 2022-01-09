@@ -1,7 +1,7 @@
 ---
 title: BASH-BOOST(1)
 author: github.com/tomocafe
-date: January 8, 2022
+date: January 9, 2022
 ---
 
 
@@ -23,7 +23,7 @@ bb_getopt -v fooval foo
 [[ $fooval -gt 0 ]] || bb_errusage "foo val must be greater than 0"
 echo "You set foo to $fooval"
 for arg in "$@"; do
-echo "You have item $arg"
+  echo "You have item $arg"
 done
 ```
 
@@ -69,7 +69,7 @@ Print the command line help
 **Notes:**
 
 Includes the usage string and a list of flags and options with their
-descrptions.
+descriptions.
 
 ## `bb_errusage MESSAGE [RETURNVAL]`
 
@@ -434,10 +434,10 @@ Sets the left prompt to the output of the list of given functions
 
 The prompt areas are as follows:
 ```
-+----------------------------------------+
-| left prompt               right prompt |
-| nextline prompt                        |
-+----------------------------------------+
+  +----------------------------------------+
+  | left prompt               right prompt |
+  | nextline prompt                        |
+  +----------------------------------------+
 ```
 
 ## `bb_setpromptright FUNCTION ...`
@@ -696,6 +696,22 @@ Replaces symbolic links with deep copies
 # Package util/kwargs
 
 Routines for parsing keyword arg strings
+
+**Example:**
+
+```bash
+talk() {
+  bb_kwparse opts "$@"
+  set -- "${BB_OTHERARGS[@]}" # $@ now only contains non-kwargs
+  local verb="${opts[verb]:+have}"
+  local item
+  for item in "$@"; do
+    echo "You $verb $item"
+  done
+}
+talk eggs milk bread
+talk verb=ate eggs milk bread
+```
 
 ## `bb_kwparse MAP KEY=VAL ... ARGS ...`
 
