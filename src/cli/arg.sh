@@ -62,7 +62,7 @@ function bb_addopt () {
     # Check for short name
     if [[ "${optdef:1:1}" == ":" ]]; then
         local shortname="${optdef:0:1}"
-        if ! [[ ${__bb_cli_arg_short["$shortname"]+set} ]]; thenDESCR
+        if ! [[ ${__bb_cli_arg_short["$shortname"]+set} ]]; then
             __bb_cli_arg_short["$shortname"]="$longname"
         fi
     fi
