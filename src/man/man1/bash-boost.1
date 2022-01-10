@@ -293,6 +293,36 @@ text
 \f[C]MESSAGE\f[R]: optional prefix to the error message
 .IP \[bu] 2
 \f[C]RETURNCODE\f[R]: return code to exit with (defaults to 1)
+.SS \f[C]bb_loglevel [LEVEL]\f[R]
+.PP
+Sets the current log level
+.PP
+\f[B]Arguments:\f[R]
+.IP \[bu] 2
+\f[C]LEVEL\f[R]: integer representing the current log verbosity level
+(default: 0)
+.SS \f[C]bb_setloglevelname LEVEL NAME\f[R]
+.PP
+Assigns a name to the given log level
+.PP
+\f[B]Arguments:\f[R]
+.IP \[bu] 2
+\f[C]LEVEL\f[R]: integer representing the current log verbosity level
+.IP \[bu] 2
+\f[C]NAME\f[R]: name to be assigned
+.SS \f[C]bb_log LEVEL MESSAGE\f[R]
+.PP
+Issues a message at a certain log level
+.PP
+\f[B]Arguments:\f[R]
+.IP \[bu] 2
+\f[C]LEVEL\f[R]: minimum logging level required to print the message
+.IP \[bu] 2
+\f[C]MESSAGE\f[R]: message to be printed
+.PP
+\f[B]Notes:\f[R]
+.PP
+Set BB_LOG_TIMEFMT to a valid time format string to override the default
 .SH Package core
 .PP
 Core routines
@@ -678,7 +708,7 @@ Routines for parsing keyword arg strings
 talk() {
   bb_kwparse opts \[dq]$\[at]\[dq]
   set \-\- \[dq]${BB_OTHERARGS[\[at]]}\[dq] # $\[at] now only contains non\-kwargs
-  local verb=\[dq]${opts[verb]:+have}\[dq]
+  local verb=\[dq]${opts[verb]:\-have}\[dq]
   local item
   for item in \[dq]$\[at]\[dq]; do
     echo \[dq]You $verb $item\[dq]
@@ -1105,12 +1135,14 @@ Repeat TEXT NUM times
 .SH Package util/time
 .PP
 Routines for common time and date operations
-.SS \f[C]bb_now [OFFSET ...]\f[R]
+.SS \f[C]bb_now [\-v VAR] [OFFSET ...]\f[R]
 .PP
 Returns a timestamp relative to the current time (in seconds after
 epoch)
 .PP
 \f[B]Arguments:\f[R]
+.IP \[bu] 2
+\f[C]VAR\f[R]: variable to store result (if not given, prints to stdout)
 .IP \[bu] 2
 \f[C]OFFSET\f[R]: {+,\-}N{s,m,h,d,w} where N is an integer
 .PP
@@ -1119,11 +1151,13 @@ epoch)
 \f[B]Notes:\f[R]
 .PP
 s: seconds m: minutes h: hours d: days w: weeks
-.SS \f[C]bb_timefmt FORMAT [TIMESTAMP]\f[R]
+.SS \f[C]bb_timefmt [\-v VAR] FORMAT [TIMESTAMP]\f[R]
 .PP
 Formats a timestamp into a desired date format
 .PP
 \f[B]Arguments:\f[R]
+.IP \[bu] 2
+\f[C]VAR\f[R]: variable to store result (if not given, prints to stdout)
 .IP \[bu] 2
 \f[C]FORMAT\f[R]: date format string, refer to man strftime
 .IP \[bu] 2

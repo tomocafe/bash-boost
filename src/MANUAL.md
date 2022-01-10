@@ -308,6 +308,36 @@ Issues a fatal error if a given substring is not found in some given text
 - `MESSAGE`: optional prefix to the error message
 - `RETURNCODE`: return code to exit with (defaults to 1)
 
+## `bb_loglevel [LEVEL]`
+
+Sets the current log level
+
+**Arguments:**
+
+- `LEVEL`: integer representing the current log verbosity level (default: 0)
+
+## `bb_setloglevelname LEVEL NAME`
+
+Assigns a name to the given log level
+
+**Arguments:**
+
+- `LEVEL`: integer representing the current log verbosity level 
+- `NAME`: name to be assigned
+
+## `bb_log LEVEL MESSAGE`
+
+Issues a message at a certain log level
+
+**Arguments:**
+
+- `LEVEL`: minimum logging level required to print the message
+- `MESSAGE`: message to be printed
+
+**Notes:**
+
+Set BB_LOG_TIMEFMT to a valid time format string to override the default
+
 # Package core
 
 Core routines
@@ -703,7 +733,7 @@ Routines for parsing keyword arg strings
 talk() {
   bb_kwparse opts "$@"
   set -- "${BB_OTHERARGS[@]}" # $@ now only contains non-kwargs
-  local verb="${opts[verb]:+have}"
+  local verb="${opts[verb]:-have}"
   local item
   for item in "$@"; do
     echo "You $verb $item"
@@ -1123,12 +1153,13 @@ Repeat TEXT NUM times
 
 Routines for common time and date operations
 
-## `bb_now [OFFSET ...]`
+## `bb_now [-v VAR] [OFFSET ...]`
 
 Returns a timestamp relative to the current time (in seconds after epoch)
 
 **Arguments:**
 
+- `VAR`: variable to store result (if not given, prints to stdout)
 - `OFFSET`: {+,-}N{s,m,h,d,w} where N is an integer
 
 **Returns:** 1 if any offset is invalid, 0 otherwise
@@ -1141,11 +1172,12 @@ h: hours
 d: days
 w: weeks
 
-## `bb_timefmt FORMAT [TIMESTAMP]`
+## `bb_timefmt [-v VAR] FORMAT [TIMESTAMP]`
 
 Formats a timestamp into a desired date format
 
 **Arguments:**
 
+- `VAR`: variable to store result (if not given, prints to stdout)
 - `FORMAT`: date format string, refer to man strftime
 - `TIMESTAMP`: epoch time, defaults to current time (now)

@@ -65,3 +65,14 @@ yes | bb_yn
 bb_expect "$?" "$__bb_true" "bb_yn y"
 yes n | bb_yn
 bb_expect "$?" "$__bb_false" "bb_yn n"
+
+################################################################################
+# cli/msg
+################################################################################
+
+BB_LOG_TIMEFMT="ts" # hardcode time
+bb_setloglevelname 2 "special"
+bb_expect "$(bb_log 1 "test1")" ""
+bb_loglevel 2
+bb_expect "$(bb_log 1 "test1")" "[ts] test1"
+bb_expect "$(bb_log 2 "test2")" "[ts] special: test2"

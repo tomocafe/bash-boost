@@ -5,7 +5,7 @@
 # talk() {
 #   bb_kwparse opts "$@"
 #   set -- "${BB_OTHERARGS[@]}" # $@ now only contains non-kwargs
-#   local verb="${opts[verb]:+have}"
+#   local verb="${opts[verb]:-have}"
 #   local item
 #   for item in "$@"; do
 #     echo "You $verb $item"
