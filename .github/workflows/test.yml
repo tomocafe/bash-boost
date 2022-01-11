@@ -24,6 +24,6 @@ jobs:
     container:
       image: ${{ matrix.container }}
       volumes:
-        - ./latest:/latest
+        - ${{ github.action_path }}/latest:/latest
     steps:
         - run: make test
