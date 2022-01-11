@@ -5,7 +5,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Install dependencies
-        run:  sudo apt-get install -y pandoc
+        run:  sudo apt-get install -y build-essential pandoc
       - name: Fetch source
         uses: actions/checkout@main
       - name: Make source
@@ -21,6 +21,9 @@ jobs:
     strategy:
       matrix:
         container: ['bash:4.0', 'bash:4.4', 'latest']
-    container: ${{ matrix.container }}
+    container:
+      image: ${{ matrix.container }}
+      volumes:
+        - ./latest:/latest
     steps:
         - run: make test
