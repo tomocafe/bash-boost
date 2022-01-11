@@ -14,9 +14,8 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
-      - run: |
-          pwd
-          ls
+      - run: ls
+      - run: tree
       - run: shellcheck ./latest/bash-boost.sh ./latest/*/*.sh
   test:
     runs-on: ubuntu-latest
