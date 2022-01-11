@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 BB_ROOT="${1:?requires BB_ROOT as argument}"
 modules=(cli interactive util)
 unflattened="$BB_ROOT/bash-boost.sh"
