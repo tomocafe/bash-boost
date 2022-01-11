@@ -5,7 +5,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Install dependencies
-        run:  apt-get install -y pandoc
+        run:  sudo apt-get install -y pandoc
       - name: Fetch source
         uses: actions/checkout@main
       - name: Make source
