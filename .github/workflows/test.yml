@@ -14,6 +14,9 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
+      - run: |
+          pwd
+          ls
       - run: shellcheck ./latest/bash-boost.sh ./latest/*/*.sh
   test:
     runs-on: ubuntu-latest
@@ -21,9 +24,7 @@ jobs:
     strategy:
       matrix:
         container: ['bash:4.0', 'bash:4.4', 'latest']
-    container:
-      image: ${{ matrix.container }}
-      volumes:
-        - ${{ github.action_path }}/latest:/latest
+    container: ${{ matrix.container }}
     steps:
-        - run: make test
+        - run: ./test
+        - run: ./test-portable
