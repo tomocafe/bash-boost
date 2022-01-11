@@ -11,32 +11,29 @@ jobs:
       - name: Run shellcheck
         run:  shellcheck ./latest/bash-boost.sh ./latest/*/*.sh
   bash-4.0:
-    container:
-      runs-on: bash:4.0
-      steps:
-        - name: Fetch source
-          uses: actions/checkout@main
-        - name: Make source
-          run:  make
-        - name: Run tests
-          run:  make test
+    container: bash:4.0
+    steps:
+      - name: Fetch source
+        uses: actions/checkout@main
+      - name: Make source
+        run:  make
+      - name: Run tests
+        run:  make test
   bash-4.4:
-    container:
-      runs-on: bash:4.4
-      steps:
-        - name: Fetch source
-          uses: actions/checkout@main
-        - name: Make source
-          run:  make
-        - name: Run tests
-          run:  make test
+    container: bash:4.4
+    steps:
+      - name: Fetch source
+        uses: actions/checkout@main
+      - name: Make source
+        run:  make
+      - name: Run tests
+        run:  make test
   latest:
-    container:
-      runs-on: bash:latest
-      steps:
-        - name: Fetch source
-          uses: actions/checkout@main
-        - name: Make source
-          run:  make
-        - name: Run tests
-          run:  make test
+    container: bash:latest
+    steps:
+      - name: Fetch source
+        uses: actions/checkout@main
+      - name: Make source
+        run:  make
+      - name: Run tests
+        run:  make test
