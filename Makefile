@@ -5,6 +5,8 @@ SRCS := $(shell find src -type f -name "*.sh" | sort)
 
 full: $(TARGET) check doc
 
+only: $(TARGET)
+
 $(TARGET): $(SRCS) flatten
 	$(RM) -r $@
 	cp -r src $@
@@ -46,5 +48,5 @@ doc: src/MANUAL.md src/man/man1/bash-boost.1
 check: $(SRCS)
 	@./check $(SRCS)
 
-.PHONY: full release clean test doc check
+.PHONY: full only release clean test doc check
 
