@@ -3,7 +3,9 @@ VERSION=1.6
 TARGET := bash-boost-$(VERSION)
 SRCS := $(shell find src -type f -name "*.sh" | sort)
 
-$(TARGET): check doc $(SRCS) flatten
+full: $(TARGET) check doc
+
+$(TARGET): $(SRCS) flatten
 	$(RM) -r $@
 	cp -r src $@
 	cp -r bin $@
@@ -25,7 +27,7 @@ clean:
 	$(RM)    $(TARGET).tar.gz
 	$(RM)    latest
 
-test: $(TARGET)/bash-boost.sh $(TARGET)/bash-boost-portable.sh
+test: $(TARGET) check
 	@./test
 	@./test-portable
 
@@ -44,5 +46,5 @@ doc: src/MANUAL.md src/man/man1/bash-boost.1
 check: $(SRCS)
 	@./check $(SRCS)
 
-.PHONY: release clean test doc check
+.PHONY: full release clean test doc check
 
