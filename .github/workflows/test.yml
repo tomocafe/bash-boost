@@ -9,7 +9,7 @@ jobs:
     container: ${{ matrix.container }}
     steps:
       - name: Install dependencies
-        run: apk add --no-cache --virtual .build-deps make m4
+        run: apk add --no-cache --virtual .build-deps make m4 coreutils
       - name: Fetch source
         uses: actions/checkout@main
       - name: Run tests
