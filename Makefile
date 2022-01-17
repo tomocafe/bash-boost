@@ -7,7 +7,7 @@ full: $(TARGET) check doc
 
 only: $(TARGET)
 
-$(TARGET): $(SRCS) flatten
+$(TARGET): $(SRCS) flatten src/bash-boost.sh.m4
 	$(RM) -r $@
 	cp -r src $@
 	cp -r bin $@
