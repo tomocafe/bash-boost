@@ -5,7 +5,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        container: ['bash:4.2', 'bash:4.4', 'latest']
+        container: ['bash:4.2', 'bash:4.4', 'bash:5.0', 'bash:latest']
     container: ${{ matrix.container }}
     steps:
       - name: Install dependencies
