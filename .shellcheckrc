@@ -1,0 +1,10 @@
+# SC1090: Can't follow non-constant source. Use a directive to specify location.
+# Static analysis can't trace through bb_load, but all files should be individually covered.
+disable=SC1090
+
+# SC2034: ... appears unused. Verify use (or export if used externally).
+# SC2154: ... is referenced but not assigned.
+# Static analysis can't trace through bb_load, but some variables are defined/used in different modules.
+disable=SC2034
+disable=SC2154
+

@@ -22,4 +22,4 @@ jobs:
       - name: Make source
         run: make only
       - name: Run shellcheck
-        run: shellcheck ./latest/bash-boost.sh ./latest/*/*.sh
+        run: shellcheck --shell bash ./latest/bash-boost.sh ./latest/*/*.sh

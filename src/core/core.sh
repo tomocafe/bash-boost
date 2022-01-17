@@ -116,7 +116,7 @@ function _bb_glopts () {
     # Look for trailing - (read args from stdin)
     case "${@: -1}" in
         -)
-            unset __bb_args[${#_bb_args[@]}-1]
+            unset __bb_args[${#__bb_args[@]}-1]
             readarray -t -O ${#__bb_args[@]} __bb_args # append args from stdin to __bb_args
             ;;
     esac
