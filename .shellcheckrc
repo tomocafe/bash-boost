@@ -10,3 +10,6 @@ disable=SC2154
 
 # SC2059: Don't use variables in the printf format string. Use printf "..%s.." "$foo".
 disable=SC2059
+
+# SC2155: Declare and assign separately to avoid masking return values.
+disable=SC2155

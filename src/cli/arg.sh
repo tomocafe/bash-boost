@@ -80,7 +80,7 @@ function bb_addopt () {
 function bb_addflag () {
     local optdef="$1"
     local longname="${optdef#*:}"
-    bb_addopt "$optdef" "$2" $__bb_false
+    bb_addopt "$optdef" "$2" "$__bb_false"
     __bb_cli_arg_flags["$longname"]=1
 }
 
@@ -271,7 +271,7 @@ function bb_getopt () {
 # - LONGNAME: long name of the flag
 # @returns: the flag value
 function bb_checkopt () {
-    return ${__bb_cli_arg_optvals["$1"]}
+    return "${__bb_cli_arg_optvals["$1"]}"
 }
 
 # function: bb_argclear

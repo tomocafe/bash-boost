@@ -75,7 +75,7 @@ function bb_debug () {
 # @returns: 0 if sourced, 1 otherwise
 function bb_issourced () {
     # Note: use the bottom of the call stack
-    [[ ${BASH_SOURCE[${#BASH_SOURCE[@]}-1]} != $0 ]]
+    [[ "${BASH_SOURCE[${#BASH_SOURCE[@]}-1]}" != "$0" ]]
 }
 
 # function: bb_stacktrace
@@ -84,10 +84,10 @@ function bb_stacktrace () {
     local -i i
     local depth="${#FUNCNAME[@]}"
     local maxwidth=0
-    for (( i=1; i<$depth; i++ )); do
+    for (( i=1; i<depth; i++ )); do
         [[ ${#FUNCNAME[$i]} -gt $maxwidth ]] && maxwidth=${#FUNCNAME[$i]}
     done
-    for (( i=1; i<$depth; i++ )); do
+    for (( i=1; i<depth; i++ )); do
         printf "%-${#depth}d  %-${maxwidth}s  %s:%d\n" "$i" "${FUNCNAME[$i]}" "${BASH_SOURCE[$i]}" "${BASH_LINENO[$i-1]}" 1>&2
     done
 }

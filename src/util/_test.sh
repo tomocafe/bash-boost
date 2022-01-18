@@ -108,7 +108,9 @@ bb_expect "$(bb_sorthumandesc "${__bb_tmp_list[@]}")" "2G 3M 4K"
 
 __bb_tmp_list=(1 2 3 2 1)
 bb_expect "$(bb_uniq "${__bb_tmp_list[@]}")" "1 2 3"
+# shellcheck disable=SC2046
 bb_expect "$(bb_uniqsorted $(bb_sort "${__bb_tmp_list[@]}"))" "1 2 3"
+# shellcheck disable=SC2046
 bb_expect "$(bb_uniqsorted $(bb_sortnums "${__bb_tmp_list[@]}"))" "1 2 3"
 
 unset __bb_tmp_list
@@ -125,7 +127,7 @@ bb_expect "$(bb_relpath "/foo/bar" "/foo/bar/baz")" ".."
 bb_expect "$(bb_relpath "/foo/./bar//" "/foo/bar")" "."
 
 __bb_tmp_file="$(mktemp)"
-cat <<EOF > $__bb_tmp_file
+cat <<EOF > "$__bb_tmp_file"
 foo
 bar
 baz
@@ -170,7 +172,9 @@ bb_isint "abcd"
 bb_expect "$?" "$__bb_false" "isint string false"
 
 __bb_tmp_nums=({0..20})
+# shellcheck disable=SC2046
 bb_expect "$(bb_hex2dec $(bb_dec2hex "${__bb_tmp_nums[@]}"))" "${__bb_tmp_nums[*]}" "hex2dec(dec2hex())"
+# shellcheck disable=SC2046
 bb_expect "$(bb_oct2dec $(bb_dec2oct "${__bb_tmp_nums[@]}"))" "${__bb_tmp_nums[*]}" "oct2dec(dec2oct())"
 unset __bb_tmp_nums
 

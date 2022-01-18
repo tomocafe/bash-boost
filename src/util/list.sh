@@ -213,7 +213,7 @@ function bb_uniqsorted () {
     local prev="$1"
     local item
     for item in "${@:2}"; do
-        [[ $item == $prev ]] && continue
+        [[ "$item" == "$prev" ]] && continue
         prev="$item"
         dedup+=("$item")
     done

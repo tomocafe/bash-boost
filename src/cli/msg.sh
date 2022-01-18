@@ -65,7 +65,7 @@ function bb_fatal () {
 # - MESSAGE: optional prefix to the error message
 # - RETURNCODE: return code to exit with (defaults to 1)
 function bb_expect () {
-    [[ "$1" == "$2" ]] || bb_fatal "${3:+$3: }expected \`$2' got \`$1'" $4
+    [[ "$1" == "$2" ]] || bb_fatal "${3:+$3: }expected \`$2' got \`$1'" "$4"
 }
 
 # function: bb_expectsubstr TEXT PATTERN [MESSAGE] [RETURNCODE]
@@ -76,7 +76,7 @@ function bb_expect () {
 # - MESSAGE: optional prefix to the error message
 # - RETURNCODE: return code to exit with (defaults to 1)
 function bb_expectsubstr () {
-    [[ "$1" == *"$2"* ]] || bb_fatal "${3:+$3: }expected substring \`$2' got \`$1'" $4
+    [[ "$1" == *"$2"* ]] || bb_fatal "${3:+$3: }expected substring \`$2' got \`$1'" "$4"
 }
 
 # function: bb_expectre TEXT PATTERN [MESSAGE] [RETURNCODE]
@@ -87,7 +87,7 @@ function bb_expectsubstr () {
 # - MESSAGE: optional prefix to the error message
 # - RETURNCODE: return code to exit with (defaults to 1)
 function bb_expectre () {
-    [[ "$1" =~ $2 ]] || bb_fatal "${3:+$3: }expected match \`$2' got \`$1'" $4
+    [[ "$1" =~ $2 ]] || bb_fatal "${3:+$3: }expected match \`$2' got \`$1'" "$4"
 }
 
 # function: bb_loglevel [LEVEL]

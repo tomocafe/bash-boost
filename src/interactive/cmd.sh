@@ -34,6 +34,7 @@ function bb_mcd () {
 #   a directory is removed, moving you up the directory stack. Once you see
 #   the upward directory you want to go to, hit ENTER
 function bb_up () {
+    # shellcheck disable=SC2164
     cd "${1:-..}"
 }
 
@@ -69,6 +70,6 @@ function bb_forkterm () {
     bb_iscmd "${args[0]}" || return "$__bb_false"
     # Putting this in a (temporary) subshell silences the job messages
     # from spawning a background process
-    ( BB_FORKDIR=$PWD "${args[@]}" $@ &>/dev/null & )
+    ( BB_FORKDIR=$PWD "${args[@]}" "$@" &>/dev/null & )
 }
 

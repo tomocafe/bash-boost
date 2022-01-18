@@ -89,7 +89,7 @@ function bb_relpath () {
     fi
     # Find the common parent directory
     local common="$from/"
-    while [[ ${target#$common} == ${target} ]]; do
+    while [[ "${target#$common}" == "${target}" ]]; do
         common="${common%/}"
         common="${common%/*}"
         result+="${result:+/}.."
@@ -166,7 +166,7 @@ function bb_extpop () {
     local f
     for f in "$@"; do
         local new="${f%.*}"
-        [[ $f == $new ]] || mv "$f" "$new"
+        [[ "$f" == "$new" ]] || mv "$f" "$new"
     done
 }
 

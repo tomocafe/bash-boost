@@ -129,7 +129,7 @@ function bb_removefrompath () {
         eval export $1="$newpath"
         found=$__bb_true
     done
-    return $found
+    return "$found"
 }
 
 # function: bb_swapinpath VAR ITEM1 ITEM2

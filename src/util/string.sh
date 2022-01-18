@@ -243,7 +243,7 @@ function bb_urldecode () {
                     %[[:xdigit:]][[:xdigit:]]) ;;
                     *) return "$__bb_false" ;; # malformed
                 esac
-                let i+=2
+                (( i+=2 ))
                 printf -v char '%b' "\\x${char:1}"
                 ;;
             +) printf -v char ' ' ;;
@@ -264,6 +264,7 @@ function bb_urldecode () {
 function bb_repeatstr () {
     _bb_glopts "$@"; set -- "${__bb_args[@]}"
     local rep
+    # shellcheck disable=SC2183
     printf -v rep '%*s' "$1"
     printf -v rep "${rep// /$2}"
     _bb_result "$rep"

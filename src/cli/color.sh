@@ -129,7 +129,7 @@ function bb_colorstrip () {
         case "$c1$c2" in
             \\\[|\\\])
                 # Prompt non-printable region delimiters
-                let i++
+                (( i++ ))
                 ;;
             $'\e'[\[0])
                 # Beginning of an escape sequence

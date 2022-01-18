@@ -55,7 +55,11 @@ function bb_now () {
         esac
         local val="${offset:1: -1}"
         bb_isint "$val" || return "$__bb_false"
-        $isadd && (( ts += val * unit )) || (( ts -= val * unit ))
+        if $isadd; then
+            (( ts += val * unit ))
+        else
+            (( ts -= val * unit ))
+        fi
     done
     printf -v result '%(%s)T' "$ts"
     _bb_result "$result"
