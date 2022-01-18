@@ -25,7 +25,7 @@ bb_load "util/env"
 function bb_canonicalize () {
     _bb_glopts "$@"; set -- "${__bb_args[@]}"
     local path="$1"
-    [[ "${path:0:1}" == '/' ]] || return $__bb_false
+    [[ "${path:0:1}" == '/' ]] || return "$__bb_false"
     local patharr=()
     bb_split -V patharr '/' "$path"
     local fixed=()
@@ -41,7 +41,7 @@ function bb_canonicalize () {
         esac
     done
     _bb_result "/$(bb_join '/' "${fixed[@]}")"
-    return $__bb_true
+    return "$__bb_true"
 }
 
 # function: bb_abspath [-v VAR] TARGET [FROM]
@@ -74,8 +74,8 @@ function bb_relpath () {
     local from="${2:-$PWD}"
     local result=""
     # Check inputs, must be absolute
-    [[ "${target:0:1}" == '/' ]] || return $__bb_false
-    [[ "${from:0:1}" == '/' ]] || return $__bb_false
+    [[ "${target:0:1}" == '/' ]] || return "$__bb_false"
+    [[ "${from:0:1}" == '/' ]] || return "$__bb_false"
     # Strip any trailing slashes
     target="${target%/}"
     from="${from%/}"
@@ -85,7 +85,7 @@ function bb_relpath () {
     # Handle trivial . case
     if [[ "$target" == "$from" ]]; then
         _bb_result "."
-        return $__bb_true
+        return "$__bb_true"
     fi
     # Find the common parent directory
     local common="$from/"
@@ -97,7 +97,7 @@ function bb_relpath () {
     # Append
     result+="${target#$common}"
     _bb_result "$result"
-    return $__bb_true
+    return "$__bb_true"
 }
 
 # function: bb_countlines FILENAME ...
@@ -110,7 +110,7 @@ function bb_countlines () {
     local f line
     local -i ct=0
     for f in "$@"; do
-        [[ -f "$f" ]] || return $__bb_false
+        [[ -f "$f" ]] || return "$__bb_false"
         while read -r line; do
             if [[ -n $__bb_util_file_countlines_filter ]]; then
                 $__bb_util_file_countlines_filter "$line" || continue
@@ -119,7 +119,7 @@ function bb_countlines () {
         done < "$f"
     done
     _bb_result "$ct"
-    return $__bb_true
+    return "$__bb_true"
 }
 
 # function: bb_countmatches PATTERN FILENAME ...

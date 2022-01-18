@@ -34,7 +34,7 @@ function bb_mcd () {
 #   a directory is removed, moving you up the directory stack. Once you see
 #   the upward directory you want to go to, hit ENTER
 function bb_up () {
-    cd ${1:-..}
+    cd "${1:-..}"
 }
 
 function _bb_interactive_cmd_up_completion () {
@@ -64,9 +64,9 @@ complete -o nospace -F _bb_interactive_cmd_up_completion bb_up
 #   desired.
 function bb_forkterm () {
     local cmd="${BB_TERMINAL:-$TERMINAL}"
-    bb_checkset cmd || return $__bb_false
+    bb_checkset cmd || return "$__bb_false"
     local args=( $cmd )
-    bb_iscmd "${args[0]}" || return $__bb_false
+    bb_iscmd "${args[0]}" || return "$__bb_false"
     # Putting this in a (temporary) subshell silences the job messages
     # from spawning a background process
     ( BB_FORKDIR=$PWD "${args[@]}" $@ &>/dev/null & )

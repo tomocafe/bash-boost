@@ -67,7 +67,7 @@ function bb_colorize () {
     # Check if this is a terminal, return otherwise
     if ! [[ -t 1 ]] && [[ -z "${__bb_cli_color_rawcolor+set}" ]]; then
         printf -- "$text"
-        return $__bb_false
+        return "$__bb_false"
     fi
     local fgcolor="${colorstr%%_on_*}"
     local colorcode
@@ -77,7 +77,7 @@ function bb_colorize () {
         colorcode=${__bb_cli_color_code["$bgcolor"]}
         if [[ -z "$colorcode" ]]; then
             printf -- "$text"
-            return $__bb_false
+            return "$__bb_false"
         fi
         (( colorcode += 40 ))
         prefix+="${__bb_cli_color_escapeprompt+\[}\e[${colorcode}m${__bb_cli_color_escapeprompt+\]}"
@@ -85,13 +85,13 @@ function bb_colorize () {
     colorcode=${__bb_cli_color_code["$fgcolor"]}
     if [[ -z "$colorcode" ]]; then
         printf -- "$text"
-        return $__bb_false
+        return "$__bb_false"
     fi
     (( colorcode += 30 ))
     prefix+="${__bb_cli_color_escapeprompt+\[}\e[${colorcode}m${__bb_cli_color_escapeprompt+\]}"
     local reset="${__bb_cli_color_escapeprompt+\[}$__bb_cli_color_reset${__bb_cli_color_escapeprompt+\]}"
     printf -- '%b%s%b' "$prefix" "$text" "$reset"
-    return $__bb_true
+    return "$__bb_true"
 }
 
 # function: bb_rawcolor COLORSTR TEXT

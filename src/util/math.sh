@@ -79,9 +79,9 @@ function bb_isint () {
     local re='^-*[0-9]+$'
     local n
     for n in "$@"; do
-        [[ $n =~ $re ]] || return $__bb_false
+        [[ $n =~ $re ]] || return "$__bb_false"
     done
-    return $__bb_true
+    return "$__bb_true"
 }
 
 # function: bb_hex2dec [-V LISTVAR] NUM ...
@@ -96,11 +96,11 @@ function bb_hex2dec () {
     local res=()
     for n in "$@"; do
         [[ $n == '0' ]] && { res+=("$n"); continue; }
-        (( n=16#$n )) 2>/dev/null || return $__bb_false
+        (( n=16#$n )) 2>/dev/null || return "$__bb_false"
         res+=( "$n" )
     done
     _bb_result "${res[@]}"
-    return $__bb_true
+    return "$__bb_true"
 }
 
 # function: bb_dec2hex [-V LISTVAR] NUM ...
@@ -114,11 +114,11 @@ function bb_dec2hex () {
     local n
     local res=()
     for n in "$@"; do
-        printf -v n '%x' "$n" 2>/dev/null || return $__bb_false
+        printf -v n '%x' "$n" 2>/dev/null || return "$__bb_false"
         res+=( "$n" )
     done
     _bb_result "${res[@]}"
-    return $__bb_true
+    return "$__bb_true"
 }
 
 # function: bb_oct2dec [-V LISTVAR] NUM ...
@@ -133,11 +133,11 @@ function bb_oct2dec () {
     local res=()
     for n in "$@"; do
         [[ $n == '0' ]] && { res+=("$n"); continue; }
-        (( n=8#$n )) 2>/dev/null || return $__bb_false
+        (( n=8#$n )) 2>/dev/null || return "$__bb_false"
         res+=( "$n" )
     done
     _bb_result "${res[@]}"
-    return $__bb_true
+    return "$__bb_true"
 }
 
 # function: bb_dec2oct [-V LISTVAR] NUM ...
@@ -151,9 +151,9 @@ function bb_dec2oct () {
     local n
     local res=()
     for n in "$@"; do
-        printf -v n '%o' "$n" || return $__bb_false
+        printf -v n '%o' "$n" || return "$__bb_false"
         res+=( "$n" )
     done
     _bb_result "${res[@]}"
-    return $__bb_true
+    return "$__bb_true"
 }

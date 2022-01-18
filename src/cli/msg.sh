@@ -54,7 +54,7 @@ function bb_error () {
 function bb_fatal () {
     bb_colorize 'bright_red' 'fatal error:' 1>&2
     echo " $1" 1>&2
-    bb_issourced && return ${2:-1} || exit ${2:-1}
+    bb_issourced && return "${2:-1}" || exit "${2:-1}"
 }
 
 # function: bb_expect VAL1 VAL2 [MESSAGE] [RETURNCODE]
@@ -65,18 +65,29 @@ function bb_fatal () {
 # - MESSAGE: optional prefix to the error message
 # - RETURNCODE: return code to exit with (defaults to 1)
 function bb_expect () {
-    [[ "$1" == "$2" ]] || bb_fatal "${3:+$3: }expected $2 got $1" $4
+    [[ "$1" == "$2" ]] || bb_fatal "${3:+$3: }expected \`$2' got \`$1'" $4
 }
 
-# function: bb_expectsubstr VAL1 VAL2 [MESSAGE] [RETURNCODE]
+# function: bb_expectsubstr TEXT PATTERN [MESSAGE] [RETURNCODE]
 # Issues a fatal error if a given substring is not found in some given text
 # @arguments:
-# - VAL1: text to check
-# - VAL2: substring to be found
+# - TEXT: text to check
+# - PATTERN: substring to be found
 # - MESSAGE: optional prefix to the error message
 # - RETURNCODE: return code to exit with (defaults to 1)
 function bb_expectsubstr () {
-    [[ "$1" =~ "$2" ]] || bb_fatal "${3:+$3: }expected substring $2 got $1" $4
+    [[ "$1" == *"$2"* ]] || bb_fatal "${3:+$3: }expected substring \`$2' got \`$1'" $4
+}
+
+# function: bb_expectre TEXT PATTERN [MESSAGE] [RETURNCODE]
+# Issues a fatal error if text does not match the given regular expression
+# @arguments:
+# - TEXT: text to check
+# - PATTERN: regular expression
+# - MESSAGE: optional prefix to the error message
+# - RETURNCODE: return code to exit with (defaults to 1)
+function bb_expectre () {
+    [[ "$1" =~ $2 ]] || bb_fatal "${3:+$3: }expected match \`$2' got \`$1'" $4
 }
 
 # function: bb_loglevel [LEVEL]

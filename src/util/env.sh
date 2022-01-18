@@ -43,12 +43,12 @@ function bb_iscmd () {
 # - ITEM: items to find in the path variable
 # @returns: 0 if all items are in the path, 1 otherwise
 function bb_inpath () {
-    [[ $# -ge 2 ]] || return $__bb_false
+    [[ $# -ge 2 ]] || return "$__bb_false"
     local item
     for item in "${@:2}"; do
-        eval [[ ":\${$1}:" =~ ":${item}:" ]] || return $__bb_false
+        eval [[ ":\${$1}:" =~ ":${item}:" ]] || return "$__bb_false"
     done
-    return $__bb_true
+    return "$__bb_true"
 }
 
 # function: bb_prependpath VAR ITEM ...
@@ -145,8 +145,8 @@ function bb_removefrompath () {
 #   3 for internal error
 function bb_swapinpath () {
     [[ $# -eq 3 ]] || return 2
-    bb_inpath "$1" "$2" || return $__bb_false
-    bb_inpath "$1" "$3" || return $__bb_false
+    bb_inpath "$1" "$2" || return "$__bb_false"
+    bb_inpath "$1" "$3" || return "$__bb_false"
     bb_inpath "$1" "@SWAPPING@" && return 3 # sentinel value
     local newpath
     eval newpath=":\$$1:"
@@ -156,7 +156,7 @@ function bb_swapinpath () {
     newpath="${newpath#:}"
     newpath="${newpath%:}"
     eval export $1="$newpath"
-    return $__bb_true
+    return "$__bb_true"
 }
 
 # function: bb_printpath VAR [SEP]

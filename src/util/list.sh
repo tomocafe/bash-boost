@@ -64,9 +64,9 @@ function bb_inlist () {
     shift
     local item
     for item in "$@"; do
-        [[ "$item" == "$target" ]] && return $__bb_true
+        [[ "$item" == "$target" ]] && return "$__bb_true"
     done
-    return $__bb_false
+    return "$__bb_false"
 }
 
 # function: bb_push LISTVAR ITEM ...

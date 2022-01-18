@@ -241,7 +241,7 @@ function bb_urldecode () {
                 char="${text:$i:3}"
                 case "$char" in
                     %[[:xdigit:]][[:xdigit:]]) ;;
-                    *) return $__bb_false ;; # malformed
+                    *) return "$__bb_false" ;; # malformed
                 esac
                 let i+=2
                 printf -v char '%b' "\\x${char:1}"
@@ -252,7 +252,7 @@ function bb_urldecode () {
         decoded+="$char"
     done
     _bb_result "$decoded"
-    return $__bb_true
+    return "$__bb_true"
 }
 
 # function: bb_repeatstr [-v VAR] NUM TEXT

@@ -55,9 +55,9 @@ function _bb_setloaded () {
 
 # onfirstload PKG
 function _bb_onfirstload () {
-    bb_isloaded "$1" && return $__bb_false
+    bb_isloaded "$1" && return "$__bb_false"
     _bb_setloaded "$1"
-    return $__bb_true
+    return "$__bb_true"
 }
 
 # function: bb_debug TEXT
@@ -159,5 +159,5 @@ function bb_cleanup () {
         line="${line%%=*}"
         [[ $line =~ ^(BB|__bb)_ ]] && unset "$line"
     done < <(set -o posix; set)
-    : # don't use return $__bb_true here, it's now undefined
+    : # don't use return "$__bb_true" here, it's now undefined
 }

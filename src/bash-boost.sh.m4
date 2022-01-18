@@ -56,7 +56,7 @@ BB_ROOT="$(readlink -f "$(dirname "${BASH_SOURCE[0]}")")"
 # flatten-begin-exclude
 
 # Load the core
-source $BB_ROOT/core/core.sh
+source "$BB_ROOT/core/core.sh"
 
 # Load packages by argument
 # Alternatively, caller can use bb_load after sourcing this function

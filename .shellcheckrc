@@ -8,3 +8,5 @@ disable=SC1090
 disable=SC2034
 disable=SC2154
 
+# SC2059: Don't use variables in the printf format string. Use printf "..%s.." "$foo".
+disable=SC2059

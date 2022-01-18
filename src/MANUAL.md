@@ -1,7 +1,7 @@
 ---
 title: BASH-BOOST(1)
 author: github.com/tomocafe
-date: January 16, 2022
+date: January 18, 2022
 ---
 
 
@@ -297,14 +297,25 @@ Issues a fatal error if two given values are not equal
 - `MESSAGE`: optional prefix to the error message
 - `RETURNCODE`: return code to exit with (defaults to 1)
 
-## `bb_expectsubstr VAL1 VAL2 [MESSAGE] [RETURNCODE]`
+## `bb_expectsubstr TEXT PATTERN [MESSAGE] [RETURNCODE]`
 
 Issues a fatal error if a given substring is not found in some given text
 
 **Arguments:**
 
-- `VAL1`: text to check
-- `VAL2`: substring to be found
+- `TEXT`: text to check
+- `PATTERN`: substring to be found
+- `MESSAGE`: optional prefix to the error message
+- `RETURNCODE`: return code to exit with (defaults to 1)
+
+## `bb_expectre TEXT PATTERN [MESSAGE] [RETURNCODE]`
+
+Issues a fatal error if text does not match the given regular expression
+
+**Arguments:**
+
+- `TEXT`: text to check
+- `PATTERN`: regular expression
 - `MESSAGE`: optional prefix to the error message
 - `RETURNCODE`: return code to exit with (defaults to 1)
 

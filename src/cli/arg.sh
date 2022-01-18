@@ -140,7 +140,7 @@ function bb_arghelp () {
 function bb_errusage () {
     echo "usage error: $1" 1>&2
     bb_argusage
-    bb_issourced && return ${2:-1} || exit ${2:-1}
+    bb_issourced && return "${2:-1}" || exit "${2:-1}"
 }
 
 # function: bb_isflag LONGNAME
