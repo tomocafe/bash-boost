@@ -1,7 +1,7 @@
 ---
 title: BASH-BOOST(1)
 author: github.com/tomocafe
-date: January 18, 2022
+date: January 19, 2022
 ---
 
 
@@ -1159,6 +1159,22 @@ Repeat TEXT NUM times
 - `VAR`: variable to store result (if not given, prints to stdout)
 - `NUM`: repeat this many times (integer)
 - `TEXT`: text to repeat
+
+## `bb_cmpversion VER1 VER2 [DELIM]`
+
+Checks if VER1 is greater than or equal to VER2
+
+**Arguments:**
+
+- `VER1`: a version string (containing only numerals and delimeters)
+- `VER2`: another version string, usually a reference point
+- `DELIM`: character(s) to delimit fields in the version string (default: .-_)
+
+**Returns:** 0 if VER1 greater or equal to VER2, 1 otherwise
+
+**Notes:**
+
+Numeric comparison is used, so alphabetical characters are not supported
 
 # Package util/time
 

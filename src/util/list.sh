@@ -102,7 +102,7 @@ function bb_unshift () {
 # @arguments:
 # - LISTVAR: name of the list variable (do not include $)
 function bb_shift () {
-    eval "[[ \${#$1[@]} -gt 0 ]] && unset $1[0]"
+    eval "$1=(\"\${$1[@]:1}\")"
 }
 
 function _bb_util_list_base_sort () {

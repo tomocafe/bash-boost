@@ -3,6 +3,8 @@
 
 _bb_onfirstload "bb_util_string" || return
 
+bb_load "util/list"
+
 ################################################################################
 # Globals
 ################################################################################
@@ -268,4 +270,27 @@ function bb_repeatstr () {
     printf -v rep '%*s' "$1"
     printf -v rep "${rep// /$2}"
     _bb_result "$rep"
+}
+
+# function: bb_cmpversion VER1 VER2 [DELIM]
+# Checks if VER1 is greater than or equal to VER2
+# @arguments:
+# - VER1: a version string (containing only numerals and delimeters)
+# - VER2: another version string, usually a reference point
+# - DELIM: character(s) to delimit fields in the version string (default: .-_)
+# @returns: 0 if VER1 greater or equal to VER2, 1 otherwise
+# @notes:
+#   Numeric comparison is used, so alphabetical characters are not supported
+function bb_cmpversion () {
+    local lhs rhs
+    bb_split -V lhs ".-_" "$1"
+    bb_split -V rhs ".-_" "$2"
+    local l r
+    for l in "${lhs[@]}"; do
+        [[ ${#rhs[@]} -gt 0 ]] || break
+        r="${rhs[0]}"
+        [[ ${l##0*} -ge ${r##0*} ]] || return "$__bb_false"
+        bb_shift rhs
+    done
+    [[ ${#rhs[@]} -eq 0 ]]
 }

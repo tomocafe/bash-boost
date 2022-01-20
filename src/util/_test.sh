@@ -201,6 +201,17 @@ bb_expect "$(bb_urldecode "hello+world")" "hello world" "urldecode"
 
 bb_expect "$(bb_repeatstr 5 ab)" "ababababab"
 
+bb_cmpversion 3.10 3.9
+bb_expect "$?" "$__bb_true" "bb_cmpversion 3.10 3.9"
+bb_cmpversion 3.10 3.009
+bb_expect "$?" "$__bb_true" "bb_cmpversion 3.10 3.009"
+bb_cmpversion 3.10 3.90
+bb_expect "$?" "$__bb_false" "bb_cmpversion 3.10 3.90"
+bb_cmpversion 3.10.1 3.10
+bb_expect "$?" "$__bb_true" "bb_cmpversion 3.10.1 3.10"
+bb_cmpversion 3.10 3.10.1
+bb_expect "$?" "$__bb_false" "bb_cmpversion 3.10 3.10.1"
+
 ################################################################################
 # util/time
 ################################################################################
