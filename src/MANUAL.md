@@ -1,7 +1,7 @@
 ---
 title: BASH-BOOST(1)
 author: github.com/tomocafe
-date: January 19, 2022
+date: February 20, 2022
 ---
 
 
@@ -27,6 +27,20 @@ for arg in "$@"; do
 done
 ```
 
+**Example:**
+
+```bash
+bb_setprog "copy"
+bb_addflag "f:force" "force overwrite destination"
+bb_addarg "src" "source file/directory"
+bb_addarg "dst" "destination path"
+bb_parseargs "$@"
+bb_getopt -v src src || bb_errusage "missing required src argument"
+bb_getopt -v dst fst || bb_errusage "missing required dst argument"
+[[ -e "$dst" && ! bb_checkopt force ]] && bb_fatal "$dst exists"
+cp "$src" "$dst"
+```
+
 ## `bb_addopt [SHORTNAME:]LONGNAME [DESCRIPTION] [DEFAULT]`
 
 Adds a command line option to be parsed
@@ -42,6 +56,16 @@ Adds a command line option to be parsed
 
 -h and --help are reserved for automatically-generated
 command usage and help
+
+## `bb_addarg NAME DESCRIPTION [DEFAULT]`
+
+Adds a named argument
+
+**Arguments:**
+
+- `NAME`: unique, one-word name of the argument
+- `DESCRIPTION`: description of the argument used in help
+- `DEFAULT`: default value if not given in the command line
 
 ## `bb_addflag [SHORTNAME:]LONGNAME [DESCRIPTION]`
 
@@ -113,8 +137,8 @@ Parses command line arguments after registering valid flags and options
 
 **Notes:**
 
-Check flags with checkopt LONGNAME
-Get option setting values with getopt LONGNAME
+Check flags with `bb_checkopt LONGNAME'
+Get option setting values or named arguments with `bb_getopt LONGNAME'
 Get positional arguments with ${BB_POSARGS[@]} array
 If the last argument is a single dash (-), read remaining arguments from stdin
 
@@ -127,6 +151,8 @@ Gets the value of option named LONGNAME
 - `VAR`: variable to store result (if not given, prints to stdout)
 - `LONGNAME`: long name of the option
 
+**Returns:** true if the result is nonempty
+
 ## `bb_checkopt LONGNAME`
 
 Returns the value of flag named LONGNAME
@@ -135,7 +161,10 @@ Returns the value of flag named LONGNAME
 
 - `LONGNAME`: long name of the flag
 
-**Returns:** the flag value
+**Returns:** the flag value, either __bb_true or __bb_false
+
+**Notes:**
+
 
 ## `bb_argclear`
 

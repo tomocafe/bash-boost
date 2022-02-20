@@ -16,26 +16,39 @@
 #   echo "You have item $arg"
 # done
 # ```
+# @example:
+# ```bash
+# bb_setprog "copy"
+# bb_addflag "f:force" "force overwrite destination"
+# bb_addarg "src" "source file/directory"
+# bb_addarg "dst" "destination path"
+# bb_parseargs "$@"
+# bb_getopt -v src src || bb_errusage "missing required src argument"
+# bb_getopt -v dst fst || bb_errusage "missing required dst argument"
+# [[ -e "$dst" && ! bb_checkopt force ]] && bb_fatal "$dst exists"
+# cp "$src" "$dst"
+# ```
 
 _bb_onfirstload "bb_cli_arg" || return
 
-bb_load "cli/color"
+bb_load "cli/color" "util/list"
 
 ################################################################################
 # Globals
 ################################################################################
 
-declare -Ag __bb_cli_arg_optvals # optvals[LONGNAME] = VAL
-declare -Ag __bb_cli_arg_optdesc # optdesc[LONGNAME] = DESCRIPTION
+declare -Ag __bb_cli_arg_argvals # argvals[LONGNAME] = VAL
+declare -Ag __bb_cli_arg_argdesc # argdesc[LONGNAME] = DESCRIPTION
 declare -Ag __bb_cli_arg_flags # flags[LONGNAME] = 1
 declare -Ag __bb_cli_arg_short # short[SHORTNAME] = LONGNAME
 __bb_cli_arg_short["h"]="help"
 
 __bb_cli_arg_progname="" # see setprog()
 __bb_cli_arg_opts=() # [SHORTNAME:]LONGNAME in order of registry
+__bb_cli_arg_args=() # named arguments
 __bb_cli_arg_positional_name="" # see setpositional()
 __bb_cli_arg_positional_desc="" # see setpositional()
-BB_POSARGS=() # remaining (positional) args
+BB_POSARGS=() # remaining positional args
 
 ################################################################################
 # Functions
@@ -57,8 +70,8 @@ function bb_addopt () {
     local default="$3"
     local longname="${optdef#*:}"
     __bb_cli_arg_opts+=("$optdef")
-    __bb_cli_arg_optvals["$longname"]="${default}"
-    __bb_cli_arg_optdesc["$longname"]="${desc}"
+    __bb_cli_arg_argdesc["$longname"]="${desc}"
+    [[ $# -ge 3 ]] && __bb_cli_arg_argvals["$longname"]="${default}"
     # Check for short name
     if [[ "${optdef:1:1}" == ":" ]]; then
         local shortname="${optdef:0:1}"
@@ -66,6 +79,18 @@ function bb_addopt () {
             __bb_cli_arg_short["$shortname"]="$longname"
         fi
     fi
+}
+
+# function: bb_addarg NAME DESCRIPTION [DEFAULT]
+# Adds a named argument
+# @arguments:
+# - NAME: unique, one-word name of the argument
+# - DESCRIPTION: description of the argument used in help
+# - DEFAULT: default value if not given in the command line
+function bb_addarg () {
+    __bb_cli_arg_args+=("$1")
+    __bb_cli_arg_argdesc["$1"]="$2"
+    [[ $# -ge 3 ]] && __bb_cli_arg_argvals["$1"]="$3"
 }
 
 # function: bb_addflag [SHORTNAME:]LONGNAME [DESCRIPTION]
@@ -89,13 +114,13 @@ function bb_addflag () {
 function bb_argusage () {
     {
     printf "$__bb_cli_arg_progname"
-    local optdef
-    for optdef in "${__bb_cli_arg_opts[@]}"; do
+    local arg
+    for arg in "${__bb_cli_arg_opts[@]}"; do
         # e.g. [--foo] [-f|--foo] [-f|--foo FOO]
         printf " ["
-        local longname="${optdef#*:}"
-        if [[ "${optdef:1:1}" == ":" ]]; then
-            local shortname="${optdef:0:1}"
+        local longname="${arg#*:}"
+        if [[ "${arg:1:1}" == ":" ]]; then
+            local shortname="${arg:0:1}"
             printf -- "-%s|" "$shortname"
         fi
         printf -- "--%s" "$longname";
@@ -103,6 +128,9 @@ function bb_argusage () {
             printf " ${longname^^}"
         fi
         printf "]"
+    done
+    for arg in "${__bb_cli_arg_args[@]}"; do
+        printf -- " %s" "$arg"
     done
     if [[ -n $__bb_cli_arg_positional_name ]]; then
         printf " [${__bb_cli_arg_positional_name^^} ...]"
@@ -119,11 +147,16 @@ function bb_argusage () {
 function bb_arghelp () {
     {
     bb_argusage
-    local optdef
-    for optdef in "${__bb_cli_arg_opts[@]}"; do
-        local longname="${optdef#*:}"
-        if [[ ${__bb_cli_arg_optdesc["$longname"]+set} ]]; then
-            printf "  %-16s %s\n" "--$longname" "${__bb_cli_arg_optdesc["$longname"]}"
+    local arg
+    for arg in "${__bb_cli_arg_opts[@]}"; do
+        local longname="${arg#*:}"
+        if [[ ${__bb_cli_arg_argdesc["$longname"]+set} ]]; then
+            printf "  %-16s %s\n" "--$longname" "${__bb_cli_arg_argdesc["$longname"]}"
+        fi
+    done
+    for arg in "${__bb_cli_arg_args[@]}"; do
+        if [[ ${__bb_cli_arg_argdesc["$arg"]+set} ]]; then
+            printf "  %-16s %s\n" "$arg" "${__bb_cli_arg_argdesc["$arg"]}"
         fi
     done
     if [[ -n $__bb_cli_arg_positional_name ]] && [[ -n $__bb_cli_arg_positional_desc ]]; then
@@ -173,8 +206,8 @@ function bb_setpositional () {
 # @arguments:
 # - ARGS: the list of command line arguments, usually "$@"
 # @notes:
-#   Check flags with checkopt LONGNAME
-#   Get option setting values with getopt LONGNAME
+#   Check flags with `bb_checkopt LONGNAME'
+#   Get option setting values or named arguments with `bb_getopt LONGNAME'
 #   Get positional arguments with ${BB_POSARGS[@]} array
 #   If the last argument is a single dash (-), read remaining arguments from stdin
 function bb_parseargs () {
@@ -187,6 +220,7 @@ function bb_parseargs () {
             ;;
     esac
     set -- "${arglist[@]}" # replace original $@ with expanded arglist
+    local namedargs=("${__bb_cli_arg_args[@]}")
     BB_POSARGS=()
     while [[ $# -gt 0 ]]; do
         case "$1" in
@@ -203,10 +237,10 @@ function bb_parseargs () {
                 local optstr="${1:2}" # strip --
                 local longname="${optstr%%=*}" # strip =*
                 local optval="${optstr#*=}"
-                [[ ${__bb_cli_arg_optvals["$longname"]+set} ]] || bb_errusage "invalid option: --$longname"
+                [[ ${__bb_cli_arg_argvals["$longname"]+set} ]] || bb_errusage "invalid option: --$longname"
                 if bb_isflag "$longname"; then
                     # Flag, e.g., --foo
-                    __bb_cli_arg_optvals["$longname"]=$__bb_true
+                    __bb_cli_arg_argvals["$longname"]=$__bb_true
                 else
                     # Option, e.g., --foo=bar, --foo bar
                     if [[ "$optstr" == "$longname" ]]; then
@@ -215,7 +249,7 @@ function bb_parseargs () {
                         [[ $# -gt 0 ]] || bb_errusage "option --$longname missing required value"
                         optval="$1"
                     fi
-                    __bb_cli_arg_optvals["$longname"]="$optval"
+                    __bb_cli_arg_argvals["$longname"]="$optval"
                 fi
                 ;;
             -*)
@@ -228,13 +262,13 @@ function bb_parseargs () {
                     [[ -n "$longname" ]] || bb_errusage "invalid option: -$shortname"
                     if bb_isflag "$longname"; then
                         # Flag, e.g., -f
-                        __bb_cli_arg_optvals["$longname"]=$__bb_true
+                        __bb_cli_arg_argvals["$longname"]=$__bb_true
                     else
                         # Option, e.g., -f bar
                         if [[ ${#optstr} -eq 1 ]]; then
                             shift
                             [[ $# -gt 0 ]] || bb_errusage "option -$shortname missing required value"
-                            __bb_cli_arg_optvals["$longname"]="$1"
+                            __bb_cli_arg_argvals["$longname"]="$1"
                         else
                             bb_errusage "option -$shortname requires argument but is compounded as -$optstr; use -$shortname ${longname^^} -${optstr/$shortname/}"
                         fi
@@ -242,8 +276,15 @@ function bb_parseargs () {
                 done
                 ;;
             *)
-                # Positional args
-                BB_POSARGS+=("$1")
+                # Populate named args first, in order; then add any remaining to positional args
+                if [[ ${#namedargs[@]} -gt 0 ]]; then
+                    # Named arg
+                    __bb_cli_arg_argvals["${namedargs[0]}"]="$1"
+                    bb_shift namedargs
+                else
+                    # Positional args
+                    BB_POSARGS+=("$1")
+                fi
                 ;;
         esac
         shift
@@ -260,18 +301,21 @@ function bb_parseargs () {
 # @arguments:
 # - VAR: variable to store result (if not given, prints to stdout)
 # - LONGNAME: long name of the option
+# @returns: true if the result is nonempty
 function bb_getopt () {
     _bb_glopts "$@"; set -- "${__bb_args[@]}"
-    _bb_result "${__bb_cli_arg_optvals["$1"]}"
+    _bb_result "${__bb_cli_arg_argvals["$1"]}"
+    [[ ${__bb_cli_arg_argvals["$1"]+x} == "x" ]]
 }
 
 # function: bb_checkopt LONGNAME
 # Returns the value of flag named LONGNAME
 # @arguments:
 # - LONGNAME: long name of the flag
-# @returns: the flag value
+# @returns: the flag value, either __bb_true or __bb_false
+# @notes: undefined if used on an opt instead of a flag
 function bb_checkopt () {
-    return "${__bb_cli_arg_optvals["$1"]}"
+    return "${__bb_cli_arg_argvals["$1"]}"
 }
 
 # function: bb_argclear
@@ -281,8 +325,8 @@ function bb_checkopt () {
 #   so this can be used to clear the state of a previous command
 #   and start a new one
 function bb_argclear () {
-    __bb_cli_arg_optvals=()
-    __bb_cli_arg_optdesc=()
+    __bb_cli_arg_argvals=()
+    __bb_cli_arg_argdesc=()
     __bb_cli_arg_flags=()
     __bb_cli_arg_short=()
     __bb_cli_arg_short["h"]="help"
