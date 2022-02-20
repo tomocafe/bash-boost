@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+modules=(cli interactive util)
+
 # Load everything
 if [[ $0 =~ -portable ]]; then
     echo "Testing bash-boost-portable"
@@ -7,9 +9,7 @@ if [[ $0 =~ -portable ]]; then
 else
     echo "Testing bash-boost"
     source latest/bash-boost.sh
-    bb_load "cli"
-    bb_load "interactive"
-    bb_load "util"
+    bb_load "${modules[@]}"
 fi
 
 # Make sure bb_expect works
@@ -20,7 +20,7 @@ fi
     bb_expect "foo" "foo" &>/dev/null;
 ) || bb_fatal "bb_expect not working"
 
-for module in cli interactive util; do
+for module in "${modules[@]}"; do
     tester="src/$module/_test.sh"
     [[ -r "$tester" ]] || bb_fatal "could not read $tester"
     source "$tester" || exit 1
