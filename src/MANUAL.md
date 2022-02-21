@@ -137,19 +137,27 @@ Parses command line arguments after registering valid flags and options
 
 **Notes:**
 
-Check flags with `bb_checkopt LONGNAME'
-Get option setting values or named arguments with `bb_getopt LONGNAME'
-Get positional arguments with ${BB_POSARGS[@]} array
-If the last argument is a single dash (-), read remaining arguments from stdin
+- Check flags with `bb_checkopt LONGNAME`
+- Get option setting values or named arguments with `bb_getopt LONGNAME`
+- Get positional arguments with `${BB_POSARGS[@]}` array
+- If the last argument is a single dash (-), read remaining arguments from stdin
+
+## `bb_processargs`
+
+Parses arguments in $@ and modifies it in-place to only hold positional arguments
+
+**Notes:**
+
+To use this in a script, you must do `shopt -s expand_aliases`
 
 ## `bb_getopt [-v VAR] LONGNAME`
 
-Gets the value of option named LONGNAME
+Gets the value of option or argument by name
 
 **Arguments:**
 
 - `VAR`: variable to store result (if not given, prints to stdout)
-- `LONGNAME`: long name of the option
+- `LONGNAME`: long name of the option (or named argument)
 
 **Returns:** true if the result is nonempty
 
@@ -161,10 +169,11 @@ Returns the value of flag named LONGNAME
 
 - `LONGNAME`: long name of the flag
 
-**Returns:** the flag value, either __bb_true or __bb_false
+**Returns:** the flag value, either true or false
 
 **Notes:**
 
+Undefined if used on an opt instead of a flag
 
 ## `bb_argclear`
 

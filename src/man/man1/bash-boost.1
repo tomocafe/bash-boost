@@ -144,21 +144,33 @@ Parses command line arguments after registering valid flags and options
 \[lq]$\[at]\[rq]
 .PP
 \f[B]Notes:\f[R]
-.PP
-Check flags with
-\f[C]bb_checkopt LONGNAME\[aq] Get option setting values or named arguments with\f[R]bb_getopt
-LONGNAME\[cq] Get positional arguments with ${BB_POSARGS[\[at]]} array
+.IP \[bu] 2
+Check flags with \f[C]bb_checkopt LONGNAME\f[R]
+.IP \[bu] 2
+Get option setting values or named arguments with
+\f[C]bb_getopt LONGNAME\f[R]
+.IP \[bu] 2
+Get positional arguments with \f[C]${BB_POSARGS[\[at]]}\f[R] array
+.IP \[bu] 2
 If the last argument is a single dash (\-), read remaining arguments
 from stdin
+.SS \f[C]bb_processargs\f[R]
+.PP
+Parses arguments in $\[at] and modifies it in\-place to only hold
+positional arguments
+.PP
+\f[B]Notes:\f[R]
+.PP
+To use this in a script, you must do \f[C]shopt \-s expand_aliases\f[R]
 .SS \f[C]bb_getopt [\-v VAR] LONGNAME\f[R]
 .PP
-Gets the value of option named LONGNAME
+Gets the value of option or argument by name
 .PP
 \f[B]Arguments:\f[R]
 .IP \[bu] 2
 \f[C]VAR\f[R]: variable to store result (if not given, prints to stdout)
 .IP \[bu] 2
-\f[C]LONGNAME\f[R]: long name of the option
+\f[C]LONGNAME\f[R]: long name of the option (or named argument)
 .PP
 \f[B]Returns:\f[R] true if the result is nonempty
 .SS \f[C]bb_checkopt LONGNAME\f[R]
@@ -169,9 +181,11 @@ Returns the value of flag named LONGNAME
 .IP \[bu] 2
 \f[C]LONGNAME\f[R]: long name of the flag
 .PP
-\f[B]Returns:\f[R] the flag value, either __bb_true or __bb_false
+\f[B]Returns:\f[R] the flag value, either true or false
 .PP
 \f[B]Notes:\f[R]
+.PP
+Undefined if used on an opt instead of a flag
 .SS \f[C]bb_argclear\f[R]
 .PP
 Clears all registered argument parsing settings

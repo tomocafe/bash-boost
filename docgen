@@ -43,6 +43,10 @@ sub formatmd {
         $text =~ s/^\s*function:\s*//;
         print "\n## \`$text\`\n\n";
     }
+    elsif ($type eq 'alias') {
+        $text =~ s/^\s*alias:\s*//;
+        print "\n## \`$text\`\n\n";
+    }
     else {
         if ($text =~ m/^\s*\@arguments:/) {
            print "\n**Arguments:**\n\n"; 
@@ -51,7 +55,7 @@ sub formatmd {
            print "\n**Returns:** $v\n"; 
         }
         elsif ($text =~ m/^\s*\@notes:/) {
-           print "\n**Notes:**\n\n"; 
+           print "\n**Notes:**\n\n";
         }
         elsif ($text =~ m/^\s*\@example:/) {
            print "\n**Example:**\n\n"; 
@@ -95,6 +99,9 @@ sub getfcns {
         if (my ($f) = ($line =~ m/^\s*function\s+(.*)\s*\(\s*\)/)) {
             push @fcns, $f unless $f =~ /^_/;
         }
+        elsif (($f) = ($line =~ m/^\s*alias\s+(.*)=/)) {
+            push @fcns, $f unless $f =~ /^_/;
+        }
     }
     close $fd;
     return @fcns;
@@ -117,11 +124,11 @@ sub parsefcns {
         elsif (@fcns == 0) {
             last;
         }
-        elsif (my ($f) = ($line =~ m/#\s*function:\s*(\w+)/)) {
+        elsif (my ($type, $f) = ($line =~ m/#\s*(function|alias):\s*(\w+)/)) {
             next unless $fcns[0] =~ $f;
             shift @fcns;
             $start = 1;
-            formatout $line, 'function';
+            formatout $line, $type;
         }
     }
     close $fd;

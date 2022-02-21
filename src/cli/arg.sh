@@ -206,10 +206,10 @@ function bb_setpositional () {
 # @arguments:
 # - ARGS: the list of command line arguments, usually "$@"
 # @notes:
-#   Check flags with `bb_checkopt LONGNAME'
-#   Get option setting values or named arguments with `bb_getopt LONGNAME'
-#   Get positional arguments with ${BB_POSARGS[@]} array
-#   If the last argument is a single dash (-), read remaining arguments from stdin
+# - Check flags with `bb_checkopt LONGNAME`
+# - Get option setting values or named arguments with `bb_getopt LONGNAME`
+# - Get positional arguments with `${BB_POSARGS[@]}` array
+# - If the last argument is a single dash (-), read remaining arguments from stdin
 function bb_parseargs () {
     # Read arguments from stdin if last argument is -
     local arglist=("$@")
@@ -296,11 +296,17 @@ function bb_parseargs () {
     done
 }
 
+# alias: bb_processargs
+# Parses arguments in $@ and modifies it in-place to only hold positional arguments
+# @notes:
+#   To use this in a script, you must do `shopt -s expand_aliases`
+alias bb_processargs='bb_parseargs "$@"; set -- "${BB_POSARGS[@]}"; unset BB_POSARGS;'
+
 # function: bb_getopt [-v VAR] LONGNAME
-# Gets the value of option named LONGNAME
+# Gets the value of option or argument by name
 # @arguments:
 # - VAR: variable to store result (if not given, prints to stdout)
-# - LONGNAME: long name of the option
+# - LONGNAME: long name of the option (or named argument)
 # @returns: true if the result is nonempty
 function bb_getopt () {
     _bb_glopts "$@"; set -- "${__bb_args[@]}"
@@ -312,8 +318,9 @@ function bb_getopt () {
 # Returns the value of flag named LONGNAME
 # @arguments:
 # - LONGNAME: long name of the flag
-# @returns: the flag value, either __bb_true or __bb_false
-# @notes: undefined if used on an opt instead of a flag
+# @returns: the flag value, either true or false
+# @notes:
+#   Undefined if used on an opt instead of a flag
 function bb_checkopt () {
     return "${__bb_cli_arg_argvals["$1"]}"
 }
@@ -333,6 +340,7 @@ function bb_argclear () {
 
     __bb_cli_arg_progname=""
     __bb_cli_arg_opts=()
+    __bb_cli_arg_args=()
     __bb_cli_arg_positional_name=""
     __bb_cli_arg_positional_desc=""
     BB_POSARGS=()
