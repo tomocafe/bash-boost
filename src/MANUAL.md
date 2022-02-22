@@ -1,7 +1,7 @@
 ---
 title: BASH-BOOST(1)
 author: github.com/tomocafe
-date: February 20, 2022
+date: February 21, 2022
 ---
 
 

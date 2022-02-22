@@ -3,6 +3,7 @@
 ################################################################################
 
 function test1 () {
+    bb_argclear
     bb_setprog "test1"
     bb_addopt "f:foo" "This is the foo option (default: bar)" "bar"
     bb_addflag "x:extra" "Use this to print an extra message"
@@ -43,6 +44,7 @@ posarg=hello
 posarg=world"
 
 function test2 () {
+    bb_argclear
     bb_setprog "test2"
     bb_addopt "B:baz" "This is the baz option"
     bb_addarg "x" "x coordinate"

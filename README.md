@@ -25,7 +25,7 @@ Download and extract the [latest release](https://github.com/tomocafe/bash-boost
 
 ### From `git`
 
-Clone this repository and run `make`. For man page generation, `pandoc` is required.
+Clone this repository and run `make`. For manual generation, `perl` and `pandoc` are required.
 
 ## Usage
 
@@ -77,6 +77,10 @@ You have the choice of loading an entire module, or select certain packages from
 ## Documentation
 
 See the [manual](src/MANUAL.md) for an exhaustive list of functions defined in each package.
+
+## Versioning
+
+This project follows [semantic versioning](https://semver.org/). Any breaking changes must be made in a new major release. New functions are introduced in minor releases. Patch releases only include fixes to existing functions. No documented feature should be regressed in a minor or patch release.
 
 ## Alternatives
 

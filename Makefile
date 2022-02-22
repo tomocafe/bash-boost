@@ -1,3 +1,4 @@
+MAJOR_VERSION=1
 VERSION=1.9
 
 TARGET := bash-boost-$(VERSION)
@@ -17,6 +18,8 @@ $(TARGET): $(SRCS) flatten src/bash-boost.sh.m4
 	./flatten $@
 	$(RM) ./latest
 	ln -s $(TARGET) latest
+	$(RM) ./bash-boost-$(MAJOR_VERSION).latest
+	ln -s $(TARGET) ./bash-boost-$(MAJOR_VERSION).latest
 
 release: $(TARGET).tar.gz
 
@@ -28,6 +31,7 @@ clean:
 	$(RM) -r $(TARGET)
 	$(RM)    $(TARGET).tar.gz
 	$(RM)    latest
+	$(RM)    bash-boost-$(MAJOR_VERSION).latest
 
 test: $(TARGET) check
 	@./test
