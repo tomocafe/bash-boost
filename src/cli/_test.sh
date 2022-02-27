@@ -75,6 +75,9 @@ bb_expect "$(test2 1 2)" "x=1 y=2"
 bb_expect "$(test2 3 -B something 4)" "baz=something
 x=3 y=4"
 
+bb_expect "$(test2 3 --baz something 4)" "baz=something
+x=3 y=4"
+
 bb_expect "$(test2 5 6 7 8)" "x=5 y=6
 posarg=7
 posarg=8"
