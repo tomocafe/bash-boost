@@ -44,6 +44,7 @@ function bb_split () {
     local arr=()
     local token
     while IFS= read -r token; do
+        # shellcheck disable=SC2206
         arr+=( $token ) # no quotes around $token -- important!
     done <<< "$2"
     # Restore globbing
@@ -218,4 +219,18 @@ function bb_uniqsorted () {
         dedup+=("$item")
     done
     _bb_result "${dedup[@]}"
+}
+
+# function: bb_islist LISTVAR
+# Checks if the variable with the given name is a list with >1 element
+# @arguments:
+# - LISTVAR: name of a variable
+# @notes:
+#   This will return false if the variable is declared as a list 
+#   but only has 1 element. In that case, you can treat the variable
+#   as a scalar anyway.
+function bb_islist () {
+    local listname="$1[@]"
+    local list=("${!listname}")
+    [[ ${#list[@]} -gt 1 ]]
 }

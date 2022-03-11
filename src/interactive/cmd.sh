@@ -4,6 +4,7 @@
 _bb_onfirstload "bb_interactive_cmd" || return
 
 bb_load "util/env"
+bb_load "util/list"
 
 ################################################################################
 # Globals
@@ -58,18 +59,25 @@ complete -o nospace -F _bb_interactive_cmd_up_completion bb_up
 # @arguments:
 # - ARGS: arguments to be appended to the terminal launch command
 # @notes:
-#   Uses the BB_TERMINAL or TERMINAL environment variable as the command
-#   to launch the new terminal instance. Sets the BB_FORKDIR variable
-#   for the spawned shell to read. In your shell init file, you can 
-#   detect when this variable is set and change to this directory, if
-#   desired.
+# - Uses the BB_TERMINAL or TERMINAL environment variable as the command
+#   to launch the new terminal instance.
+# - Sets the BB_FORKDIR variable for the spawned shell to read.
+#   In your shell init file, you can  detect when this variable is set 
+#   and change to this directory, if desired.
+# - BB_TERMINAL can be a list with arguments, or a string which will be
+#   tokenized by space. If your arguments contain spaces, you will need
+#   to declare the variable as a list.
 function bb_forkterm () {
-    local cmd="${BB_TERMINAL:-$TERMINAL}"
-    bb_checkset cmd || return "$__bb_false"
-    local args=( $cmd )
+    local args
+    if bb_islist BB_TERMINAL; then
+        args=( "${BB_TERMINAL[@]}" )
+    else
+        local cmd="${BB_TERMINAL:-$TERMINAL}"
+        bb_checkset cmd || return "$__bb_false"
+        read -r -a args <<<"$cmd"
+    fi
     bb_iscmd "${args[0]}" || return "$__bb_false"
     # Putting this in a (temporary) subshell silences the job messages
     # from spawning a background process
     ( BB_FORKDIR=$PWD "${args[@]}" "$@" &>/dev/null & )
 }
-

@@ -1,7 +1,7 @@
 ---
 title: BASH-BOOST(1)
 author: github.com/tomocafe
-date: February 26, 2022
+date: March 11, 2022
 ---
 
 
@@ -478,11 +478,14 @@ Spawn a new terminal instance inheriting from this shell's environment
 
 **Notes:**
 
-Uses the BB_TERMINAL or TERMINAL environment variable as the command
-to launch the new terminal instance. Sets the BB_FORKDIR variable
-for the spawned shell to read. In your shell init file, you can 
-detect when this variable is set and change to this directory, if
-desired.
+- Uses the BB_TERMINAL or TERMINAL environment variable as the command
+to launch the new terminal instance.
+- Sets the BB_FORKDIR variable for the spawned shell to read.
+In your shell init file, you can  detect when this variable is set 
+and change to this directory, if desired.
+- BB_TERMINAL can be a list with arguments, or a string which will be
+tokenized by space. If your arguments contain spaces, you will need
+to declare the variable as a list.
 
 # Package interactive/prompt
 
@@ -958,6 +961,20 @@ Filters an sorted list to include only unique items
 **Notes:**
 
 Faster than uniq, but requires the list to be pre-sorted
+
+## `bb_islist LISTVAR`
+
+Checks if the variable with the given name is a list with >1 element
+
+**Arguments:**
+
+- `LISTVAR`: name of a variable
+
+**Notes:**
+
+This will return false if the variable is declared as a list 
+but only has 1 element. In that case, you can treat the variable
+as a scalar anyway.
 
 # Package util/math
 

@@ -302,7 +302,7 @@ function bb_parseargs () {
 # Parses arguments in $@ and modifies it in-place to only hold positional arguments
 # @notes:
 #   To use this in a script, you must do `shopt -s expand_aliases`
-alias bb_processargs='bb_parseargs "$@"; set -- "${BB_POSARGS[@]}"; unset BB_POSARGS;'
+alias bb_processargs='bb_parseargs "$@"; set -- "${BB_POSARGS[@]}"; unset BB_POSARGS;' # shellcheck disable=SC2142
 
 # function: bb_getopt [-v VAR] LONGNAME
 # Gets the value of option or argument by name

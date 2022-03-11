@@ -126,7 +126,7 @@ function bb_removefrompath () {
         newpath="${newpath//:$path:/:}"
         newpath="${newpath#:}"
         newpath="${newpath%:}"
-        eval export $1="$newpath"
+        eval export "$1"="$newpath"
         found=$__bb_true
     done
     return "$found"
@@ -155,7 +155,7 @@ function bb_swapinpath () {
     newpath="${newpath//:@SWAPPING@:/:$3:}"
     newpath="${newpath#:}"
     newpath="${newpath%:}"
-    eval export $1="$newpath"
+    eval export "$1"="$newpath"
     return "$__bb_true"
 }
 
