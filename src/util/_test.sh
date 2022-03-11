@@ -114,6 +114,7 @@ bb_expect "$(bb_uniqsorted $(bb_sort "${__bb_tmp_list[@]}"))" "1 2 3"
 bb_expect "$(bb_uniqsorted $(bb_sortnums "${__bb_tmp_list[@]}"))" "1 2 3"
 
 unset __bb_tmp_list # note: need to do this when changing variable from array to scalar!
+# shellcheck disable=SC2178
 __bb_tmp_list="not_a_list"
 bb_islist __bb_tmp_list
 bb_expect "$?" "$__bb_false" "islist not_a_list"

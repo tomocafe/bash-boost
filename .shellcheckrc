@@ -13,3 +13,6 @@ disable=SC2059
 
 # SC2155: Declare and assign separately to avoid masking return values.
 disable=SC2155
+
+# SC2142: Aliases can't use positional parameters. Use a function.
+disable=SC2142
