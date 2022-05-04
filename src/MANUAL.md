@@ -1,7 +1,7 @@
 ---
 title: BASH-BOOST(1)
 author: github.com/tomocafe
-date: March 11, 2022
+date: May 3, 2022
 ---
 
 
@@ -975,6 +975,34 @@ Checks if the variable with the given name is a list with >1 element
 This will return false if the variable is declared as a list 
 but only has 1 element. In that case, you can treat the variable
 as a scalar anyway.
+
+## `bb_rename ITEM ... -- NAME ...`
+
+Assigns new variable names to items
+
+**Arguments:**
+
+- `ITEM`: a list item
+- `NAME`: a variable name
+
+**Example:**
+
+```bash
+func() {
+  bb_rename "$@" -- first second
+  echo "The first argument is $first"
+  echo "The second argument is $second"
+}
+```
+
+## `bb_unpack LISTVAR NAME ...`
+
+Unpacks list items into named variables
+
+**Arguments:**
+
+- `LISTVAR`: name of the list variable (do not include $)
+- `NAME`: a variable name to hold a list element
 
 # Package util/math
 

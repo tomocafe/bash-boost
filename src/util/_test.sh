@@ -130,6 +130,26 @@ unset __bb_tmp_list
 bb_islist __bb_tmp_list
 bb_expect "$?" "$__bb_false" "islist undefined"
 
+unset __bb_one __bb_two __bb_three
+bb_rename x y z -- __bb_one __bb_two
+bb_expect ":$__bb_one:$__bb_two:$__bb_three:" ":x:y::"
+bb_rename x y -- __bb_one __bb_two __bb_three
+bb_expect ":$__bb_one:$__bb_two:$__bb_three:" ":x:y::"
+bb_rename x y z -- __bb_one __bb_two __bb_three
+bb_expect ":$__bb_one:$__bb_two:$__bb_three:" ":x:y:z:"
+
+__bb_tmp_list=(x y z)
+unset __bb_one __bb_two __bb_three
+bb_rename "${__bb_tmp_list[@]}" -- __bb_one __bb_two
+bb_expect ":$__bb_one:$__bb_two:$__bb_three:" ":x:y::"
+bb_rename "${__bb_tmp_list[@]:0:2}" -- __bb_one __bb_two __bb_three
+bb_expect ":$__bb_one:$__bb_two:$__bb_three:" ":x:y::"
+bb_rename "${__bb_tmp_list[@]}" -- __bb_one __bb_two __bb_three
+bb_expect ":$__bb_one:$__bb_two:$__bb_three:" ":x:y:z:"
+unset __bb_one __bb_two __bb_three
+
+unset __bb_tmp_list
+
 ################################################################################
 # util/file
 ################################################################################

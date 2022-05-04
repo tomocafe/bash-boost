@@ -234,3 +234,39 @@ function bb_islist () {
     local list=("${!listname}")
     [[ ${#list[@]} -gt 1 ]]
 }
+
+# function: bb_rename ITEM ... -- NAME ...
+# Assigns new variable names to items
+# @arguments:
+# - ITEM: a list item
+# - NAME: a variable name
+# @example:
+# ```bash
+# func() {
+#   bb_rename "$@" -- first second
+#   echo "The first argument is $first"
+#   echo "The second argument is $second"
+# }
+# ```
+function bb_rename () {
+    local args=( "$@" )
+    local -i j
+    for (( j=0; j<${#args[@]}; j++ )); do
+        [[ ${args[$j]} == '--' ]] && break
+    done
+    [[ $j -gt ${#args[@]} ]] && return
+    local -i sep=$j
+    local -i i
+    for (( i=0, j++; i<sep && j<${#args[@]}; i++, j++ )); do
+        printf -v "${args[$j]}" '%s' "${args[$i]}"
+    done
+}
+
+# function: bb_unpack LISTVAR NAME ...
+# Unpacks list items into named variables
+# @arguments:
+# - LISTVAR: name of the list variable (do not include $)
+# - NAME: a variable name to hold a list element
+function bb_unpack () {
+    bb_rename "${!1[@]}" -- "${@:1}"
+}
