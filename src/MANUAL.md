@@ -1,7 +1,7 @@
 ---
 title: BASH-BOOST(1)
 author: github.com/tomocafe
-date: May 3, 2022
+date: November 20, 2022
 ---
 
 
@@ -1263,6 +1263,17 @@ Numeric comparison is used, so alphabetical characters are not supported
 
 Routines for common time and date operations
 
+**Example:**
+
+```bash
+bb_timefmt "%F %T" # e.g., 2022-11-20 16:53:30
+bb_timefmt "%F %T" $(bb_now +1h) # one hour from now
+bb_timefmt "%F %T" $(bb_now ^h)  # end of the hour
+bb_timefmt "%F %T" $(bb_now +1d) # one day from now
+bb_timefmt "%F %T" $(bb_now ^d)  # end of the day
+bb_timefmt "%F %T" $(bb_now +2w ^d) # after two weeks, at end of day
+```
+
 ## `bb_now [-v VAR] [OFFSET ...]`
 
 Returns a timestamp relative to the current time (in seconds after epoch)
@@ -1270,7 +1281,7 @@ Returns a timestamp relative to the current time (in seconds after epoch)
 **Arguments:**
 
 - `VAR`: variable to store result (if not given, prints to stdout)
-- `OFFSET`: {+,-}N{s,m,h,d,w} where N is an integer
+- `OFFSET`: {+,-}N{s,m,h,d,w}[^] where N is an integer
 
 **Returns:** 1 if any offset is invalid, 0 otherwise
 
@@ -1281,6 +1292,7 @@ m: minutes
 h: hours
 d: days
 w: weeks
+Optional: trailing ^ rounds up; ^d is short for +0d^
 
 ## `bb_timefmt [-v VAR] FORMAT [TIMESTAMP]`
 

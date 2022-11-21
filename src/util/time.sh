@@ -2,7 +2,12 @@
 # Routines for common time and date operations
 # @example:
 # ```bash
-# # TODO
+# bb_timefmt "%F %T" # e.g., 2022-11-20 16:53:30
+# bb_timefmt "%F %T" $(bb_now +1h) # one hour from now
+# bb_timefmt "%F %T" $(bb_now ^h)  # end of the hour
+# bb_timefmt "%F %T" $(bb_now +1d) # one day from now
+# bb_timefmt "%F %T" $(bb_now ^d)  # end of the day
+# bb_timefmt "%F %T" $(bb_now +2w ^d) # after two weeks, at end of day
 # ```
 
 _bb_onfirstload "bb_util_time" || return
@@ -81,8 +86,8 @@ function bb_now () {
                 [[ $tz =~ [+-][01][0-9][03]0 ]] || return "$__bb_false"
                 (( tzoff = 10#${tz:3:2}*60 + 10#${tz:1:2}*3600 )) # specify base 10 due to leading zero
                 case "${tz:0:1}" in
-                    +) (( ts = ts - tzoff + 86400 )) ;;
-                    -) (( ts = ts + tzoff )) ;;
+                    +) (( ts = ts - tzoff )) ;;
+                    -) (( ts = ts + tzoff - 86400 )) ;;
                 esac
             fi
         fi

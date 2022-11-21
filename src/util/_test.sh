@@ -253,12 +253,28 @@ bb_expect "$?" "$__bb_false" "bb_cmpversion 3.10 3.10.1"
 
 chkdelta () {
     local delta
-    (( delta = $1 - $2 ))
+    (( delta = 10#$1 - 10#$2 ))
     delta="${delta#-}" # absolute value
-    [[ $delta -le 1 ]] # difference less than 1 second
+    [[ $delta -le ${3:-1} ]] # difference less than 1
 }
 
 chkdelta "$(bb_now)" "$(date +%s)" || bb_fatal "bb_now gave incorrect value"
 chkdelta "$(bb_now -2d +1h)" "$(date --date="now - 2 days + 1 hour" +%s)" || bb_fatal "bb_now -2d +1h gave incorrect value"
 
 bb_expect "$(TZ=UTC bb_timefmt %Y-%m-%d_%H%M%S 0)" "1970-01-01_000000"
+
+testround () {
+    local orig rounded
+    bb_timefmt -v orig "%$2" 
+    bb_timefmt -v rounded "%$2" $(bb_now "^$1")
+    chkdelta $rounded $orig 1
+}
+
+for tz in "" UTC US/Pacific Asia/Calcutta; do
+    (
+    export TZ=$tz
+    testround h H || bb_fatal "bb_now ^h failed ${TZ:+(TZ=$TZ)}"
+    testround d d || bb_fatal "bb_now ^d failed ${TZ:+(TZ=$TZ)}"
+    )
+done
+
