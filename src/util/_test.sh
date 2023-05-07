@@ -156,10 +156,12 @@ unset __bb_tmp_list
 
 bb_expect "$(bb_canonicalize "/foo//bar/../bar/./baz/")" "/foo/bar/baz"
 bb_expect "$(bb_abspath "../leaf2" "/base/leaf1")" "/base/leaf2"
+bb_expect "$(bb_abspath "/foo/baz/../bar" "zzz")" "/foo/bar"
 bb_expect "$(bb_relpath "/base/leaf2" "/base/leaf1")" "../leaf2"
 bb_expect "$(bb_relpath "/foo/bar/baz" "/foo/bar")" "baz"
 bb_expect "$(bb_relpath "/foo/bar" "/foo/bar/baz")" ".."
 bb_expect "$(bb_relpath "/foo/./bar//" "/foo/bar")" "."
+bb_expect "$(bb_prettypath "$HOME/foo")" "~/foo"
 
 __bb_tmp_file="$(mktemp)"
 cat <<EOF > "$__bb_tmp_file"
@@ -253,7 +255,12 @@ bb_expect "$?" "$__bb_false" "bb_cmpversion 3.10 3.10.1"
 
 chkdelta () {
     local delta
-    (( delta = 10#$1 - 10#$2 ))
+    local mod="$4"
+    if [[ -n $mod ]]; then
+        (( delta = (10#$1 - 10#$2 + mod) % mod )) # handle case when 23:00 rounds up to 00:00, still want delta to be 1
+    else
+        (( delta = 10#$1 - 10#$2 ))
+    fi
     delta="${delta#-}" # absolute value
     [[ $delta -le ${3:-1} ]] # difference less than 1
 }
@@ -264,17 +271,30 @@ chkdelta "$(bb_now -2d +1h)" "$(date --date="now - 2 days + 1 hour" +%s)" || bb_
 bb_expect "$(TZ=UTC bb_timefmt %Y-%m-%d_%H%M%S 0)" "1970-01-01_000000"
 
 testround () {
-    local orig rounded
+    local orig rounded mod
+    local mod="$3"
     bb_timefmt -v orig "%$2" 
     bb_timefmt -v rounded "%$2" $(bb_now "^$1")
-    chkdelta $rounded $orig 1
+    chkdelta $rounded $orig 1 "$mod"
+}
+
+get_days_in_month () {
+    # this only works on the last day of the month, but that's the only time we need this to work
+    local today tomorrow delta
+    today="$(date +%-d)"
+    tomorrow="$(date +%-d --date="tomorrow")"
+    (( delta = tomorrow - today ))
+    if [[ $today -gt $tomorrow ]]; then
+        echo "$today"
+    fi
+    echo "99"
 }
 
 for tz in "" UTC US/Pacific Asia/Calcutta; do
     (
     export TZ=$tz
-    testround h H || bb_fatal "bb_now ^h failed ${TZ:+(TZ=$TZ)}"
-    testround d d || bb_fatal "bb_now ^d failed ${TZ:+(TZ=$TZ)}"
+    testround h H 24 || bb_fatal "bb_now ^h failed ${TZ:+(TZ=$TZ)}"
+    testround d d "$(get_days_in_month)" || bb_fatal "bb_now ^d failed ${TZ:+(TZ=$TZ)}"
     )
 done
 

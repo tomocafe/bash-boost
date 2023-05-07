@@ -56,7 +56,8 @@ function bb_abspath () {
     local target="$1"
     local from="${2:-$PWD}"
     local result
-    bb_canonicalize -v result "$from/$target"
+    [[ "${target:0:1}" == '/' ]] || target="$from/$target"
+    bb_canonicalize -v result "$target"
     _bb_result "$result"
 }
 
@@ -98,6 +99,19 @@ function bb_relpath () {
     result+="${target#$common}"
     _bb_result "$result"
     return "$__bb_true"
+}
+
+# function: bb_prettypath PATH
+# Prints a pretty version of the path
+# @arguments:
+# - PATH: a path
+# @notes:
+#   Replaces home directory with ~
+function bb_prettypath () {
+    _bb_glopts "$@"; set -- "${__bb_args[@]}"
+    local result="$1"
+    result="${result/#$HOME/\~}"
+    _bb_result "$result"
 }
 
 # function: bb_countlines FILENAME ...

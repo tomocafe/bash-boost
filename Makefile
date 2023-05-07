@@ -1,5 +1,5 @@
 MAJOR_VERSION=1
-VERSION=1.12
+VERSION=1.13
 
 TARGET := bash-boost-$(VERSION)
 SRCS := $(shell find src -type f -name "*.sh" | sort)
@@ -13,7 +13,7 @@ $(TARGET): $(SRCS) flatten src/bash-boost.sh.m4
 	cp -r src $@
 	cp -r bin $@
 	cp LICENSE $@
-	m4 -DM4_VERSION=$(VERSION) $@/bash-boost.sh.m4 > $@/bash-boost.sh
+	m4 -DM4_VERSION=$(VERSION) -DM4_YEAR="$(shell date +%Y)" $@/bash-boost.sh.m4 > $@/bash-boost.sh
 	$(RM) $@/bash-boost.sh.m4
 	./flatten $@
 	$(RM) ./latest

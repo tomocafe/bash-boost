@@ -1,7 +1,7 @@
 ---
 title: BASH-BOOST(1)
 author: github.com/tomocafe
-date: November 20, 2022
+date: May 7, 2023
 ---
 
 
@@ -440,6 +440,66 @@ Print a stack trace to stderr
 
 Clears all functions and variables defined by bash-boost
 
+# Package interactive/bookmark
+
+Directory bookmarking system
+
+## `bb_addbookmark [KEY] [DIR]`
+
+Adds a bookmark to the directory for quick recall
+
+**Arguments:**
+
+- `KEY`: single character to assign bookmark to
+- `DIR`: directory to bookmark; defaults to current directory
+
+**Notes:**
+
+If DIR is already bookmarked, this will clear the previously associated key
+If KEY is already used, this will overwrite the orevious assignment
+
+## `bb_delbookmark [KEY]`
+
+
+**Arguments:**
+
+- `KEY`: bookmark key to delete; prompts if unspecified
+
+**Notes:**
+
+Useful as a keyboard shortcut, e.g., Ctrl+Shift+B
+
+## `bb_bookmark [KEY] [DIR]`
+
+Go to the directory bookmarked by KEY if it exists, otherwise create bookmark
+
+**Arguments:**
+
+- `KEY`: single character to assign bookmark to; prompts if unspecified
+- `DIR`: directory to bookmark; defaults to current directory
+
+**Notes:**
+
+If DIR is already bookmarked, this will clear the previously associated key.
+If KEY is already used but you wish to overwrite it, use bb_addbookmark or use bb_delbookmark KEY first
+Useful as a keyboard shortcut, e.g., Ctrl+B
+
+## `bb_showbookmark [KEY]`
+
+Shows the current mapping of KEY, or all keys if KEY is unspecified
+
+**Arguments:**
+
+- `KEY`: bookmark key to show
+
+## `bb_getbookmark [DIR]`
+
+Prints bookmark key assigned to the given DIR if such a bookmark exists
+
+**Arguments:**
+
+- `DIR`: directory to get assigned bookmark key of; defaults to current directory
+
 # Package interactive/cmd
 
 Miscellaneous interactive commands
@@ -728,6 +788,18 @@ Returns the relative path from a directory to the target
 (Defaults to $PWD)
 
 **Returns:** 1 if either TARGET or FROM is invalid, 0 otherwise
+
+## `bb_prettypath PATH`
+
+Prints a pretty version of the path
+
+**Arguments:**
+
+- `PATH`: a path
+
+**Notes:**
+
+Replaces home directory with ~
 
 ## `bb_countlines FILENAME ...`
 

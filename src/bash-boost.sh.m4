@@ -4,7 +4,7 @@ changecom()dnl
 # 
 # MIT License
 # 
-# Copyright (c) 2021 Evan Wegley (github.com/tomocafe)
+# Copyright (c) M4_YEAR Evan Wegley (github.com/tomocafe)
 # 
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
