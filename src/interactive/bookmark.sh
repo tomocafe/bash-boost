@@ -85,7 +85,7 @@ function bb_bookmark () {
         return $?
     fi
     dir="${__bb_interactive_bookmark_keys[$key]}"
-    [[ -z $BB_BOOKMARK_SILENT ]] || echo "${BB_BOOKMARK_PS2}$dir"
+    [[ -n $BB_BOOKMARK_SILENT ]] || echo "${BB_BOOKMARK_PS2}$(bb_prettypath "$dir")"
     cd "$dir"
 }
 
