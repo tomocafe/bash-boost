@@ -54,7 +54,7 @@ function bb_addbookmark () {
 # @arguments:
 # - KEY: bookmark key to delete; prompts if unspecified
 # @notes:
-#   Useful as a keyboard shortcut, e.g., Ctrl+Shift+B
+#   Useful as a keyboard shortcut, e.g., Ctrl+X-B
 function bb_delbookmark () {
     local key="$1"
     [[ -z $key ]] && { _bb_interactive_bookmark_prompt; key="$__bb_interactive_bookmark_resp"; }

@@ -62,6 +62,7 @@ bash-boost consists of the following _modules_, each with different _packages_
 - [**interactive**](src/interactive) - for interactive use
   - [cmd](src/interactive/cmd.sh) - miscellaneous interactive commands
   - [prompt](src/interactive/prompt.sh) - dynamic shell prompt
+  - [bookmark](src/interactive/bookmark.sh) - directory bookmarking system
 - [**util**](src/util) - general purpose routines
   - [env](src/util/env.sh) - for checking and setting environment variables
   - [file](src/util/file.sh) - file and filesystem related operations
