@@ -19,8 +19,8 @@ __bb_interactive_bookmark_resp=""
 
 function _bb_interactive_bookmark_prompt () {
     read -r -n 1 -p "${BB_BOOKMARK_PS1:-(bookmark) }" __bb_interactive_bookmark_resp
-    echo
     __bb_interactive_bookmark_resp="${__bb_interactive_bookmark_resp,,}"
+    echo "$__bb_interactive_bookmark_resp"
 }
 
 function _bb_interactive_bookmark_iskeyvalid() {

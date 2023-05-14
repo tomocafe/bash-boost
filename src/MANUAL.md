@@ -1,7 +1,7 @@
 ---
 title: BASH-BOOST(1)
 author: github.com/tomocafe
-date: May 7, 2023
+date: May 14, 2023
 ---
 
 
@@ -467,7 +467,7 @@ If KEY is already used, this will overwrite the orevious assignment
 
 **Notes:**
 
-Useful as a keyboard shortcut, e.g., Ctrl+Shift+B
+Useful as a keyboard shortcut, e.g., Ctrl+X-B
 
 ## `bb_bookmark [KEY] [DIR]`
 
