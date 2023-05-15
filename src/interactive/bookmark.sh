@@ -4,6 +4,7 @@
 _bb_onfirstload "bb_interactive_bookmark" || return
 
 bb_load "util/file"
+bb_load "cli/color"
 
 ################################################################################
 # Globals
@@ -36,7 +37,7 @@ function _bb_interactive_bookmark_iskeyvalid() {
 #   If DIR is already bookmarked, this will clear the previously associated key
 #   If KEY is already used, this will overwrite the orevious assignment
 function bb_addbookmark () {
-    local key="$1"
+    local key="${1,,}"
     local dir="${2:-$PWD}"
     [[ -z $key ]] && { _bb_interactive_bookmark_prompt; key="$__bb_interactive_bookmark_resp"; }
     _bb_interactive_bookmark_iskeyvalid "$key" || return $__bb_false
@@ -100,7 +101,8 @@ function bb_showbookmark () {
         return $__bb_true
     fi
     for key in "${!__bb_interactive_bookmark_keys[@]}"; do
-        echo "$key: $(bb_prettypath "${__bb_interactive_bookmark_keys[$key]}")"
+        bb_colorize cyan "$key:"
+        echo " $(bb_prettypath "${__bb_interactive_bookmark_keys[$key]}")"
     done
 }
 
@@ -115,4 +117,24 @@ function bb_getbookmark () {
     local key="${__bb_interactive_bookmark_dirs[$dir]}"
     _bb_result "$key"
     [[ -n "$key" ]]
+}
+
+# function: bb_loadbookmark FILE
+# Loads bookmark assignments from FILE
+# @arguments:
+# - FILE: a file containing bookmark assignments
+# @notes:
+#   FILE should be formatted with an assignment on each line,
+#   with each assignment being a letter followed by a path, separated by space
+function bb_loadbookmark () {
+    [[ -r "$1" ]] || return $__bb_false
+    local line
+    local re='([a-zA-Z])\s*(.*)'
+    while read -r line; do
+        if [[ $line =~ $re ]]; then
+            local dir="${BASH_REMATCH[2]}"
+            dir="${dir/#~/$HOME}"
+            bb_addbookmark "${BASH_REMATCH[1]}" "$dir"
+        fi
+    done < "$1"
 }

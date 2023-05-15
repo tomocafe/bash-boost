@@ -56,7 +56,7 @@ function bb_abspath () {
     local target="$1"
     local from="${2:-$PWD}"
     local result
-    [[ "${target:0:1}" == '/' ]] || target="$from/$target"
+    [[ "${target:0:1}" =~ [/~] ]] || target="$from/$target"
     bb_canonicalize -v result "$target"
     _bb_result "$result"
 }

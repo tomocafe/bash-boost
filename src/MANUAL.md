@@ -1,7 +1,7 @@
 ---
 title: BASH-BOOST(1)
 author: github.com/tomocafe
-date: May 14, 2023
+date: May 15, 2023
 ---
 
 
@@ -499,6 +499,19 @@ Prints bookmark key assigned to the given DIR if such a bookmark exists
 **Arguments:**
 
 - `DIR`: directory to get assigned bookmark key of; defaults to current directory
+
+## `bb_loadbookmark FILE`
+
+Loads bookmark assignments from FILE
+
+**Arguments:**
+
+- `FILE`: a file containing bookmark assignments
+
+**Notes:**
+
+FILE should be formatted with an assignment on each line,
+with each assignment being a letter followed by a path, separated by space
 
 # Package interactive/cmd
 

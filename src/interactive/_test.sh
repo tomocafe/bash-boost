@@ -34,5 +34,9 @@ bb_bookmark z "$__bb_tmp_dir/aaa/bbb" # rename b
 bb_expect "$(bb_showbookmark | wc -l)" "3" "after rename"
 bb_expect "$(bb_getbookmark "$__bb_tmp_dir/aaa/bbb")" "z"
 bb_expect "$(bb_showbookmark z)" "$__bb_tmp_dir/aaa/bbb"
+echo "x /xxx" > "$__bb_tmp_dir/.bookmarks"
+bb_loadbookmark "$__bb_tmp_dir/.bookmarks"
+bb_expect "$(bb_showbookmark x)" "/xxx"
+bb_expect "$(bb_showbookmark | wc -l)" "4"
 )
 rm -rf "${__bb_tmp_dir}"
