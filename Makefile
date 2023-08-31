@@ -1,5 +1,5 @@
 MAJOR_VERSION=1
-VERSION=1.14
+VERSION=1.15
 
 TARGET := bash-boost-$(VERSION)
 SRCS := $(shell find src -type f -name "*.sh" | sort)

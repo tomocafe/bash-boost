@@ -1,7 +1,7 @@
 ---
 title: BASH-BOOST(1)
 author: github.com/tomocafe
-date: May 15, 2023
+date: August 31, 2023
 ---
 
 
@@ -386,6 +386,33 @@ Issues a message at a certain log level
 **Notes:**
 
 Set BB_LOG_TIMEFMT to a valid time format string to override the default
+
+# Package cli/progress
+
+Text-based progress bar
+
+**Example:**
+
+```bash
+for pct in {0..100}; do sleep 0.1s; bb_progressbar $pct "Downloading"; done; echo
+for pct in {0..100}; do sleep 0.1s; bb_progressbar $pct "Unpacking"; done; echo
+for pct in {0..100}; do sleep 0.1s; bb_progressbar $pct "Installing"; done; echo
+```
+
+## `bb_progressbar VALUE TEXT`
+
+Prints/updates a progress bar
+
+**Arguments:**
+
+- `VALUE`: integer from 0 to 100; 100 meaning complete
+- `TEXT`: optional text to be displayed
+
+**Notes:**
+
+Customize the start, end, and fill characters by setting environment 
+variables BB_PROGRESS_START, BB_PROGRESS_END, and BB_PROGRESS_FILL.
+By default these are set to [, ], and .
 
 # Package core
 
