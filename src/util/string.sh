@@ -272,6 +272,33 @@ function bb_repeatstr () {
     _bb_result "$rep"
 }
 
+# function: bb_centerstr [-v VAR] WIDTH TEXT [FILL]
+# Pad and center TEXT with FILL character to have WIDTH width
+# @arguments:
+# - VAR: variable to store result (if not given, prints to stdout)
+# - WIDTH: width of the padded string result
+# - TEXT: text to display
+# - FILL: character used for padding (if not given, uses space)
+# @notes:
+#   If the text cannot be perfectly centered, it will be pushed
+#   closer to the left side
+function bb_centerstr () {
+    _bb_glopts "$@"; set -- "${__bb_args[@]}"
+    local width="$1"
+    local text="$2"
+    local fillchar="${3:- }"
+    fillchar="${fillchar:0:1}"
+    [[ $width -lt ${#text} ]] && width="${#text}"
+    local padct=$((width - ${#text}))
+    local leftpadct=$((padct / 2))
+    local rightpadct=$((padct - leftpadct))
+    local leftpad rightpad out
+    bb_repeatstr -v leftpad $leftpadct "$fillchar"
+    bb_repeatstr -v rightpad $rightpadct "$fillchar"
+    printf -v out -- '%s%s%s' "$leftpad" "$text" "$rightpad"
+    _bb_result "$out"
+}
+
 # function: bb_cmpversion VER1 VER2 [DELIM]
 # Checks if VER1 is greater than or equal to VER2
 # @arguments:

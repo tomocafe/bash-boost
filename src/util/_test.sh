@@ -238,6 +238,12 @@ bb_expect "$(bb_urldecode "hello+world")" "hello world" "urldecode"
 
 bb_expect "$(bb_repeatstr 5 ab)" "ababababab"
 
+bb_expect "$(bb_centerstr 8 ab)" "   ab   "
+bb_expect "$(bb_centerstr 8 ab .)" "...ab..."
+bb_expect "$(bb_centerstr 7 ab)" "  ab   "
+bb_expect "$(bb_centerstr 7 ab ...)" "..ab..."
+bb_expect "$(bb_centerstr 2 foobar)" "foobar"
+
 bb_cmpversion 3.10 3.9
 bb_expect "$?" "$__bb_true" "bb_cmpversion 3.10 3.9"
 bb_cmpversion 3.10 3.009

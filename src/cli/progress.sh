@@ -1,10 +1,9 @@
 # @package: cli/progress
-# Text-based progress bar
+# Text-based progress bar and checkpoint pass/fail status line generator
 # @example:
 # ```bash
+# ping -c 1 8.8.8.8 &>/dev/null; bb_checkpoint "Pinging DNS"
 # for pct in {0..100}; do sleep 0.1s; bb_progressbar $pct "Downloading"; done; echo
-# for pct in {0..100}; do sleep 0.1s; bb_progressbar $pct "Unpacking"; done; echo
-# for pct in {0..100}; do sleep 0.1s; bb_progressbar $pct "Installing"; done; echo
 # ```
 
 _bb_onfirstload "bb_cli_progress" || return
@@ -65,6 +64,53 @@ function bb_progressbar () {
     bb_repeatstr -v fill $fillct "${fillchar:0:1}"
     bb_repeatstr -v blank $blankct " "
     printf -- '\r%s%s %s%s %3d%%%s' "$start" "$text" "$fill" "$blank" "$val" "$end"
+    # Reset shell opts if altered
+    $resetopt && shopt -u checkwinsize
+}
+
+# function: bb_checkpoint TEXT [RESULT]
+# Prints a status line with pass/fail result based on RESULT
+# @arguments:
+# - TEXT: text to be displayed
+# - RESULT: 0 for pass, nonzero for fail; if not given, infers from $?
+# @notes:
+#   Customize the fill character and pass/fail text by setting environment 
+#   variables BB_CHECKPOINT_FILL, BB_CHECKPOINT_PASS, and BB_CHECKPOINT_FAIL.
+#   By default these are set to space, OK, and FAIL.
+function bb_checkpoint () {
+    local result="${2:-$?}" # keep this first
+    local text="$1"
+    # Defaults
+    local pass="${BB_CHECKPOINT_PASS:-OK}"
+    local fail="${BB_CHECKPOINT_FAIL:-FAIL}"
+    local fillchar="${BB_CHECKPOINT_FILL:- }"
+    local start="${BB_CHECKPOINT_START:-[}"
+    local end="${BB_CHECKPOINT_END:-]}"
+    local statuswidth
+    bb_max -v statuswidth "${#pass}" "${#fail}"
+    local color
+    if [[ $result -eq 0 ]]; then
+        result="$pass"
+        color='bright_green'
+    else
+        result="$fail"
+        color='bright_red'
+    fi
+    # Get number of columns
+    local resetopt=false
+    if [[ ! -o checkwinsize ]]; then
+        shopt -s checkwinsize
+        resetopt=true
+    fi
+    local cols=${COLUMNS?set checkwinsize}
+    # Build string
+    local fillct=$((cols - ${#text} - 2 - ${#start} - ${#end} - $statuswidth))
+    local fill status
+    bb_repeatstr -v fill $fillct "${fillchar:0:1}"
+    bb_centerstr -v status $statuswidth "$result"
+    printf '%s %s %s' "$text" "$fill" "$start"
+    bb_colorize "$color" "$status"
+    printf '%s\n' "$end"
     # Reset shell opts if altered
     $resetopt && shopt -u checkwinsize
 }

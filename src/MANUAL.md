@@ -1,7 +1,7 @@
 ---
 title: BASH-BOOST(1)
 author: github.com/tomocafe
-date: August 31, 2023
+date: September 1, 2023
 ---
 
 
@@ -389,14 +389,13 @@ Set BB_LOG_TIMEFMT to a valid time format string to override the default
 
 # Package cli/progress
 
-Text-based progress bar
+Text-based progress bar and checkpoint pass/fail status line generator
 
 **Example:**
 
 ```bash
+ping -c 1 8.8.8.8 &>/dev/null; bb_checkpoint "Pinging DNS"
 for pct in {0..100}; do sleep 0.1s; bb_progressbar $pct "Downloading"; done; echo
-for pct in {0..100}; do sleep 0.1s; bb_progressbar $pct "Unpacking"; done; echo
-for pct in {0..100}; do sleep 0.1s; bb_progressbar $pct "Installing"; done; echo
 ```
 
 ## `bb_progressbar VALUE TEXT`
@@ -413,6 +412,21 @@ Prints/updates a progress bar
 Customize the start, end, and fill characters by setting environment 
 variables BB_PROGRESS_START, BB_PROGRESS_END, and BB_PROGRESS_FILL.
 By default these are set to [, ], and .
+
+## `bb_checkpoint TEXT [RESULT]`
+
+Prints a status line with pass/fail result based on RESULT
+
+**Arguments:**
+
+- `TEXT`: text to be displayed
+- `RESULT`: 0 for pass, nonzero for fail; if not given, infers from $?
+
+**Notes:**
+
+Customize the fill character and pass/fail text by setting environment 
+variables BB_CHECKPOINT_FILL, BB_CHECKPOINT_PASS, and BB_CHECKPOINT_FAIL.
+By default these are set to space, OK, and FAIL.
 
 # Package core
 
@@ -1354,6 +1368,22 @@ Repeat TEXT NUM times
 - `VAR`: variable to store result (if not given, prints to stdout)
 - `NUM`: repeat this many times (integer)
 - `TEXT`: text to repeat
+
+## `bb_centerstr [-v VAR] WIDTH TEXT [FILL]`
+
+Pad and center TEXT with FILL character to have WIDTH width
+
+**Arguments:**
+
+- `VAR`: variable to store result (if not given, prints to stdout)
+- `WIDTH`: width of the padded string result
+- `TEXT`: text to display
+- `FILL`: character used for padding (if not given, uses space)
+
+**Notes:**
+
+If the text cannot be perfectly centered, it will be pushed
+closer to the left side
 
 ## `bb_cmpversion VER1 VER2 [DELIM]`
 
