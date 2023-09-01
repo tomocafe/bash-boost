@@ -1,6 +1,9 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-source "$BB_ROOT/bash-boost.sh"
+# Demo: progress bar
+
+source ../latest/bash-boost.sh
+
 bb_load cli/progress
 
 for i in {0..100..5}; do
