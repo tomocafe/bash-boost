@@ -59,6 +59,7 @@ bash-boost consists of the following _modules_, each with different _packages_
   - [color](src/cli/color.sh) - for printing text in color
   - [input](src/cli/input.sh) - for handling user input
   - [msg](src/cli/msg.sh) - for messaging and logging
+  - [progress](src/cli/progress.sh) - for creating progress bars
 - [**interactive**](src/interactive) - for interactive use
   - [cmd](src/interactive/cmd.sh) - miscellaneous interactive commands
   - [prompt](src/interactive/prompt.sh) - dynamic shell prompt
