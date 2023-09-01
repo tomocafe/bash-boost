@@ -47,8 +47,8 @@ function bb_progressbar () {
     local cols=${COLUMNS?set checkwinsize}
     # Ensure val is an int between 0 and 100
     bb_isint "$val" || val=0
-    bb_max -v $val $val 0
-    bb_min -v $val $val 100
+    bb_max -v val $val 0
+    bb_min -v val $val 100
     # Truncate text if it doesn't fit
     local barspace=$(( cols - 5 - ${#start} - ${#end} ))
     local maxtextsz=$(( barspace - 1 )) # for space after text
