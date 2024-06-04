@@ -46,7 +46,9 @@ fi
 for prefix in /usr/{local/,}lib{,64} /opt/lib{,64}; do
     [[ -d "$prefix" ]] && { default_system_location="$prefix/bash-boost"; break; }
 done
+[[ "$default_system_location" == "$existing_install" ]] && unset default_system_location
 default_home_location="$HOME/.local/lib/bash-boost"
+[[ "$default_home_location" == "$existing_install" ]] && unset default_home_location
 
 # present options
 options=()
@@ -54,8 +56,12 @@ if [[ -d "$existing_install" ]]; then
     echo "Found existing installation in $existing_install"
     options+=("$existing_install")
 fi
-options+=("$default_home_location")
+[[ -n "$default_home_location" ]] && options+=("$default_home_location")
 [[ -n "$default_system_location" ]] && options+=("$default_system_location")
+
+if [[ "$PWD" != "$existing_install" ]] && [[ "$PWD" != "$default_home_location" ]] && [[ "$PWD" != "$default_system_location" ]]; then
+    options+=("$PWD")
+fi
 
 if [[ ${#options[@]} -gt 0 ]]; then
     echo "Choose a destination to install:"
@@ -73,7 +79,8 @@ read -r resp
 
 dest_dir="$resp"
 if [[ $resp =~ [0-9]+ ]]; then
-    if [[ $resp -gt 0 ]] && [[ $resp -lt "${#options[@]}" ]]; then
+    if [[ $resp -gt 0 ]] && [[ $resp -le "${#options[@]}" ]]; then
+        let resp--
         dest_dir="${options[$resp]}"
     else
         error "choice out of range"
