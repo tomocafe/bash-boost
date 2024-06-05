@@ -19,20 +19,30 @@ This has only been tested for Linux. YMMV for other platforms.
 
 ## Installation
 
-### From release tarball (recommended)
+### Bootstrap (recommended)
+
+Download and run the interactive bootstrap script to install the latest release. The script will allow you to enter a directory of your choice or you can select from prepopulated locations.
+
+```bash
+bash <(curl -sSL tomocafe.github.io/bash-boost/bootstrap.sh)
+```
+
+You can rerun this at any time to update an exsting installation.
+
+### From release tarball
 
 Download and extract the [latest release](https://github.com/tomocafe/bash-boost/releases), then follow the instructions in the Usage section.
 
 ### From `git`
 
-Clone this repository and run `make`. For manual generation, `perl` and `pandoc` are required.
+Clone this repository and run `make`. For manpage generation, `perl` and `pandoc` are required.
 
 ## Usage
 
 Source the `bash-boost.sh` script and use `bb_load` to load modules and/or packages
 
 ```bash
-source /path/to/bash-boost.sh
+source /path/to/bash-boost/latest/bash-boost.sh
 
 bb_load MODULE      # e.g. cli
 bb_load MODULE/PKG  # e.g. cli/arg
@@ -41,13 +51,21 @@ bb_load MODULE/PKG  # e.g. cli/arg
 Alternatively, you can list modules and packages to load by argument when sourcing `bash-boost.sh`:
 
 ```bash
-source /path/to/bash-boost.sh MODULE MODULE/PKG ...
+source /path/to/bash-boost/latest/bash-boost.sh MODULE MODULE/PKG ...
 ```
 
 If you want to distribute bash-boost as a single file, you can use `bash-boost-portable.sh` and all modules and packages will be available for use. Please use proper attribution if distributing bash-boost. See [LICENSE](LICENSE) for details.
 
 ```bash
 source /path/to/bash-boost-portable.sh
+```
+
+You may also want to add the included scripts and manpages to your path lists:
+
+```bash
+bb_load util/env # for bb_appendpathuniq
+bb_appendpathuniq PATH "$BB_ROOT/bin"
+bb_appendpathuniq MANPATH "$BB_ROOT/man"
 ```
 
 ## Organization
