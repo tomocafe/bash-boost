@@ -125,11 +125,19 @@ fi
 mv "$temp/$install_dir_name" "$dest_dir"
 
 # update latest link
+install_path="$dest_dir/$install_dir_name"
 read -r -n1 -p "Update the latest link to point to $tag? (Yy) > " resp
 echo
 if [[ $resp =~ ^[Yy]$ ]]; then
+    major_version_link_name="${install_dir_name%%.*}.latest"
     rm -f "$dest_dir/latest" &>/dev/null
-    ln -s "$dest_dir/$install_dir_name" "$dest_dir/latest"
+    ln -s "$install_path" "$dest_dir/latest"
+    rm -f "$dest_dir/$major_version_link_name" &>/dev/null
+    ln -s "$install_path" "$dest_dir/$major_version_link_name"
+    install_path="$dest_dir/latest"
 fi
 
 echo "Installation complete."
+echo
+echo "Add to bashrc, bash_profile, or script using:"
+echo "\$ source ${install_path}/bash-boost.sh"
