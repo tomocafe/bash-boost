@@ -131,9 +131,9 @@ echo
 if [[ $resp =~ ^[Yy]$ ]]; then
     major_version_link_name="${install_dir_name%%.*}.latest"
     rm -f "$dest_dir/latest" &>/dev/null
-    ln -s "$install_path" "$dest_dir/latest"
+    ln -s "$install_dir_name" "$dest_dir/latest"
     rm -f "$dest_dir/$major_version_link_name" &>/dev/null
-    ln -s "$install_path" "$dest_dir/$major_version_link_name"
+    ln -s "$install_dir_name" "$dest_dir/$major_version_link_name"
     install_path="$dest_dir/latest"
 fi
 
