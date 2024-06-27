@@ -196,3 +196,15 @@ function bb_hardcopy () {
         unlink "$f" && cp -r "$real" "$f"
     done
 }
+
+# function: bb_scriptpath [-v VAR]
+# Returns the unresolved directory name of the current script
+# @arguments:
+# - VAR: variable to store result (if not given, prints to stdout)
+function bb_scriptpath () {
+    _bb_glopts "$@"; set -- "${__bb_args[@]}"
+    local src="${BASH_SOURCE[-1]}"
+    result="$(dirname -- "$src")"
+    _bb_result "$result"
+}
+

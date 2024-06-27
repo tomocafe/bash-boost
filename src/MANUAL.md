@@ -1,7 +1,7 @@
 ---
 title: BASH-BOOST(1)
 author: github.com/tomocafe
-date: September 1, 2023
+date: June 27, 2024
 ---
 
 
@@ -900,6 +900,14 @@ Replaces symbolic links with deep copies
 **Arguments:**
 
 - `FILENAME`: a valid symbolic link
+
+## `bb_scriptpath [-v VAR]`
+
+Returns the unresolved directory name of the current script
+
+**Arguments:**
+
+- `VAR`: variable to store result (if not given, prints to stdout)
 
 # Package util/kwargs
 

@@ -6,9 +6,11 @@ modules=(cli interactive util)
 if [[ $0 =~ -portable ]]; then
     echo "Testing bash-boost-portable"
     source latest/bash-boost-portable.sh
+    export __bb_test_script="$PWD/latest/bash-boost-portable.sh"
 else
     echo "Testing bash-boost"
     source latest/bash-boost.sh
+    export __bb_test_script="$PWD/latest/bash-boost.sh"
     bb_load "${modules[@]}"
 fi
 

@@ -187,8 +187,36 @@ bb_extpop "$__bb_tmp_file.ext"
 bb_expect "$(checkfile "$__bb_tmp_file.ext")" "$__bb_false"
 bb_expect "$(checkfile "$__bb_tmp_file")" "$__bb_true"
 
+__bb_tmp_dir="$(mktemp -d)"
+mkdir -p "$__bb_tmp_dir/src"
+cat <<EOF > "$__bb_tmp_dir/src/test.sh"
+source $__bb_test_script
+bb_load util/file
+bb_scriptpath
+EOF
+chmod +x "$__bb_tmp_dir/src/test.sh"
+ln -s "$__bb_tmp_dir/src" "$__bb_tmp_dir/foo"
+mkdir -p "$__bb_tmp_dir/bar"
+ln -s "$__bb_tmp_dir/src/test.sh" "$__bb_tmp_dir/bar/link.sh"
+ln -s "$__bb_tmp_dir/src" "$__bb_tmp_dir/bar/baz"
+
+bb_expect "$("$__bb_tmp_dir/src/test.sh")" "$__bb_tmp_dir/src"
+bb_expect "$("$__bb_tmp_dir/foo/test.sh")" "$__bb_tmp_dir/foo"
+bb_expect "$("$__bb_tmp_dir/bar/baz/test.sh")" "$__bb_tmp_dir/bar/baz"
+bb_expect "$("$__bb_tmp_dir/bar/link.sh")" "$__bb_tmp_dir/bar"
+
+(
+    cd "$__bb_tmp_dir"
+    bb_expect "$(./src/test.sh)" "./src"
+    bb_expect "$(./foo/test.sh)" "./foo"
+    bb_expect "$(./bar/baz/test.sh)" "./bar/baz"
+    bb_expect "$(./bar/link.sh)" "./bar"
+)
+
 rm -f "$__bb_tmp_file"
 unset __bb_tmp_file
+rm -rf "$__bb_tmp_dir"
+unset __bb_tmp_dir
 
 ################################################################################
 # util/math
