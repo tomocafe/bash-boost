@@ -268,5 +268,6 @@ function bb_rename () {
 # - LISTVAR: name of the list variable (do not include $)
 # - NAME: a variable name to hold a list element
 function bb_unpack () {
-    bb_rename "${!1[@]}" -- "${@:1}"
+    declare -n arr="$1"
+    bb_rename "${arr[@]}" -- "${@:2}"
 }

@@ -146,8 +146,12 @@ bb_rename "${__bb_tmp_list[@]:0:2}" -- __bb_one __bb_two __bb_three
 bb_expect ":$__bb_one:$__bb_two:$__bb_three:" ":x:y::"
 bb_rename "${__bb_tmp_list[@]}" -- __bb_one __bb_two __bb_three
 bb_expect ":$__bb_one:$__bb_two:$__bb_three:" ":x:y:z:"
-unset __bb_one __bb_two __bb_three
 
+unset __bb_one __bb_two __bb_three
+bb_unpack __bb_tmp_list __bb_one __bb_two __bb_three
+bb_expect ":$__bb_one:$__bb_two:$__bb_three:" ":x:y:z:"
+
+unset __bb_one __bb_two __bb_three
 unset __bb_tmp_list
 
 ################################################################################
