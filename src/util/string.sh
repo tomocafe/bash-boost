@@ -4,6 +4,7 @@
 _bb_onfirstload "bb_util_string" || return
 
 bb_load "util/list"
+bb_load "cli/color" # for bb_colorstrip
 
 ################################################################################
 # Globals
@@ -281,15 +282,17 @@ function bb_repeatstr () {
 # - FILL: character used for padding (if not given, uses space)
 # @notes:
 #   If the text cannot be perfectly centered, it will be pushed
-#   closer to the left side
+#   closer to the left side. TEXT may contain color codes.
 function bb_centerstr () {
     _bb_glopts "$@"; set -- "${__bb_args[@]}"
     local width="$1"
     local text="$2"
     local fillchar="${3:- }"
     fillchar="${fillchar:0:1}"
-    [[ $width -lt ${#text} ]] && width="${#text}"
-    local padct=$((width - ${#text}))
+    local striptext="$(bb_colorstrip "$text")"
+    local textwidth="${#striptext}"
+    [[ $width -lt $textwidth ]] && width="$textwidth"
+    local padct=$((width - $textwidth))
     local leftpadct=$((padct / 2))
     local rightpadct=$((padct - leftpadct))
     local leftpad rightpad out

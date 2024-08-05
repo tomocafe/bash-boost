@@ -279,6 +279,10 @@ bb_expect "$(bb_centerstr 7 ab)" "  ab   "
 bb_expect "$(bb_centerstr 7 ab ...)" "..ab..."
 bb_expect "$(bb_centerstr 2 foobar)" "foobar"
 
+bb_centerstr -v __bb_tmp_centerstr 9 "$(bb_rawcolor red hello)" _
+bb_expect "${__bb_tmp_centerstr:0:2}" "__"
+unset __bb_tmp_centerstr
+
 bb_cmpversion 3.10 3.9
 bb_expect "$?" "$__bb_true" "bb_cmpversion 3.10 3.9"
 bb_cmpversion 3.10 3.009

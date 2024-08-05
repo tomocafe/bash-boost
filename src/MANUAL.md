@@ -1400,7 +1400,7 @@ Pad and center TEXT with FILL character to have WIDTH width
 **Notes:**
 
 If the text cannot be perfectly centered, it will be pushed
-closer to the left side
+closer to the left side. TEXT may contain color codes.
 
 ## `bb_cmpversion VER1 VER2 [DELIM]`
 
