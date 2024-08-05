@@ -151,6 +151,9 @@ unset __bb_one __bb_two __bb_three
 bb_unpack __bb_tmp_list __bb_one __bb_two __bb_three
 bb_expect ":$__bb_one:$__bb_two:$__bb_three:" ":x:y:z:"
 
+bb_map __bb_tmp_list bb_ord
+bb_expect "${__bb_tmp_list[*]}" "120 121 122"
+
 unset __bb_one __bb_two __bb_three
 unset __bb_tmp_list
 
@@ -336,3 +339,5 @@ for tz in "" UTC US/Pacific Asia/Calcutta; do
     )
 done
 
+bb_expect "$(bb_timedeltafmt "%D:%H:%M:%S %dd %hh %mm %ss" 1400 63)" "00:00:22:17 0d 0h 22m 1337s"
+bb_expect "$(bb_timedeltafmt "%D:%H:%M:%S %dd %hh %mm %ss" 8675309)" "100:09:48:29 100d 2409h 144588m 8675309s"

@@ -271,3 +271,16 @@ function bb_unpack () {
     declare -n arr="$1"
     bb_rename "${arr[@]}" -- "${@:2}"
 }
+
+# function: bb_map LISTVAR FUNCTION
+# Maps a function over a list, modifying it in place
+# @arguments:
+# - LISTVAR: name of the list variable (do not include $)
+# - FUNCTION: a function or command to map a list element to a new value
+function bb_map () {
+    declare -n arr="$1"
+    local -i i
+    for (( i=0; i<${#arr[@]}; i++ )); do
+        arr[$i]="$("$2" "${arr[$i]}" 2>/dev/null)"
+    done
+}

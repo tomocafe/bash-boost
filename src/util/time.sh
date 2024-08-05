@@ -109,3 +109,55 @@ function bb_timefmt () {
     printf -v result "%($1)T" "${2:--1}"
     _bb_result "$result"
 }
+
+# function: bb_timedeltafmt [-v VAR] FORMAT TIME1 [TIME2]
+# Formats a time delta into a desired format
+# @arguments:
+# - VAR:
+# - FORMAT:
+# - TIME1: if TIME1 not specified, this is interpreted as a duration in seconds
+# - TIME2: if specified, TIME1 is the end timestamp and TIME2 is the start timestamp
+# @notes:
+#   Capital letters D, H, M, S represent the partial value
+#   Lowercase letters d, h, m, s represent the total value
+# @example:
+# ```bash
+# bb_now -v start
+# sleep 120s
+# bb_now -v end
+# bb_timedeltafmt -v elapsed "%H:%M:%S" end start
+# bb_timedeltafmt -v total_seconds "%s" end start
+# echo "elapsed time $elapsed, $total_seconds total seconds"
+# # above should print "elapsed time 00:02:00, 120 total seconds"
+# ```
+function bb_timedeltafmt () {
+    _bb_glopts "$@"; set -- "${__bb_args[@]}"
+    local result="$1"
+    local delta="$2"
+    [[ $# -ge 3 ]] && delta=$(( delta - $3 ))
+    local D H M S d h m s
+    s="$delta"
+    m=$(( s / 60 ))
+    h=$(( m / 60 ))
+    d=$(( h / 24 ))
+    S=$(( s % 60 ))
+    M=$(( m % 60 ))
+    H=$(( h % 24 ))
+    D="$d"
+
+    printf -v S "%02d" "$S"
+    printf -v M "%02d" "$M"
+    printf -v H "%02d" "$H"
+    printf -v D "%02d" "$D"
+
+    result="${result//%S/$S}"
+    result="${result//%M/$M}"
+    result="${result//%H/$H}"
+    result="${result//%D/$D}"
+    result="${result//%s/$s}"
+    result="${result//%m/$m}"
+    result="${result//%h/$h}"
+    result="${result//%d/$d}"
+
+    _bb_result "$result"
+}

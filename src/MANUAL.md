@@ -1,7 +1,7 @@
 ---
 title: BASH-BOOST(1)
 author: github.com/tomocafe
-date: June 27, 2024
+date: August 4, 2024
 ---
 
 
@@ -1138,6 +1138,15 @@ Unpacks list items into named variables
 - `LISTVAR`: name of the list variable (do not include $)
 - `NAME`: a variable name to hold a list element
 
+## `bb_map LISTVAR FUNCTION`
+
+Maps a function over a list, modifying it in place
+
+**Arguments:**
+
+- `LISTVAR`: name of the list variable (do not include $)
+- `FUNCTION`: a function or command to map a list element to a new value
+
 # Package util/math
 
 Routines for common math operations
@@ -1453,3 +1462,31 @@ Formats a timestamp into a desired date format
 - `VAR`: variable to store result (if not given, prints to stdout)
 - `FORMAT`: date format string, refer to man strftime
 - `TIMESTAMP`: epoch time, defaults to current time (now)
+
+## `bb_timedeltafmt [-v VAR] FORMAT TIME1 [TIME2]`
+
+Formats a time delta into a desired format
+
+**Arguments:**
+
+- `VAR`:
+- `FORMAT`:
+- `TIME1`: if TIME1 not specified, this is interpreted as a duration in seconds
+- `TIME2`: if specified, TIME1 is the end timestamp and TIME2 is the start timestamp
+
+**Notes:**
+
+Capital letters D, H, M, S represent the partial value
+Lowercase letters d, h, m, s represent the total value
+
+**Example:**
+
+```bash
+bb_now -v start
+sleep 120s
+bb_now -v end
+bb_timedeltafmt -v elapsed "%H:%M:%S" end start
+bb_timedeltafmt -v total_seconds "%s" end start
+echo "elapsed time $elapsed, $total_seconds total seconds"
+# above should print "elapsed time 00:02:00, 120 total seconds"
+```
