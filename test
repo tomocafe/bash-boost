@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-modules=(cli interactive util)
+modules=(core cli interactive util)
 
 # Load everything
 if [[ $0 =~ -portable ]]; then

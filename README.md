@@ -72,31 +72,32 @@ bb_appendpathuniq MANPATH "$BB_ROOT/man"
 
 bash-boost consists of the following _modules_, each with different _packages_
 
-- [**cli**](src/cli) - for command-line (script) use
-  - [arg](src/cli/arg.sh) - for parsing command line arguments
-  - [color](src/cli/color.sh) - for printing text in color
-  - [input](src/cli/input.sh) - for handling user input
-  - [msg](src/cli/msg.sh) - for messaging and logging
-  - [progress](src/cli/progress.sh) - for creating progress bars
-- [**interactive**](src/interactive) - for interactive use
-  - [cmd](src/interactive/cmd.sh) - miscellaneous interactive commands
-  - [prompt](src/interactive/prompt.sh) - dynamic shell prompt
-  - [bookmark](src/interactive/bookmark.sh) - directory bookmarking system
-- [**util**](src/util) - general purpose routines
-  - [env](src/util/env.sh) - for checking and setting environment variables
-  - [file](src/util/file.sh) - file and filesystem related operations
-  - [kwargs](src/util/kwargs.sh) - for handling keyword arguments
-  - [list](src/util/list.sh) - common list operations
-  - [math](src/util/math.sh) - common math operations
-  - [prof](src/util/prof.sh) - runtime profiling routines
-  - [string](src/util/string.sh) - common string operations
-  - [time](src/util/time.sh) - common time and date operations
+- **cli** - for command-line (script) use
+  - [arg](src/MANUAL.md#package-cliarg) - for parsing command line arguments
+  - [color](src/MANUAL.md#package-clicolor) - for printing text in color
+  - [input](src/MANUAL.md#package-cliinput) - for handling user input
+  - [msg](src/MANUAL.md#package-climsg) - for messaging and logging
+  - [progress](src/MANUAL.md#package-cliprogress) - for creating progress bars
+- **interactive** - for interactive use
+  - [cmd](src/MANUAL.md#package-interactivecmd) - miscellaneous interactive commands
+  - [prompt](src/MANUAL.md#package-interactiveprompt) - dynamic shell prompt
+  - [bookmark](src/MANUAL.md#package-interactivebookmark) - directory bookmarking system
+- **util**- general purpose routines
+  - [env](src/MANUAL.md#package-utilenv) - for checking and setting environment variables
+  - [file](src/MANUAL.md#package-utilfile) - file and filesystem related operations
+  - [kwargs](src/MANUAL.md#package-utilkwargs) - for handling keyword arguments
+  - [list](src/MANUAL.md#package-utillist) - common list operations
+  - [math](src/MANUAL.md#package-utilmath) - common math operations
+  - [prof](src/MANUAL.md#package-utilprof) - runtime profiling routines
+  - [string](src/MANUAL.md#package-utilstring) - common string operations
+  - [time](src/MANUAL.md#package-utiltime) - common time and date operations
+  - [time](src/MANUAL.md#package-utilrand) - random number and string generation
 
-You have the choice of loading an entire module, or select certain packages from them.
+You have the choice of loading an entire module, or selecting certain packages from them.
 
 ## Documentation
 
-See the [manual](src/MANUAL.md) for an exhaustive list of functions defined in each package.
+Consult the [full manual](src/MANUAL.md) for an exhaustive list of functions defined in each package.
 
 ## Versioning
 

@@ -114,12 +114,16 @@ function _bb_glopts () {
     __bb_args=("$@") # copy args after shifting out -v, -V, --
     $stop && return # encountered --
     # Look for trailing - (read args from stdin)
-    case "${@: -1}" in
-        -)
-            unset __bb_args[${#__bb_args[@]}-1]
-            readarray -t -O ${#__bb_args[@]} __bb_args # append args from stdin to __bb_args
-            ;;
-    esac
+    if [[ -n $__bb_glopts_no_trailing_dash ]]; then
+        unset __bb_glopts_no_trailing_dash
+    else
+        case "${@: -1}" in
+            -)
+                unset __bb_args[${#__bb_args[@]}-1]
+                readarray -t -O ${#__bb_args[@]} __bb_args # append args from stdin to __bb_args
+                ;;
+        esac
+    fi
 }
 
 # result VAL ...

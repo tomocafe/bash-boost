@@ -14,7 +14,7 @@
 . ftr VB CB
 . ftr VBI CBI
 .\}
-.TH "BASH-BOOST" "1" "August 4, 2024" "" ""
+.TH "BASH-BOOST" "1" "August 10, 2024" "" ""
 .hy
 .SH Package cli/arg
 .PP
@@ -1275,6 +1275,59 @@ Use the bbprof-read utility script to parse and analyze profile data
 .SS \f[V]bb_stopprof\f[R]
 .PP
 Stops runtime profiling
+.SH Package util/rand
+.PP
+Routines for generating random sequences
+.SS \f[V]bb_randint [-v VAR] MAX [MIN]\f[R]
+.PP
+Returns a random non-negative integer between MIN and MAX
+.PP
+\f[B]Arguments:\f[R]
+.IP \[bu] 2
+\f[V]VAR\f[R]: variable to store result (if not given, prints to stdout)
+.IP \[bu] 2
+\f[V]MAX\f[R]: the largest possible returned value
+.IP \[bu] 2
+\f[V]MIN\f[R]: the smallest possible returned value (defaults to zero)
+.SS \f[V]bb_randstr [-v VAR] LENGTH [CHARSET]\f[R]
+.PP
+Returns a random string of the given length
+.PP
+\f[B]Arguments:\f[R]
+.IP \[bu] 2
+\f[V]VAR\f[R]: variable to store result (if not given, prints to stdout)
+.IP \[bu] 2
+\f[V]LENGTH\f[R]: length of the returned string
+.IP \[bu] 2
+\f[V]CHARSET\f[R]: string with all possible characters to use (defaults
+to all alphanumeric characters)
+.SS \f[V]bb_loadworddict [FILENAME]\f[R]
+.PP
+Loads a dictionary of words
+.PP
+\f[B]Arguments:\f[R]
+.IP \[bu] 2
+\f[V]FILENAME\f[R]: file containing words, one per line
+.PP
+\f[B]Notes:\f[R]
+.PP
+The dictionary file should contain one word per line
+.SS \f[V]bb_randwords [-v VAR] COUNT [SEP]\f[R]
+.PP
+Returns a string containing non-repeated random words from a loaded word
+dictionary
+.PP
+\f[B]Arguments:\f[R]
+.IP \[bu] 2
+\f[V]VAR\f[R]: variable to store result (if not given, prints to stdout)
+.IP \[bu] 2
+\f[V]COUNT\f[R]: number of returned words
+.IP \[bu] 2
+\f[V]SEP\f[R]: separator to use between words (default is space)
+.PP
+\f[B]Notes:\f[R]
+.PP
+You must load a word dictionary with bb_loadworddict before using this
 .SH Package util/string
 .PP
 Routines for common string operations

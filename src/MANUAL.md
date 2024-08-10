@@ -1,7 +1,7 @@
 ---
 title: BASH-BOOST(1)
 author: github.com/tomocafe
-date: August 4, 2024
+date: August 10, 2024
 ---
 
 
@@ -1261,6 +1261,56 @@ Use the bbprof-read utility script to parse and analyze profile data
 ## `bb_stopprof`
 
 Stops runtime profiling
+
+# Package util/rand
+
+Routines for generating random sequences
+
+## `bb_randint [-v VAR] MAX [MIN]`
+
+Returns a random non-negative integer between MIN and MAX
+
+**Arguments:**
+
+- `VAR`: variable to store result (if not given, prints to stdout)
+- `MAX`: the largest possible returned value
+- `MIN`: the smallest possible returned value (defaults to zero)
+
+## `bb_randstr [-v VAR] LENGTH [CHARSET]`
+
+Returns a random string of the given length
+
+**Arguments:**
+
+- `VAR`: variable to store result (if not given, prints to stdout)
+- `LENGTH`: length of the returned string
+- `CHARSET`: string with all possible characters to use (defaults to all alphanumeric characters)
+
+## `bb_loadworddict [FILENAME]`
+
+Loads a dictionary of words
+
+**Arguments:**
+
+- `FILENAME`: file containing words, one per line
+
+**Notes:**
+
+The dictionary file should contain one word per line
+
+## `bb_randwords [-v VAR] COUNT [SEP]`
+
+Returns a string containing non-repeated random words from a loaded word dictionary
+
+**Arguments:**
+
+- `VAR`: variable to store result (if not given, prints to stdout)
+- `COUNT`: number of returned words
+- `SEP`: separator to use between words (default is space)
+
+**Notes:**
+
+You must load a word dictionary with bb_loadworddict before using this
 
 # Package util/string
 

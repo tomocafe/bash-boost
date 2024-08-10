@@ -345,3 +345,54 @@ done
 
 bb_expect "$(bb_timedeltafmt "%D:%H:%M:%S %dd %hh %mm %ss" 1400 63)" "00:00:22:17 0d 0h 22m 1337s"
 bb_expect "$(bb_timedeltafmt "%D:%H:%M:%S %dd %hh %mm %ss" 8675309)" "100:09:48:29 100d 2409h 144588m 8675309s"
+
+################################################################################
+# util/rand
+################################################################################
+
+bb_expect "$(bb_randint 1234 1234)" "1234"
+bb_expect "$(bb_randstr 4 x)" "xxxx"
+
+for (( i=0; i<100; i++ )); do
+    bb_randint -v __bb_tmp_num 210 200
+    [[ $__bb_tmp_num -ge 200 && $__bb_tmp_num -le 210 ]] || bb_fatal "bb_randint out of range"
+done
+unset __bb_tmp_num
+
+for (( i=0; i<100; i++ )); do
+    bb_randstr -v __bb_tmp_str 24 abcdef
+    bb_expectre "$__bb_tmp_str" "^[abcdef]+" "bb_randstr out of range"
+    bb_expect "${#__bb_tmp_str}" "24" "bb_randstr wrong char count"
+done
+unset __bb_tmp_str
+
+bb_randwords 1 &>/dev/null
+bb_expect "$?" "$__bb_false" "bb_randwords before bb_loadworddict"
+
+bb_loadworddict <(echo "foo
+bar
+baz
+hello
+world
+red
+yellow
+blue")
+
+bb_expect "${#__bb_util_rand_words[@]}" 8 "__bb_util_rand_words invalid count"
+bb_expect "$__bb_util_rand_wordct" 8 "__bb_util_rand_wordct invalid count"
+
+bb_randwords 100 &>/dev/null
+bb_expect "$?" "$__bb_false" "bb_randwords too many words requested"
+
+for (( i=0; i<100; i++ )); do
+    bb_randwords -v __bb_tmp_str 3 -
+    bb_expectre "$__bb_tmp_str" "^\w+-\w+-\w+$" "bb_randwords out of range"
+    bb_split -V __bb_tmp_words - "$__bb_tmp_str"
+    bb_expect "${#__bb_tmp_words[@]}" "3" "bb_randwords wrong word count"
+    while [[ ${#__bb_tmp_words[@]} -gt 1 ]]; do
+        __bb_tmp_str="${__bb_tmp_words[0]}"
+        bb_shift __bb_tmp_words
+        bb_inlist "$__bb_tmp_str" "${__bb_tmp_words[@]}" && bb_fatal "bb_randwords repeated"
+    done
+done
+unset __bb_tmp_str
