@@ -91,7 +91,7 @@ bash-boost consists of the following _modules_, each with different _packages_
   - [prof](src/MANUAL.md#package-utilprof) - runtime profiling routines
   - [string](src/MANUAL.md#package-utilstring) - common string operations
   - [time](src/MANUAL.md#package-utiltime) - common time and date operations
-  - [time](src/MANUAL.md#package-utilrand) - random number and string generation
+  - [rand](src/MANUAL.md#package-utilrand) - random number and string generation
 
 You have the choice of loading an entire module, or selecting certain packages from them.
 
