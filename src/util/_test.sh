@@ -154,8 +154,14 @@ bb_expect ":$__bb_one:$__bb_two:$__bb_three:" ":x:y:z:"
 bb_map __bb_tmp_list bb_ord
 bb_expect "${__bb_tmp_list[*]}" "120 121 122"
 
+__bb_tmp_list=(x y z)
+bb_mapkeys __bb_tmp_map bb_ord "${__bb_tmp_list[@]}"
+bb_expect "${__bb_tmp_map[z]} ${__bb_tmp_map[x]} ${__bb_tmp_map[y]}" "122 120 121"
+
+bb_expect "$(bb_reverselist a b c)" "c b a"
+
 unset __bb_one __bb_two __bb_three
-unset __bb_tmp_list
+unset __bb_tmp_list __bb_tmp_map
 
 ################################################################################
 # util/file
@@ -257,6 +263,8 @@ unset __bb_tmp_nums
 bb_expect "$(bb_lstrip "  hello world  ")" "hello world  " "lstrip"
 bb_expect "$(bb_rstrip "  hello world  ")" "  hello world" "rstrip"
 bb_expect "$(bb_strip "  hello world  ")" "hello world" "strip"
+
+bb_expect "$(bb_reversestr "hello world")" "dlrow olleh"
 
 bb_expect "$(bb_ord A)" "65" "ord"
 bb_expect "$(bb_chr 65)" "A" "chr"

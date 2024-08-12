@@ -284,3 +284,35 @@ function bb_map () {
         arr[$i]="$("$2" "${arr[$i]}" 2>/dev/null)"
     done
 }
+
+# function: bb_mapkeys LISTVAR FUNCTION KEYS ...
+# Maps a function over a list of keys to generate an associative array
+# @arguments:
+# - LISTVAR: name of an associative array variable (do not include $)
+# - FUNCTION: a function or command to map keys to values
+# - KEYS: keys which will be added to the associative array with mapped values
+function bb_mapkeys () {
+    declare -Ag "$1"
+    declare -n arr="$1"
+    local h="$2"
+    shift 2
+    local key
+    for key in "$@"; do
+        arr+=( ["$key"]="$("$h" "$key" 2>/dev/null)" )
+    done
+}
+
+# function: bb_reverselist [-V LISTVAR] ITEM ...
+# Returns a reversed version of the given list
+# @arguments:
+# - LISTVAR: name of the returned reversed list variable (do not include $)
+# - ITEM: list items to reverse
+function bb_reverselist () {
+    _bb_glopts "$@"; set -- "${__bb_args[@]}"
+    local rev=()
+    local item
+    for item in "$@"; do
+        bb_unshift rev "$item"
+    done
+    _bb_result "${rev[@]}"
+}

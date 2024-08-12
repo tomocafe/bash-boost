@@ -61,6 +61,22 @@ function bb_strip () {
     _bb_result "$stripped"
 }
 
+# function: bb_reversestr [-v VAR] TEXT
+# Reverses a string
+# @arguments:
+# - VAR: variable to store result (if not given, prints to stdout)
+# - TEXT: text to reverse
+function bb_reversestr () {
+    _bb_glopts "$@"; set -- "${__bb_args[@]}"
+    local orig="$1"
+    local rev=""
+    local -i i
+    for (( i=${#orig}-1; i>=0; i-- )); do
+        rev+="${orig:$i:1}"
+    done
+    _bb_result "$rev"
+}
+
 # function: bb_ord [-v VAR] CHAR
 # Converts character to its ASCII decimal code
 # @arguments:

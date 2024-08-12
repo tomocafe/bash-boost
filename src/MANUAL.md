@@ -1147,6 +1147,25 @@ Maps a function over a list, modifying it in place
 - `LISTVAR`: name of the list variable (do not include $)
 - `FUNCTION`: a function or command to map a list element to a new value
 
+## `bb_mapkeys LISTVAR FUNCTION KEYS ...`
+
+Maps a function over a list of keys to generate an associative array
+
+**Arguments:**
+
+- `LISTVAR`: name of an associative array variable (do not include $)
+- `FUNCTION`: a function or command to map keys to values
+- `KEYS`: keys which will be added to the associative array with mapped values
+
+## `bb_reverselist [-V LISTVAR] ITEM ...`
+
+Returns a reversed version of the given list
+
+**Arguments:**
+
+- `LISTVAR`: name of the returned reversed list variable (do not include $)
+- `ITEM`: list items to reverse
+
 # Package util/math
 
 Routines for common math operations
@@ -1342,6 +1361,15 @@ Strips leading and trailing whitespace from text
 
 - `VAR`: variable to store result (if not given, prints to stdout)
 - `TEXT`: text to strip whitespace from
+
+## `bb_reversestr [-v VAR] TEXT`
+
+Reverses a string
+
+**Arguments:**
+
+- `VAR`: variable to store result (if not given, prints to stdout)
+- `TEXT`: text to reverse
 
 ## `bb_ord [-v VAR] CHAR`
 

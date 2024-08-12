@@ -1162,6 +1162,29 @@ Maps a function over a list, modifying it in place
 .IP \[bu] 2
 \f[V]FUNCTION\f[R]: a function or command to map a list element to a new
 value
+.SS \f[V]bb_mapkeys LISTVAR FUNCTION KEYS ...\f[R]
+.PP
+Maps a function over a list of keys to generate an associative array
+.PP
+\f[B]Arguments:\f[R]
+.IP \[bu] 2
+\f[V]LISTVAR\f[R]: name of an associative array variable (do not include
+$)
+.IP \[bu] 2
+\f[V]FUNCTION\f[R]: a function or command to map keys to values
+.IP \[bu] 2
+\f[V]KEYS\f[R]: keys which will be added to the associative array with
+mapped values
+.SS \f[V]bb_reverselist [-V LISTVAR] ITEM ...\f[R]
+.PP
+Returns a reversed version of the given list
+.PP
+\f[B]Arguments:\f[R]
+.IP \[bu] 2
+\f[V]LISTVAR\f[R]: name of the returned reversed list variable (do not
+include $)
+.IP \[bu] 2
+\f[V]ITEM\f[R]: list items to reverse
 .SH Package util/math
 .PP
 Routines for common math operations
@@ -1359,6 +1382,15 @@ Strips leading and trailing whitespace from text
 \f[V]VAR\f[R]: variable to store result (if not given, prints to stdout)
 .IP \[bu] 2
 \f[V]TEXT\f[R]: text to strip whitespace from
+.SS \f[V]bb_reversestr [-v VAR] TEXT\f[R]
+.PP
+Reverses a string
+.PP
+\f[B]Arguments:\f[R]
+.IP \[bu] 2
+\f[V]VAR\f[R]: variable to store result (if not given, prints to stdout)
+.IP \[bu] 2
+\f[V]TEXT\f[R]: text to reverse
 .SS \f[V]bb_ord [-v VAR] CHAR\f[R]
 .PP
 Converts character to its ASCII decimal code
