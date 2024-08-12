@@ -14,7 +14,7 @@
 . ftr VB CB
 . ftr VBI CBI
 .\}
-.TH "BASH-BOOST" "1" "August 10, 2024" "" ""
+.TH "BASH-BOOST" "1" "August 11, 2024" "" ""
 .hy
 .SH Package cli/arg
 .PP
@@ -131,13 +131,14 @@ Check if LONGNAME is a registered flag (not an option)
 .PP
 \f[B]Returns:\f[R] 0 if LONGNAME is a flag, 1 otherwise (i.e.\ it is an
 option)
-.SS \f[V]bb_setprog PROGNAME\f[R]
+.SS \f[V]bb_setprog [PROGNAME]\f[R]
 .PP
 Sets the name of the program for printing usage and help
 .PP
 \f[B]Arguments:\f[R]
 .IP \[bu] 2
-\f[V]PROGNAME\f[R]: name of the program
+\f[V]PROGNAME\f[R]: name of the program (defaults to current script
+name)
 .SS \f[V]bb_setpositional NAME DESCRIPTION\f[R]
 .PP
 Sets the name and description of the positional arguments

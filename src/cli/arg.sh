@@ -185,12 +185,12 @@ function bb_isflag () {
     [[ ${__bb_cli_arg_flags["$1"]+set} ]]
 }
 
-# function: bb_setprog PROGNAME
+# function: bb_setprog [PROGNAME]
 # Sets the name of the program for printing usage and help
 # @arguments:
-# - PROGNAME: name of the program
+# - PROGNAME: name of the program (defaults to current script name)
 function bb_setprog () {
-    __bb_cli_arg_progname="$1"
+    __bb_cli_arg_progname="${1:-"${BASH_SOURCE[-1]}"}"
 }
 
 # function: bb_setpositional NAME DESCRIPTION

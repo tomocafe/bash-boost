@@ -1,7 +1,7 @@
 ---
 title: BASH-BOOST(1)
 author: github.com/tomocafe
-date: August 10, 2024
+date: August 11, 2024
 ---
 
 
@@ -110,13 +110,13 @@ Check if LONGNAME is a registered flag (not an option)
 
 **Returns:** 0 if LONGNAME is a flag, 1 otherwise (i.e. it is an option)
 
-## `bb_setprog PROGNAME`
+## `bb_setprog [PROGNAME]`
 
 Sets the name of the program for printing usage and help
 
 **Arguments:**
 
-- `PROGNAME`: name of the program
+- `PROGNAME`: name of the program (defaults to current script name)
 
 ## `bb_setpositional NAME DESCRIPTION`
 
