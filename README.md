@@ -82,7 +82,7 @@ bash-boost consists of the following _modules_, each with different _packages_
   - [cmd](src/MANUAL.md#package-interactivecmd) - miscellaneous interactive commands
   - [prompt](src/MANUAL.md#package-interactiveprompt) - dynamic shell prompt
   - [bookmark](src/MANUAL.md#package-interactivebookmark) - directory bookmarking system
-- **util**- general purpose routines
+- **util** - general purpose routines
   - [env](src/MANUAL.md#package-utilenv) - for checking and setting environment variables
   - [file](src/MANUAL.md#package-utilfile) - file and filesystem related operations
   - [kwargs](src/MANUAL.md#package-utilkwargs) - for handling keyword arguments
