@@ -264,33 +264,41 @@ function bb_rename () {
 
 # function: bb_unpack LISTVAR NAME ...
 # Unpacks list items into named variables
+# @requires: 4.3
 # @arguments:
 # - LISTVAR: name of the list variable (do not include $)
 # - NAME: a variable name to hold a list element
+_bb_checkbashversion 4 3 && \
 function bb_unpack () {
     declare -n arr="$1"
     bb_rename "${arr[@]}" -- "${@:2}"
-}
+} \
+|| bb_unpack () { _bb_unsupportedbashversion ${FUNCNAME[0]} 4 3; }
 
 # function: bb_map LISTVAR FUNCTION
 # Maps a function over a list, modifying it in place
+# @requires: 4.3
 # @arguments:
 # - LISTVAR: name of the list variable (do not include $)
 # - FUNCTION: a function or command to map a list element to a new value
+_bb_checkbashversion 4 3 && \
 function bb_map () {
     declare -n arr="$1"
     local -i i
     for (( i=0; i<${#arr[@]}; i++ )); do
         arr[$i]="$("$2" "${arr[$i]}" 2>/dev/null)"
     done
-}
+} \
+|| bb_map () { _bb_unsupportedbashversion ${FUNCNAME[0]} 4 3; }
 
 # function: bb_mapkeys LISTVAR FUNCTION KEYS ...
 # Maps a function over a list of keys to generate an associative array
+# @requires: 4.3
 # @arguments:
 # - LISTVAR: name of an associative array variable (do not include $)
 # - FUNCTION: a function or command to map keys to values
 # - KEYS: keys which will be added to the associative array with mapped values
+_bb_checkbashversion 4 3 && \
 function bb_mapkeys () {
     declare -Ag "$1"
     declare -n arr="$1"
@@ -300,7 +308,8 @@ function bb_mapkeys () {
     for key in "$@"; do
         arr+=( ["$key"]="$("$h" "$key" 2>/dev/null)" )
     done
-}
+} \
+|| bb_mapkeys () { _bb_unsupportedbashversion ${FUNCNAME[0]} 4 3; }
 
 # function: bb_reverselist [-V LISTVAR] ITEM ...
 # Returns a reversed version of the given list

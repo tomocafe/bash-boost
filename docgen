@@ -54,6 +54,9 @@ sub formatmd {
         elsif (my ($v) = ($text =~ m/^\s*\@returns:\s*(.*)$/)) {
            print "\n**Returns:** $v\n"; 
         }
+        elsif (($v) = ($text =~ m/^\s*\@requires:\s*(.*)$/)) {
+           print "\n**Requires:** bash $v or later\n";
+        }
         elsif ($text =~ m/^\s*\@notes:/) {
            print "\n**Notes:**\n\n";
         }

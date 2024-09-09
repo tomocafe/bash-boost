@@ -147,16 +147,22 @@ bb_expect ":$__bb_one:$__bb_two:$__bb_three:" ":x:y::"
 bb_rename "${__bb_tmp_list[@]}" -- __bb_one __bb_two __bb_three
 bb_expect ":$__bb_one:$__bb_two:$__bb_three:" ":x:y:z:"
 
-unset __bb_one __bb_two __bb_three
-bb_unpack __bb_tmp_list __bb_one __bb_two __bb_three
-bb_expect ":$__bb_one:$__bb_two:$__bb_three:" ":x:y:z:"
+if _bb_checkbashversion 4 3; then
+    unset __bb_one __bb_two __bb_three
+    bb_unpack __bb_tmp_list __bb_one __bb_two __bb_three
+    bb_expect ":$__bb_one:$__bb_two:$__bb_three:" ":x:y:z:"
+fi
 
-bb_map __bb_tmp_list bb_ord
-bb_expect "${__bb_tmp_list[*]}" "120 121 122"
+if _bb_checkbashversion 4 3; then
+    bb_map __bb_tmp_list bb_ord
+    bb_expect "${__bb_tmp_list[*]}" "120 121 122"
+fi
 
-__bb_tmp_list=(x y z)
-bb_mapkeys __bb_tmp_map bb_ord "${__bb_tmp_list[@]}"
-bb_expect "${__bb_tmp_map[z]} ${__bb_tmp_map[x]} ${__bb_tmp_map[y]}" "122 120 121"
+if _bb_checkbashversion 4 3; then
+    __bb_tmp_list=(x y z)
+    bb_mapkeys __bb_tmp_map bb_ord "${__bb_tmp_list[@]}"
+    bb_expect "${__bb_tmp_map[z]} ${__bb_tmp_map[x]} ${__bb_tmp_map[y]}" "122 120 121"
+fi
 
 bb_expect "$(bb_reverselist a b c)" "c b a"
 

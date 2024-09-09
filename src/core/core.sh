@@ -165,3 +165,13 @@ function bb_cleanup () {
     done < <(set -o posix; set)
     : # don't use return "$__bb_true" here, it's now undefined
 }
+
+function _bb_checkbashversion () {
+    [[ ${BASH_VERSINFO[0]} -lt ${1:-0} ]] && return $__bb_false
+    [[ ${BASH_VERSINFO[0]} -eq ${1:-0} && ${BASH_VERSINFO[1]} -lt ${2:-0} ]] && return $__bb_false
+    return $__bb_true
+}
+
+function _bb_unsupportedbashversion () {
+    echo "$1: requires bash ${2:-0}.${3:-0} or later (detected $BASH_VERSION)" 1>&2
+}
