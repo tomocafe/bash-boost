@@ -48,7 +48,10 @@ BB_VERSION="M4_VERSION"
 
 # Check bash version
 if [[ ${BASH_VERSINFO:-0} -lt 4 ]]; then
-    echo "${BASH_SOURCE[0]##*/}: requires bash version 4 or later, this is $BASH_VERSION" 1>&2
+    echo "${BASH_SOURCE[0]##*/}: requires bash version 4.4 or later, this is $BASH_VERSION" 1>&2
+    return 1
+elif [[ ${BASH_VERSINFO[0]} -eq 4 && ${BASH_VERSINFO[1]} -lt 4 ]]; then
+    echo "${BASH_SOURCE[0]##*/}: requires bash version 4.4 or later, this is $BASH_VERSION" 1>&2
     return 1
 fi
 

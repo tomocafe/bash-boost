@@ -19,9 +19,8 @@ _bb_onfirstload "bb_util_env" || return
 # - VAR: name of the variable to check (don't include $)
 # @returns: 1 if unset, 2 if set but empty, 0 otherwise
 function bb_checkset () {
-    local v="$1"
-    eval test -z \"\${$v+x}\" && return 1 # unset
-    eval test -z \"\${$v}\"   && return 2 # set, but empty
+    test -z "${!1+x}" && return 1 # unset
+    test -z "${!1}"   && return 2 # set, but empty
     return 0
 }
 
@@ -46,7 +45,7 @@ function bb_inpath () {
     [[ $# -ge 2 ]] || return "$__bb_false"
     local item
     for item in "${@:2}"; do
-        eval [[ ":\${$1}:" =~ ":${item}:" ]] || return "$__bb_false"
+        [[ :"${!1}": == *:"${item}":* ]] || return "$__bb_false"
     done
     return "$__bb_true"
 }
@@ -60,7 +59,9 @@ function bb_prependpath () {
     [[ $# -ge 2 ]] || return
     local paths=("${@:2}")
     local IFS=':'
-    eval "export $1=\${paths[*]}\${$1:+\${paths:+:}}\${$1}"
+    local newpath
+    newpath="${paths[*]}${!1:+:}${!1}"
+    declare -gx "$1"="$newpath"
 }
 
 # function: bb_appendpath VAR ITEM ...
@@ -72,7 +73,8 @@ function bb_appendpath () {
     [[ $# -ge 2 ]] || return
     local paths=("${@:2}")
     local IFS=':'
-    eval "export $1=\${$1}\${$1:+\${paths:+:}}\${paths[*]}"
+    newpath="${!1}${!1:+:}${paths[*]}"
+    declare -gx "$1"="$newpath"
 }
 
 # function: bb_prependpathuniq VAR ITEM ...
@@ -122,11 +124,11 @@ function bb_removefrompath () {
     local found=$__bb_false
     for path in "${@:2}"; do
         bb_inpath "$1" "$path" || continue
-        eval newpath=":\${$1}:"
+        newpath=":${!1}:"
         newpath="${newpath//:$path:/:}"
         newpath="${newpath#:}"
         newpath="${newpath%:}"
-        eval export "$1"="$newpath"
+        declare -gx "$1"="$newpath"
         found=$__bb_true
     done
     return "$found"
@@ -149,13 +151,13 @@ function bb_swapinpath () {
     bb_inpath "$1" "$3" || return "$__bb_false"
     bb_inpath "$1" "@SWAPPING@" && return 3 # sentinel value
     local newpath
-    eval newpath=":\$$1:"
+    newpath=":${!1}:"
     newpath="${newpath//:$2:/:@SWAPPING@:}"
     newpath="${newpath//:$3:/:$2:}"
     newpath="${newpath//:@SWAPPING@:/:$3:}"
     newpath="${newpath#:}"
     newpath="${newpath%:}"
-    eval export "$1"="$newpath"
+    declare -gx "$1"="$newpath"
     return "$__bb_true"
 }
 
@@ -165,5 +167,5 @@ function bb_swapinpath () {
 # - VAR: path variable, e.g. PATH (do not use $)
 # - SEP: separator character, defaults to :
 function bb_printpath () {
-    eval printf \"\${$1//${2:-:}/$'\n'}$'\n'\"
+    printf '%s\n' "${!1//${2:-:}/$'\n'}"
 }

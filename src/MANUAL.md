@@ -1,7 +1,7 @@
 ---
 title: BASH-BOOST(1)
 author: github.com/tomocafe
-date: September 9, 2024
+date: December 24, 2025
 ---
 
 
@@ -1133,8 +1133,6 @@ func() {
 
 Unpacks list items into named variables
 
-**Requires:** bash 4.3 or later
-
 **Arguments:**
 
 - `LISTVAR`: name of the list variable (do not include $)
@@ -1144,8 +1142,6 @@ Unpacks list items into named variables
 
 Maps a function over a list, modifying it in place
 
-**Requires:** bash 4.3 or later
-
 **Arguments:**
 
 - `LISTVAR`: name of the list variable (do not include $)
@@ -1154,8 +1150,6 @@ Maps a function over a list, modifying it in place
 ## `bb_mapkeys LISTVAR FUNCTION KEYS ...`
 
 Maps a function over a list of keys to generate an associative array
-
-**Requires:** bash 4.3 or later
 
 **Arguments:**
 

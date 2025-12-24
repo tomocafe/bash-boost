@@ -11,10 +11,10 @@ error () {
 
 # check version
 if [[ ${BASH_VERSINFO[0]} -lt 4 ]]; then
-    error "bash version too old: requires 4.2 or newer, have ${BASH_VERSINFO[0]}.${BASH_VERSINFO[1]}"
+    error "bash version too old: requires 4.4 or newer, have ${BASH_VERSINFO[0]}.${BASH_VERSINFO[1]}"
 elif [[ ${BASH_VERSINFO[0]} -eq 4 ]]; then
-    if [[ ${BASH_VERSINFO[1]} -lt 2 ]]; then
-        error "bash version too old: requires 4.2 or newer, have ${BASH_VERSINFO[0]}.${BASH_VERSINFO[1]}"
+    if [[ ${BASH_VERSINFO[1]} -lt 4 ]]; then
+        error "bash version too old: requires 4.4 or newer, have ${BASH_VERSINFO[0]}.${BASH_VERSINFO[1]}"
     fi
 fi
 

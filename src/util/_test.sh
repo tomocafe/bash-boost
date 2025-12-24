@@ -49,6 +49,11 @@ bb_expect "$__bb_tmp_path" "bar:foo:baz" "swapinpath"
 bb_removefrompath "__bb_tmp_path" "bar" "baz"
 bb_expect "$__bb_tmp_path" "foo"
 
+# test paths with spaces
+__bb_tmp_path="foo:hello world:bar"
+bb_inpath "__bb_tmp_path" "hello world"
+bb_expect "$?" "$__bb_true" "inpath with spaces true"
+
 unset __bb_tmp_path
 unset __bb_tmp_prevpath
 

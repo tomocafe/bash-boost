@@ -13,7 +13,7 @@ For examples and further details, see [CONTRIBUTING.md](CONTRIBUTING.md)
 
 ## Requirements
 
-`bash` version 4.2 or later.
+`bash` version 4.4 or later.
 
 This has only been tested for Linux. YMMV for other platforms.
 

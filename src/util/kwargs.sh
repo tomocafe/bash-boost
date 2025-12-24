@@ -37,8 +37,9 @@ _bb_onfirstload "bb_util_kwargs" || return
 #   Get non-keyword arguments with ${BB_OTHERARGS[@]}
 function bb_kwparse () {
     [[ $# -gt 0 ]] || return
-    local mapname="$1"; shift
-    eval "declare -Ag $mapname"
+    declare -Ag "$1"
+    local -n map="$1"
+    shift
     local pair
     BB_OTHERARGS=()
     for pair in "$@"; do
@@ -48,6 +49,6 @@ function bb_kwparse () {
         fi
         local key="${pair%%=*}"
         local val="${pair#*=}"
-        eval "${mapname}["$key"]="$val""
+        map["$key"]="$val"
     done
 }

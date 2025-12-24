@@ -217,7 +217,7 @@ function bb_parseargs () {
     local arglist=("$@")
     case "${@: -1}" in
         -)
-            unset arglist[${#arglist[@]}-1] # negative array index requires bash 4.3+
+            unset arglist[-1]
             readarray -t -O ${#arglist[@]} arglist # append args from stdin to arglist
             ;;
     esac

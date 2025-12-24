@@ -19,7 +19,9 @@ _bb_onfirstload "bb_cli_input" || return
 # - VAR: variable to store response into (do not include $)
 # - PROMPT: text displayed to the user
 function bb_getinput () {
-    eval "read -r -p \"${2% }${2:+ }$PS2\" $1"
+    local -n outvar="$1"
+    local prompt="${2% }${2:+ }$PS2"
+    read -r -p "$prompt" outvar
 }
 
 # function: bb_yn PROMPT

@@ -35,22 +35,14 @@ function bb_join () {
 function bb_split () {
     _bb_glopts "$@"; set -- "${__bb_args[@]}"
     local IFS=$1
-    #local - # requires bash 4.4+ to keep shell settings local to function
-    # Turn off globbing, local to this function
-    local restore=""
-    case $- in
-        f) set -f; restore+="f" ;;
-    esac
+    local - # keep shell settings local to function
+    set -f
     local arr=()
     local token
     while IFS= read -r token; do
         # shellcheck disable=SC2206
         arr+=( $token ) # no quotes around $token -- important!
     done <<< "$2"
-    # Restore globbing
-    case $restore in
-        f) set +f ;;
-    esac
     IFS=' ' _bb_result "${arr[@]}"
 }
 
@@ -76,8 +68,9 @@ function bb_inlist () {
 # - LISTVAR: name of the list variable (do not include $)
 # - ITEM: item to push
 function bb_push () {
-    local v="$1"; shift
-    eval "$v=("\${$v[@]}" "$@")"
+    local -n arr="$1"
+    shift
+    arr=( "${arr[@]}" "$@" )
 }
 
 # function: bb_pop LISTVAR
@@ -85,7 +78,8 @@ function bb_push () {
 # @arguments:
 # - LISTVAR: name of the list variable (do not include $)
 function bb_pop () {
-    eval "[[ \${#$1[@]} -gt 0 ]] && unset $1[\${#$1[@]}-1]" # negative array index requires bash 4.3+
+    local -n arr="$1"
+    [[ ${#arr[@]} -gt 0 ]] && unset arr[-1]
 }
 
 # function: bb_unshift LISTVAR ITEM ...
@@ -94,8 +88,9 @@ function bb_pop () {
 # - LISTVAR: name of the list variable (do not include $)
 # - ITEM: item to unshift
 function bb_unshift () {
-    local v="$1"; shift
-    eval "$v=("$@" "\${$v[@]}")"
+    local -n arr="$1"
+    shift
+    arr=( "$@" "${arr[@]}" )
 }
 
 # function: bb_shift LISTVAR
@@ -103,7 +98,8 @@ function bb_unshift () {
 # @arguments:
 # - LISTVAR: name of the list variable (do not include $)
 function bb_shift () {
-    eval "$1=(\"\${$1[@]:1}\")"
+    local -n arr="$1"
+    arr=( "${arr[@]:1}" )
 }
 
 function _bb_util_list_base_sort () {
@@ -264,52 +260,43 @@ function bb_rename () {
 
 # function: bb_unpack LISTVAR NAME ...
 # Unpacks list items into named variables
-# @requires: 4.3
 # @arguments:
 # - LISTVAR: name of the list variable (do not include $)
 # - NAME: a variable name to hold a list element
-_bb_checkbashversion 4 3 && \
 function bb_unpack () {
-    declare -n arr="$1"
+    local -n arr="$1"
     bb_rename "${arr[@]}" -- "${@:2}"
-} \
-|| bb_unpack () { _bb_unsupportedbashversion ${FUNCNAME[0]} 4 3; }
+}
 
 # function: bb_map LISTVAR FUNCTION
 # Maps a function over a list, modifying it in place
-# @requires: 4.3
 # @arguments:
 # - LISTVAR: name of the list variable (do not include $)
 # - FUNCTION: a function or command to map a list element to a new value
-_bb_checkbashversion 4 3 && \
 function bb_map () {
-    declare -n arr="$1"
+    local -n arr="$1"
     local -i i
     for (( i=0; i<${#arr[@]}; i++ )); do
         arr[$i]="$("$2" "${arr[$i]}" 2>/dev/null)"
     done
-} \
-|| bb_map () { _bb_unsupportedbashversion ${FUNCNAME[0]} 4 3; }
+}
 
 # function: bb_mapkeys LISTVAR FUNCTION KEYS ...
 # Maps a function over a list of keys to generate an associative array
-# @requires: 4.3
 # @arguments:
 # - LISTVAR: name of an associative array variable (do not include $)
 # - FUNCTION: a function or command to map keys to values
 # - KEYS: keys which will be added to the associative array with mapped values
-_bb_checkbashversion 4 3 && \
 function bb_mapkeys () {
     declare -Ag "$1"
-    declare -n arr="$1"
+    local -n arr="$1"
     local h="$2"
     shift 2
     local key
     for key in "$@"; do
         arr+=( ["$key"]="$("$h" "$key" 2>/dev/null)" )
     done
-} \
-|| bb_mapkeys () { _bb_unsupportedbashversion ${FUNCNAME[0]} 4 3; }
+}
 
 # function: bb_reverselist [-V LISTVAR] ITEM ...
 # Returns a reversed version of the given list

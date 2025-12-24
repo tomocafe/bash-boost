@@ -75,7 +75,7 @@ function bb_debug () {
 # @returns: 0 if sourced, 1 otherwise
 function bb_issourced () {
     # Note: use the bottom of the call stack
-    [[ "${BASH_SOURCE[${#BASH_SOURCE[@]}-1]}" != "$0" ]]
+    [[ "${BASH_SOURCE[-1]}" != "$0" ]]
 }
 
 # function: bb_stacktrace
@@ -107,8 +107,8 @@ function _bb_glopts () {
     local stop=false
     __bb_outvars+=("") # push empty
     case "$1" in
-        -v) __bb_outvars[${#__bb_outvars[@]}-1]="v:$2"; shift 2;;
-        -V) __bb_outvars[${#__bb_outvars[@]}-1]="V:$2"; shift 2;;
+        -v) __bb_outvars[-1]="v:$2"; shift 2;;
+        -V) __bb_outvars[-1]="V:$2"; shift 2;;
         --) stop=true; shift 1;;
     esac
     __bb_args=("$@") # copy args after shifting out -v, -V, --
@@ -119,7 +119,7 @@ function _bb_glopts () {
     else
         case "${@: -1}" in
             -)
-                unset __bb_args[${#__bb_args[@]}-1]
+                unset __bb_args[-1]
                 readarray -t -O ${#__bb_args[@]} __bb_args # append args from stdin to __bb_args
                 ;;
         esac
@@ -129,19 +129,15 @@ function _bb_glopts () {
 # result VAL ...
 # Outputs the result either to a variable or to stdout
 function _bb_result () {
-    local outvar="${__bb_outvars[${#__bb_outvars[@]}-1]}"
-    unset __bb_outvars[${#__bb_outvars[@]}-1] # pop
+    local outvar="${__bb_outvars[-1]}"
+    unset __bb_outvars[-1] # pop
     case "${outvar:0:1}" in
         v) # to scalar variable
             printf -v "${outvar:2}" '%s' "$1"
             ;;
         V) # to list variable
-            local quoted=()
-            local item
-            for item in "$@"; do
-                quoted+=("\"$item\"")
-            done
-            eval "${outvar:2}=("${quoted[@]}")"
+            local -n ref="${outvar:2}"
+            ref=( "$@" )
             ;;
         *) # to stdout
             echo "$*"
