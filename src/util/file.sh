@@ -114,6 +114,43 @@ function bb_prettypath () {
     _bb_result "$result"
 }
 
+# function: bb_abbrevpath PATH MAXLEN [PREFIX]
+# Prints an abbreviated version of the path
+# @arguments:
+# - PATH: a path
+# - MAXLEN: maximum length of the output path
+# - PREFIX: prefix to use when abbreviating (defaults is ...)
+# @notes:
+#   If the path exceeds MAXLEN, it is abbreviated by replacing leading
+#   directories with PREFIX. The path is passed through bb_prettypath first.
+function bb_abbrevpath () {
+    _bb_glopts "$@"; set -- "${__bb_args[@]}"
+    local path="$1"
+    local maxlen="$2"
+    local prefix="${3:-...}"
+    bb_checkset maxlen || return
+    bb_prettypath -v path "$path"
+    local abbrev="$path"
+    if (( ${#abbrev} > maxlen )); then
+        local IFS='/'
+        read -ra parts <<< "$path"
+        abbrev=""
+        local part
+        for part in "${parts[@]}"; do
+            if [[ -z "$abbrev" ]]; then
+                abbrev="$part"
+            else
+                abbrev="$abbrev/$part"
+            fi
+            if (( ${#abbrev} > maxlen )); then
+                abbrev="${prefix}${abbrev: -((maxlen - ${#prefix}))}"
+                break
+            fi
+        done
+    fi
+    _bb_result "$abbrev"
+}
+
 # function: bb_countlines FILENAME ...
 # Counts the number of lines in a list of files
 # @arguments:

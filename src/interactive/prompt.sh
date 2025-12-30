@@ -12,7 +12,7 @@ bb_load "cli/color"
 __bb_interactive_prompt_lhs=()
 __bb_interactive_prompt_rhs=()
 __bb_interactive_prompt_nl=()
-
+__bb_interactive_prompt_prehooks=()
 __bb_interactive_prompt_backup_ps1=""
 __bb_interactive_prompt_backup_cmd=""
 __bb_interactive_prompt_resetopt=false
@@ -112,10 +112,26 @@ function bb_promptcolor () {
     unset __bb_cli_color_escapeprompt
 }
 
+# function: bb_setpromptprehook FUNCTION ...
+# Sets functions to be called before the prompt is rendered
+# @arguments:
+# - FUNCTION: a function
+# @notes:
+#   The functions will be called in order before the prompt is rendered.
+#   This can be used to set variables used by the prompt functions.
+function bb_setpromptprehook () {
+    __bb_interactive_prompt_prehooks=("$@")
+}
+
 # promptimpl
 function _bb_interactive_prompt_promptimpl () {
     BB_PROMPT_LASTRC=$? # keep this line first!
     BB_PROMPT_REM=${COLUMNS?set checkwinsize}
+
+    # Call prehooks
+    for hook in "${__bb_interactive_prompt_prehooks[@]}"; do
+        $hook
+    done
 
     local block
     local raw

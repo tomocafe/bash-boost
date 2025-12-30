@@ -1,7 +1,7 @@
 ---
 title: BASH-BOOST(1)
 author: github.com/tomocafe
-date: December 24, 2025
+date: December 30, 2025
 ---
 
 
@@ -686,6 +686,19 @@ Prints text in color, for use specifically in prompts
 This is like colorize but adds \[ and \] around non-printing
 characters which are needed specifically in prompts
 
+## `bb_setpromptprehook FUNCTION ...`
+
+Sets functions to be called before the prompt is rendered
+
+**Arguments:**
+
+- `FUNCTION`: a function
+
+**Notes:**
+
+The functions will be called in order before the prompt is rendered.
+This can be used to set variables used by the prompt functions.
+
 # Package util/env
 
 Routines for checking and setting environment variables
@@ -854,6 +867,21 @@ Prints a pretty version of the path
 **Notes:**
 
 Replaces home directory with ~
+
+## `bb_abbrevpath PATH MAXLEN [PREFIX]`
+
+Prints an abbreviated version of the path
+
+**Arguments:**
+
+- `PATH`: a path
+- `MAXLEN`: maximum length of the output path
+- `PREFIX`: prefix to use when abbreviating (defaults is ...)
+
+**Notes:**
+
+If the path exceeds MAXLEN, it is abbreviated by replacing leading
+directories with PREFIX. The path is passed through bb_prettypath first.
 
 ## `bb_countlines FILENAME ...`
 

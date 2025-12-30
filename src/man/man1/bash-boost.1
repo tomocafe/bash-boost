@@ -14,7 +14,7 @@
 . ftr VB CB
 . ftr VBI CBI
 .\}
-.TH "BASH-BOOST" "1" "December 24, 2025" "" ""
+.TH "BASH-BOOST" "1" "December 30, 2025" "" ""
 .hy
 .SH Package cli/arg
 .PP
@@ -696,6 +696,18 @@ Prints text in color, for use specifically in prompts
 .PP
 This is like colorize but adds [ and ] around non-printing characters
 which are needed specifically in prompts
+.SS \f[V]bb_setpromptprehook FUNCTION ...\f[R]
+.PP
+Sets functions to be called before the prompt is rendered
+.PP
+\f[B]Arguments:\f[R]
+.IP \[bu] 2
+\f[V]FUNCTION\f[R]: a function
+.PP
+\f[B]Notes:\f[R]
+.PP
+The functions will be called in order before the prompt is rendered.
+This can be used to set variables used by the prompt functions.
 .SH Package util/env
 .PP
 Routines for checking and setting environment variables
@@ -862,6 +874,23 @@ Prints a pretty version of the path
 \f[B]Notes:\f[R]
 .PP
 Replaces home directory with \[ti]
+.SS \f[V]bb_abbrevpath PATH MAXLEN [PREFIX]\f[R]
+.PP
+Prints an abbreviated version of the path
+.PP
+\f[B]Arguments:\f[R]
+.IP \[bu] 2
+\f[V]PATH\f[R]: a path
+.IP \[bu] 2
+\f[V]MAXLEN\f[R]: maximum length of the output path
+.IP \[bu] 2
+\f[V]PREFIX\f[R]: prefix to use when abbreviating (defaults is \&...)
+.PP
+\f[B]Notes:\f[R]
+.PP
+If the path exceeds MAXLEN, it is abbreviated by replacing leading
+directories with PREFIX.
+The path is passed through bb_prettypath first.
 .SS \f[V]bb_countlines FILENAME ...\f[R]
 .PP
 Counts the number of lines in a list of files
