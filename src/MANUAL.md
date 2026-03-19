@@ -1,7 +1,7 @@
 ---
 title: BASH-BOOST(1)
 author: github.com/tomocafe
-date: December 30, 2025
+date: March 19, 2026
 ---
 
 
@@ -876,7 +876,7 @@ Prints an abbreviated version of the path
 
 - `PATH`: a path
 - `MAXLEN`: maximum length of the output path
-- `PREFIX`: prefix to use when abbreviating (defaults is ...)
+- `PREFIX`: prefix to use when abbreviating (default is ...)
 
 **Notes:**
 

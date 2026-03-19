@@ -119,7 +119,7 @@ function bb_prettypath () {
 # @arguments:
 # - PATH: a path
 # - MAXLEN: maximum length of the output path
-# - PREFIX: prefix to use when abbreviating (defaults is ...)
+# - PREFIX: prefix to use when abbreviating (default is ...)
 # @notes:
 #   If the path exceeds MAXLEN, it is abbreviated by replacing leading
 #   directories with PREFIX. The path is passed through bb_prettypath first.
@@ -128,26 +128,21 @@ function bb_abbrevpath () {
     local path="$1"
     local maxlen="$2"
     local prefix="${3:-...}"
+    prefix="${prefix%/}"
     bb_checkset maxlen || return
     bb_prettypath -v path "$path"
     local abbrev="$path"
-    if (( ${#abbrev} > maxlen )); then
-        local IFS='/'
-        read -ra parts <<< "$path"
-        abbrev=""
-        local part
-        for part in "${parts[@]}"; do
-            if [[ -z "$abbrev" ]]; then
-                abbrev="$part"
-            else
-                abbrev="$abbrev/$part"
-            fi
-            if (( ${#abbrev} > maxlen )); then
-                abbrev="${prefix}${abbrev: -((maxlen - ${#prefix}))}"
-                break
-            fi
-        done
-    fi
+    while (( ${#abbrev} > maxlen )); do
+        abbrev="${abbrev#$prefix}"
+        abbrev="${abbrev#/}"
+        if [[ "$abbrev" != */* ]]; then
+            # No more dirs to strip, just truncate
+            abbrev="${prefix}${abbrev: -maxlen+${#prefix}}"
+            break
+        fi
+        abbrev="${abbrev#*/}"
+        abbrev="${prefix}/${abbrev}"
+    done
     _bb_result "$abbrev"
 }
 
